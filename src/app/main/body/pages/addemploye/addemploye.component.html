@@ -1,0 +1,267 @@
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Employés /</span> Ajouter un employé
+</h4>
+
+<div class="card">
+  <div class="card-body">
+    <form (ngSubmit)="submit()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nom</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-fullname2" class="input-group-text"
+                ><i class="bx bx-user"></i
+              ></span>
+              <input
+                type="text"
+                class="form-control"
+                id="basic-icon-default-fullname"
+                placeholder="John Doe"
+                aria-label="John Doe"
+                aria-describedby="basic-icon-default-fullname2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="email" class="form-label">Prénom</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-fullname2" class="input-group-text"
+                ><i class="bx bx-user"></i
+              ></span>
+              <input
+                type="text"
+                class="form-control"
+                id="basic-icon-default-fullname"
+                placeholder="John Doe"
+                aria-label="John Doe"
+                aria-describedby="basic-icon-default-fullname2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="phone" class="form-label">Téléphone</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-phone"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="address" class="form-label">Adresse</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-home"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="city" class="form-label">Sexe</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-male-sign"></i>
+              </span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="state" class="form-label">Situation familliale</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-group"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="zip" class="form-label">Date De Naissance</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-calendar"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="country" class="form-label">Date D'embauche</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-calendar"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="company" class="form-label">Csp</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-buildings"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="job" class="form-label">Secteur</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-building"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="salary" class="form-label">Poste</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-briefcase"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="birthday" class="form-label">Type de contrat</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-notepad"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="" class="form-label">Salaire de base</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-money"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="" class="form-label">Ancienneté</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-phone"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                placeholder="658 799 8941"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,153 @@
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Départs /</span> Liste des Départs
+</h4>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <!-- Champ de recherche -->
+  <div class="search-box">
+    <input type="text" class="form-control" placeholder="Rechercher..." />
+  </div>
+
+  <!-- Bouton Ajouter -->
+  <button
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#addModal"
+  >
+    Ajouter
+  </button>
+</div>
+<!-- Striped Rows -->
+<div class="card">
+  <p-toast />
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Raison</th>
+
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr *ngFor="let item of departs">
+          <td>
+            <strong>{{item.employe}}</strong>
+          </td>
+
+          <td>{{item.raison}}</td>
+          <td>
+            <div class="dropdown">
+              <button
+                type="button"
+                class="btn p-0 dropdown-toggle hide-arrow"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="modifier(item)"
+                  ><i class="bx bx-edit-alt me-1"></i> voir</a
+                >
+                <a class="dropdown-item" (click)="item.id ? supprimer(item.id) : null"
+                  ><i class="bx bx-trash me-1"></i> supprimer</a
+                >
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--/ Striped Rows -->
+<!-- Modal (Fenêtre) -->
+<div
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">
+          Ajouter un nouveau départ
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenu du formulaire ou autre contenu à ajouter -->
+        <form [formGroup]="departForm" (onsubmit)="add()">
+          <div class="mb-3">
+            <label for="nom" class="form-label"> Veuillez sélectionner l'employé Concerné</label>
+            <select id="defaultSelect" class="form-select" name="employe" formControlName="employe">
+              <option value="refuser">Kokou</option>
+              <option value="cours">Abalo</option>
+              <option value="recruter">Moussa</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="prenom" class="form-label">Raison</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="raison"
+              name="raison"
+              placeholder="Veuillez entrer la raison du départ"
+            />
+          </div>
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fermer
+        </button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal (Fenêtre) pour la suppression -->
+<div class="card flex justify-content-center">
+  <p-toast />
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="headless" let-message>
+      <div
+        class="flex flex-column align-items-center p-5 surface-overlay border-round"
+      >
+        <div
+          class="border-circle bg-warning inline-flex justify-content-center align-items-center h-6rem w-6rem"
+        >
+          <i class="pi pi-question text-5xl"></i>
+        </div>
+        <span class="font-bold text-2xl block mb-2 mt-4">
+          {{ message.header }}
+        </span>
+        <p class="mb-0">{{ message.message }}</p>
+        <div class="flex align-items-center gap-2 mt-4">
+          <button
+            pButton
+            label="Save"
+            (click)="cd.accept()"
+            class="w-8rem"
+          ></button>
+          <button
+            pButton
+            label="Cancel"
+            (click)="cd.reject()"
+            class="p-button-outlined w-8rem"
+          ></button>
+        </div>
+      </div>
+    </ng-template>
+  </p-confirmDialog>
+</div>

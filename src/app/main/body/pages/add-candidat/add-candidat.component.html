@@ -1,0 +1,318 @@
+<h4 class="fw-bold py-3 mb-4">
+  <span class="text-muted fw-light">Candidature/</span>Ajouter un candidat
+</h4>
+
+<div class="card">
+  <p-toast></p-toast>
+  <div class="card-body">
+    <form [formGroup]="candidatureForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nom</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-fullname2" class="input-group-text"
+                ><i class="bx bx-user"></i
+              ></span>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nom"
+                name="nom"
+                placeholder="Doe"
+                aria-label="John Doe"
+                aria-describedby="basic-icon-default-fullname2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="email" class="form-label">Prénom</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-fullname2" class="input-group-text"
+                ><i class="bx bx-user"></i
+              ></span>
+              <input
+                type="text"
+                name="prenom"
+                class="form-control"
+                formControlName="prenom"
+                placeholder="John"
+                aria-label="John Doe"
+                aria-describedby="basic-icon-default-fullname2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="phone" class="form-label">Téléphone</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-phone"></i
+              ></span>
+              <input
+                type="text"
+                formControlName="telephone"
+                name="telephone"
+                class="form-control phone-mask"
+                placeholder="65 87 99 89"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="address" class="form-label">Email</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-envelope"></i
+              ></span>
+              <input
+                type="text"
+                formControlName="email"
+                name="email"
+                class="form-control"
+                placeholder="test@exemple.com"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="address" class="form-label">Adresse</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-home"></i
+              ></span>
+              <input
+                type="text"
+                formControlName="adresse"
+                name="adresse"
+                class="form-control"
+                placeholder="Lomé, Togo"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="nom" class="form-label">
+              Veuillez sélectionner le poste à pourvoir</label
+            >
+            <select
+              id="defaultSelect"
+              class="form-select"
+              name="poste"
+              formControlName="poste"
+            >
+              <ng-container *ngFor="let item of postes"
+                ><option [ngValue]="item" >
+                  <strong style="text-transform: uppercase;"> {{ item.libelle }}</strong>
+                </option></ng-container
+              >
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="city" class="form-label"
+              >Prochaine action à mener</label
+            >
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-chevrons-right"></i>
+              </span>
+              <input
+                type="text"
+                formControlName="prochaineAction"
+                name="prochaineAction"
+                class="form-control"
+                placeholder="quelle est la prochaine étape à mener ?"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="state" class="form-label">date d'entretien 1</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-calendar"></i
+              ></span>
+              <input
+                type="date"
+                formControlName="dateEntretien1"
+                name="dateEntretien1"
+                class="form-control"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="zip" class="form-label">Date D'entretien 2</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-calendar"></i
+              ></span>
+              <input
+                type="date"
+                formControlName="dateEntretien2"
+                name="dateEntretien2"
+                class="form-control"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="country" class="form-label">Date D'entretien 3</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-calendar"></i
+              ></span>
+              <input
+                type="date"
+                formControlName="dateEntretien3"
+                name="dateEntretien3"
+                class="form-control"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="defaultSelect" class="form-label"
+              >Stade de recrutement</label
+            >
+            <select
+              id="defaultSelect"
+              class="form-select"
+              name="stadeDeRecrutement"
+              formControlName="stadeDeRecrutement"
+            >
+              <option value="refuser">refuser</option>
+              <option value="cours">En cours</option>
+              <option value="recruter">recruter</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="job" class="form-label">Expérience</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-notepad"></i
+              ></span>
+              <input
+                type="number"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                formControlName="noteExperience"
+                name="noteExperience"
+                placeholder="/20"
+                aria-label=""
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="salary" class="form-label">Compétence</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-notepad"></i
+              ></span>
+              <input
+                type="number"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                formControlName="noteCompetence"
+                name="noteCompetence"
+                placeholder="/20"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="birthday" class="form-label">Savoir Etre</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-notepad"></i
+              ></span>
+              <input
+                type="number"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                formControlName="noteSavoirEtre"
+                name="noteSavoirEtre"
+                placeholder="/20"
+                aria-label="658 799 8941"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="" class="form-label">Moyenne</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-notepad"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                class="form-control phone-mask"
+                formControlName="moyenne"
+                name="moyenne"
+                placeholder=""
+                aria-label=""
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="" class="form-label">Appréciation globale</label>
+            <div class="input-group input-group-merge">
+              <span id="basic-icon-default-phone2" class="input-group-text"
+                ><i class="bx bx-notepad"></i
+              ></span>
+              <input
+                type="text"
+                id="basic-icon-default-phone"
+                formControlName="apreciationGlobale"
+                name="apreciationGlobale"
+                class="form-control phone-mask"
+                aria-describedby="basic-icon-default-phone2"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="add()">
+        Ajouter
+      </button>
+    </form>
+  </div>
+</div>
