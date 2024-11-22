@@ -3,6 +3,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Absence } from '../../../../api/models/Absence';
 import { Form, FormBuilder, FormGroup } from '@angular/forms';
 import { AbsenceService } from '../../../../api/services/absence.service';
+import { EmployeService } from '../../../../api/services/employe.service';
+import { Employe } from '../../../../api/models/employe';
 
 @Component({
   selector: 'app-absence',
@@ -14,12 +16,14 @@ export class AbsenceComponent implements OnInit {
   abForm: FormGroup;
 
   absences: Absence[] = [];
+  employes!: Employe[];
 
   constructor(
     private service: AbsenceService,
     private formbuilder: FormBuilder,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private emploiyerService: EmployeService
   ) {
     this.abForm = this.formbuilder.group({
       type: [''],
@@ -31,11 +35,13 @@ export class AbsenceComponent implements OnInit {
 
   ngOnInit(): void {
     this.liste();
+    this.listeEmploye();
   }
 
   
 
   add() {
+   
     this.service.createAbsence(this.abForm?.value).subscribe({
       next: () => {
         this.messageService.add({
@@ -131,6 +137,21 @@ export class AbsenceComponent implements OnInit {
           severity: 'error',
           summary: 'Erreur',
           detail: "Erreur lors de la modification de l'absence",
+        });
+      },
+    });
+  }
+
+  listeEmploye() {
+    this.emploiyerService.getEmployes().subscribe({
+      next: (value: Employe[]) => {
+        this.employes = value;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Erreur lors de l'affichage des employés",
         });
       },
     });

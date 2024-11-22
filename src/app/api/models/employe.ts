@@ -1,5 +1,9 @@
 import { Contrat } from "./contrat";
+import { Csp } from "./csp";
 import { Depart } from "./Depart";
+import { Evenement } from "./evenement";
+import { Poste } from "./Poste";
+import { Secteur } from "./secteur";
 
 export interface Employe{
     id: number;
@@ -9,12 +13,14 @@ export interface Employe{
     adresse: string;
     sexe: string;
     situationFamiliale: string;
-    dateNaissance: string; // Stocké en chaîne de caractères (format ISO)
-    dateEmbauche: string;   // Stocké en chaîne de caractères (format ISO)
+    dateNaissance: string; 
+    age:number;// Stocké en chaîne de caractères (format ISO)
+    dateEmbauche: string;   
+    anciennete:number;
     dateDepart?: string;    // Optionnel, certains employés n'ont pas encore quitté
-    csp: string;
-    secteurId: number;      // ID du Secteur
-    posteId: number;        // ID du Poste
+    csp: Csp;
+    poste: Poste;        // ID du Poste
     depart?: Depart;        // L'objet Depart, optionnel
-    contrat: Contrat;  
+    contrat: Contrat;
+    Evenements?: Evenement[];    // Tableau d'objets Evenement  
 }

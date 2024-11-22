@@ -2,11 +2,7 @@
   <span class="text-muted fw-light">Absences /</span> Liste des absences
 </h4>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Champ de recherche -->
-  <div class="search-box">
-    <input type="text" class="form-control" placeholder="Rechercher..." />
-  </div>
+<div class="d-flex justify-content-end align-items-center mb-3">
 
   <!-- Bouton Ajouter -->
   <button
@@ -32,11 +28,11 @@
       </thead>
       <tbody class="table-border-bottom-0">
         <tr *ngFor="let item of absences">
-          <td> <a href="">{{item.employe}} </a></td>
+          <td> <a [routerLink]="">{{item.employe?.nom}}{{item.employe?.prenom}} </a></td>
          
           <td>{{item.type}}</td>
-          <td>{{item.dateDebut | date:'dd:mm:yyyy'}}</td>
-          <td>{{item.dateFin | date:'dd:mm:yyyy'}}</td>
+          <td>{{item.dateDebut | date:'dd-MM-yyyy'}}</td>
+          <td>{{item.dateFin | date:'dd-MM-yyyy'}}</td>
           <td>
             <div class="dropdown">
               <button
@@ -84,13 +80,11 @@
       </div>
       <div class="modal-body">
         <!-- Contenu du formulaire ou autre contenu à ajouter -->
-        <form [formGroup]="abForm" (onsubmit)="add()" >
+        <form [formGroup]="abForm" >
           <div class="mb-3">
             <label for="nom" class="form-label">Veuillez sélectionner l'employé concerné</label>
             <select id="defaultSelect" class="form-select" name="employe" formControlName="employe">
-              <option value="refuser">Kokou</option>
-              <option value="cours">Abalo</option>
-              <option value="recruter">Moussa</option>
+              <option *ngFor="let item of employes" [ngValue]="item">{{item.nom}} {{item.prenom}}</option>
             </select>
           </div>
           <div class="mb-3">
@@ -98,7 +92,8 @@
             <input
               type="text"
               class="form-control"
-              id="prenom"
+              formControlName="type"
+              name="type"
               placeholder="Entrez le motif"
             />
           </div>
@@ -107,17 +102,20 @@
             <input
               type="date"
               class="form-control"
-              id="moyenne"
-              placeholder="Entrez la moyenne"
+              formControlName="dateDebut"
+              name="dateDebut"
+              placeholder="Entrez la la date de début"
             />
           </div>
           <div class="mb-3">
             <label for="moyenne" class="form-label">Retour</label>
             <input
               type="date"
+              formControlName="dateFin"
+              name="dateFin"
               class="form-control"
-              id="moyenne"
-              placeholder="Entrez la moyenne"
+          
+              placeholder="Entrez la date de retour"
             />
           </div>
         </form>
@@ -126,7 +124,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fermer
         </button>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <button type="submit" class="btn btn-primary" (click)="add()">Enregistrer</button>
       </div>
     </div>
   </div>

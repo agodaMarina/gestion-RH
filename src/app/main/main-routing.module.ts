@@ -11,6 +11,13 @@ import { ListeemployeComponent } from './body/pages/listeemploye/listeemploye.co
 import { DetailemployeComponent } from './body/pages/detailemploye/detailemploye.component';
 import { AddemployeComponent } from './body/pages/addemploye/addemploye.component';
 import { RapportComponent } from './body/pages/rapport/rapport.component';
+import { RecrutementComponent } from './body/pages/recrutement/recrutement.component';
+import { SecteurComponent } from './body/pages/secteur/secteur.component';
+import { RecruteurComponent } from './body/pages/recruteur/recruteur.component';
+import { CspComponent } from './body/pages/csp/csp.component';
+import { AddPosteComponent } from './body/pages/recrutement/etapes/add-poste/add-poste.component';
+import { EvaluationComponent } from './body/pages/recrutement/etapes/evaluation/evaluation.component';
+import { SelectionComponent } from './body/pages/recrutement/etapes/selection/selection.component';
 
 
 const routes: Routes = [
@@ -26,9 +33,21 @@ const routes: Routes = [
       { path: 'candidats', component: ListecandidaturesComponent },
       { path: 'add-candidat', component: AddCandidatComponent },
       { path: 'employes', component: ListeemployeComponent },
-      { path: 'detail', component: DetailemployeComponent },
+      { path: 'detail/:id', component: DetailemployeComponent },
       { path: 'add-employe', component: AddemployeComponent },
       { path: 'rapport', component: RapportComponent },
+      { path: 'recrutement',component:RecrutementComponent,
+        children:[
+          {path:'',redirectTo:'add-poste',pathMatch:'full'},
+          {path:'add-poste',component:AddPosteComponent},
+          {path:'add-candidats',component:AddCandidatComponent},
+          {path:'add-evaluation',component:EvaluationComponent},
+          {path:'end-recrutement',component:SelectionComponent},
+        ]
+    },
+      { path: 'secteur',component:SecteurComponent},
+      { path: 'csp',component:CspComponent},
+      { path: 'recruteur',component:RecruteurComponent},
     ],
   },
 ];

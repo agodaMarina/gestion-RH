@@ -17,7 +17,9 @@ import { AddemployeComponent } from './body/pages/addemploye/addemploye.componen
 import { ListecandidaturesComponent } from './body/pages/listecandidatures/listecandidatures.component';
 import { ListeemployeComponent } from './body/pages/listeemploye/listeemploye.component';
 import { DetailemployeComponent } from './body/pages/detailemploye/detailemploye.component';
+import { RecrutementComponent } from './body/pages/recrutement/recrutement.component';
 
+import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -25,6 +27,17 @@ import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
+import { ChartModule } from 'angular-highcharts';
+import { TabViewModule } from 'primeng/tabview';
+import { StepsModule } from 'primeng/steps';
+import { BadgeModule } from 'primeng/badge';
+import { SecteurComponent } from './body/pages/secteur/secteur.component';
+import { CspComponent } from './body/pages/csp/csp.component';
+import { RecruteurComponent } from './body/pages/recruteur/recruteur.component';
+import { AddPosteComponent } from './body/pages/recrutement/etapes/add-poste/add-poste.component';
+import { EvaluationComponent } from './body/pages/recrutement/etapes/evaluation/evaluation.component';
+import { SelectionComponent } from './body/pages/recrutement/etapes/selection/selection.component';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +56,13 @@ import { PaginatorModule } from 'primeng/paginator';
     ListecandidaturesComponent,
     ListeemployeComponent,
     DetailemployeComponent,
-  
+    RecrutementComponent,
+    SecteurComponent,
+    CspComponent,
+    RecruteurComponent,
+    AddPosteComponent,
+    EvaluationComponent,
+    SelectionComponent,
   ],
   imports: [
     CommonModule,
@@ -54,8 +73,13 @@ import { PaginatorModule } from 'primeng/paginator';
     ToastModule,
     FormsModule,
     ReactiveFormsModule,
-    PaginatorModule
+    PaginatorModule,
+    ChartModule,
+    TabViewModule,
+    StepsModule,
+    BadgeModule,
+    DividerModule
   ],
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService],
 })
-export class MainModule { }
+export class MainModule {}

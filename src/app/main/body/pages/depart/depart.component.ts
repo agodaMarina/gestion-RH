@@ -3,6 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Depart } from '../../../../api/models/Depart';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DepartService } from '../../../../api/services/depart.service';
+import { PageEvent } from '../../../../api/models/pageEvent';
 
 @Component({
   selector: 'app-depart',
@@ -12,6 +13,19 @@ import { DepartService } from '../../../../api/services/depart.service';
 export class DepartComponent implements OnInit{
   departs: Depart[] = [];
   departForm: FormGroup;
+  paginate: Depart[] = [];
+  first: number = 0;
+  rows: number = 10;
+  
+
+  onPageChange(event: PageEvent) {
+    this.first = event.first ?? 0;
+    this.rows = event.rows ?? 10;
+    this.paginate = this.departs.slice(
+      this.first,
+      this.first + this.rows
+    );
+  }
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -56,6 +70,7 @@ export class DepartComponent implements OnInit{
     this.service.getAll().subscribe({
       next: (data: Depart[]) => {
         this.departs = data;
+        this.paginate=this.departs.slice(0,this.rows);
       },
       error: (err) => {
         this.messageService.add({

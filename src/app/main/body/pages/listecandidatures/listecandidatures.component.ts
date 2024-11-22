@@ -16,8 +16,11 @@ interface PageEvent {
   styleUrl: './listecandidatures.component.css',
 })
 export class ListecandidaturesComponent implements OnInit {
+ 
   candidats: Candidature[] = [];
-  candidat: Candidature = {};
+  candidat: Candidature = {
+
+  };
   first: number = 0;
 
   rows: number = 10;
@@ -27,7 +30,7 @@ export class ListecandidaturesComponent implements OnInit {
     this.rows = event.rows ?? 10;
   }
 
-  stadeClass = 'badge bg-label-primary me-1';
+  stadeClass = '';
   candidatureForm: FormGroup;
 
   constructor(
@@ -66,13 +69,13 @@ export class ListecandidaturesComponent implements OnInit {
         this.candidats = data;
         if (this.candidats) {
           this.candidats.forEach((candidat) => {
-            if (candidat.stadeDeRecrutement == 'cours') {
+            if (candidat.stadeDeRecrutement == 'En cours') {
               this.stadeClass = 'badge bg-label-warning me-1';
             }
             if (candidat.stadeDeRecrutement == 'recruter') {
               this.stadeClass = 'badge bg-label-success me-1';
             }
-            if (candidat.stadeDeRecrutement == 'Refusé') {
+            if (candidat.stadeDeRecrutement == 'refuser') {
               this.stadeClass = 'badge bg-label-danger me-1';
             }
           });
@@ -148,12 +151,9 @@ export class ListecandidaturesComponent implements OnInit {
       dateEntretien2: item.dateEntretien2,
       dateEntretien3: item.dateEntretien3,
       stadeDeRecrutement: item.stadeDeRecrutement,
-      noteExperience: item.noteExperience,
-      noteCompetence: item.noteCompetence,
       moyenne: item.moyenne,
-      noteSavoirEtre: item.noteSavoirEtre,
       apreciationGlobale: item.apreciationGlobale,
-      poste: item.poste,
+      
     });
   }
 
@@ -176,4 +176,17 @@ export class ListecandidaturesComponent implements OnInit {
       },
     });
   }
+
+  export() {
+    this.service.exportToExcel().subscribe((response:Blob)=>{
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Liste des candidatures.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })
+  }
 }
+ 

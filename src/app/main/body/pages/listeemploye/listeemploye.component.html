@@ -1,7 +1,7 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Employés /</span> Liste des employés
 </h4>
-<div class="row g-6 mb-6">
+<div class="row mb-3">
   <div class="col-sm-6 col-xl-3">
     <div class="card">
       <div class="card-body">
@@ -9,7 +9,7 @@
           <div class="content-left">
             <span class="text-heading">Total</span>
             <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">21,459</h4>
+              <h4 class="mb-0 me-2">{{employes.length}}</h4>
             </div>
             <small class="mb-0">Total des employés</small>
           </div>
@@ -29,7 +29,7 @@
           <div class="content-left">
             <span class="text-heading">Absences</span>
             <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">4,567</h4>
+              <h4 class="mb-0 me-2">{{totalAbsence|| 0}}</h4>
             </div>
             <small class="mb-0">Total des abscences actives </small>
           </div>
@@ -49,7 +49,7 @@
           <div class="content-left">
             <span class="text-heading">Employés actifs</span>
             <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">19,860</h4>
+              <h4 class="mb-0 me-2">{{totalEmployeActif || 0}}</h4>
             </div>
             <small class="mb-0">Total des employés actifs</small>
           </div>
@@ -69,7 +69,7 @@
           <div class="content-left">
             <span class="text-heading">Départs</span>
             <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">237</h4>
+              <h4 class="mb-0 me-2">{{departNumber || 0}}</h4>
               <p class="text-success mb-0"></p>
             </div>
             <small class="mb-0">Total des départs</small>
@@ -84,72 +84,81 @@
     </div>
   </div>
 </div>
-<!-- Striped Rows -->
-<div class="card">
-  <div class="table-responsive text-nowrap">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Prenom</th>
-          <th>Poste à pourvoir</th>
-          <th>Moyenne</th>
-          <th>Stade de recrutement</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody class="table-border-bottom-0">
-        <tr *ngFor="let item of employes">
-          <td>
-            <strong>{{ item.nom }}</strong>
-          </td>
-          <td>{{ item.prenom }}</td>
-          <td >
-            <strong>{{ item.csp }}</strong>
-          </td>
-          <td>
-            {{ item.dateNaissance | date: "dd/MM/yyyy" }}
-          </td>
-          <td>
-            
-          </td>
-          <td>
-            <div class="dropdown">
-              <button
-                type="button"
-                class="btn p-0 dropdown-toggle hide-arrow"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a
-                  class="dropdown-item"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editModal"
-                  (click)="modifier(item)"
-                  ><i class="bx bx-edit-alt me-1"></i> modifier</a
-                >
-                <a
-                  class="dropdown-item"
-                  (click)="item.id ? supprimer(item.id) : null"
-                  ><i class="bx bx-trash me-1"></i> supprimer</a
-                >
-              </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="row">
+  <div class="d-flex justify-content-end align-items-center mb-3">
+    <button class="btn btn-secondary" (click)="triggerFileInput()"><i class="bx bx-download bx-18px m-2"></i>importer</button>
+    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" />
   </div>
-  <div class="card flex justify-content-center">
-    <p-paginator
-      (onPageChange)="onPageChange($event)"
-      [first]="first"
-      [rows]="rows"
-      [totalRecords]="employes.length"
-      [rowsPerPageOptions]="[10, 20, 30]"
-    />
+  <!-- Striped Rows -->
+  <div class="card">
+    <div class="table-responsive text-nowrap">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Csp</th>
+            <th>Secteur</th>
+            <th>Type de contrat</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          
+          @for (item of filteredEmployees(); track $index) {
+          <tr (click)="goToDetail(item)" style="cursor: pointer;">
+            <td>
+              <strong>{{ item.nom }}</strong>
+            </td>
+            <td>{{ item.prenom }}</td>
+            <td>
+              <strong>{{ item.csp }}</strong>
+            </td>
+            <td>
+              {{ item.secteur.libelle }}
+            </td>
+            <td></td>
+            <td>
+              <div class="dropdown">
+                <button
+                  type="button"
+                  class="btn p-0 dropdown-toggle hide-arrow"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a
+                    class="dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                    (click)="modifier(item)"
+                    ><i class="bx bx-edit-alt me-1"></i> modifier</a
+                  >
+                  <a
+                    class="dropdown-item"
+                    (click)="item.id ? supprimer(item.id) : null"
+                    ><i class="bx bx-trash me-1"></i> supprimer</a
+                  >
+                </div>
+              </div>
+            </td>
+          </tr>}@empty {
+            <tr>Aucun employé portant ce nom</tr>
+          }
+        </tbody>
+      </table>
+      <div class="card flex justify-content-center">
+        <p-paginator
+          (onPageChange)="onPageChange($event)"
+          [first]="first"
+          [rows]="rows"
+          [totalRecords]="employes.length"
+          [rowsPerPageOptions]="[10, 20, 30]"
+        />
+      </div>
+    </div>
+    
   </div>
 </div>
 <!--/ Striped Rows -->

@@ -1,0 +1,117 @@
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Catégorie Socioprofessionnelle/</span> Liste des Catégories
+  </h4>
+  <div class="d-flex justify-content-end align-items-center mb-3">
+   
+    <!-- Bouton Ajouter -->
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#addModal"
+    >
+      Ajouter
+    </button>
+  </div>
+  <!-- Striped Rows -->
+  <div class="card">
+    <p-toast />
+    <div class="table-responsive text-nowrap">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Libellé</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+            @for (item of filteredData; track $index) {
+          <tr >
+            <td>
+              <strong>{{item.libelle}}</strong>
+            </td>
+                     
+            <td>
+              <div class="dropdown">
+                <button
+                  type="button"
+                  class="btn p-0 dropdown-toggle hide-arrow"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" (click)="modifier(item)"
+                    ><i class="bx bx-edit-alt me-1"></i> voir</a
+                  >
+                  <a class="dropdown-item" (click)="item.id ? supprimer(item.id) : null"
+                    ><i class="bx bx-trash me-1"></i> supprimer</a
+                  >
+                </div>
+              </div>
+            </td>
+          </tr>
+        }@empty {
+            <tr>La liste des Catégories Socioprofessionnelles est vide</tr>
+        }
+        </tbody>
+      </table>
+      <div class="card flex justify-content-center">
+        <p-paginator
+          (onPageChange)="onPageChange($event)"
+          [first]="first"
+          [rows]="rows"
+          [totalRecords]="Csps.length"
+          [rowsPerPageOptions]="[10, 20, 30]"
+        />
+      </div>
+    </div>
+  </div>
+  <!--/ Striped Rows -->
+  <!-- Modal (Fenêtre) -->
+  <div
+    class="modal fade"
+    id="addModal"
+    tabindex="-1"
+    aria-labelledby="addModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">
+            Ajouter une nouvelle Catégorie Socioprofessionnelle
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenu du formulaire ou autre contenu à ajouter -->
+          <form [formGroup]="cspForm" (onsubmit)="add()">
+            
+            <div class="mb-3">
+              <label for="prenom" class="form-label">libellé</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="libelle"
+                name="libelle"
+                placeholder="Veuillez entrer le nom de la catégorie"
+              />
+            </div>
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

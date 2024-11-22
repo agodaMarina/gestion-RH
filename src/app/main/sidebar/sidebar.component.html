@@ -104,7 +104,7 @@
     <li class="menu-item">
       <a  class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-group"></i>
-        <div data-i18n="Account Settings">Employés</div>
+        <div data-i18n="Account Settings">Personnel</div>
       </a>
       <ul class="menu-sub">
         <li class="menu-item">
@@ -122,10 +122,25 @@
     </li>
     
     <li class="menu-item">
-      <a [routerLink]="['/main/rapport']" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-chart"></i>
-        <div data-i18n="Authentications">Rapport</div>
+      <a [routerLink]="['/main/poste']" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-briefcase"></i>
+        <div data-i18n="Misc">Postes</div>
       </a>
+     
+    </li>
+    
+    <li class="menu-item">
+      <a [routerLink]="['/main/rapport']" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-line-chart"></i>
+        <div data-i18n="Authentications">Statistiques</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a [routerLink]="['/main/absence']" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-bed"></i>
+        <div data-i18n="Authentications">Absences</div>
+      </a>
+      
     </li>
     
     <li class="menu-header small text-uppercase">
@@ -143,37 +158,43 @@
           </a>
         </li>
         <li class="menu-item">
-          <a [routerLink]="['/main/add-candidat']" class="menu-link">
-            <div data-i18n="Without navbar">Ajouter une candidature</div>
+          <a [routerLink]="['/main/recrutement']" class="menu-link">
+            <div data-i18n="Without navbar">nouvelle procédure</div>
           </a>
         </li>
         
       </ul>
     </li>
+    <li class="menu-item">
+      <a  class="menu-link menu-toggle" [routerLink]="['/main/recruteur']">
+        <i class="menu-icon tf-icons bx bx-user-plus"></i>
+        <div data-i18n="Account Settings">Recruteurs</div>
+      </a>
+     
+    </li>
+
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Autres</span>
     </li>
     <li class="menu-item">
+      <a [routerLink]="['/main/secteur']" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-library"></i>
+        <div data-i18n="Account Settings">Secteurs</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a [routerLink]="['/main/csp']" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-category"></i>
+        <div data-i18n="Account Settings">Csp</div>
+      </a>
+    </li>
+    <li class="menu-item">
       <a [routerLink]="['/main/depart']" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <i class="menu-icon tf-icons bx bx-user-x"></i>
         <div data-i18n="Account Settings">Départs</div>
       </a>
+    </li>
     
-    </li>
-    <li class="menu-item">
-      <a [routerLink]="['/main/absence']" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-bed"></i>
-        <div data-i18n="Authentications">Absences</div>
-      </a>
-      
-    </li>
-    <li class="menu-item">
-      <a [routerLink]="['/main/poste']" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-carousel"></i>
-        <div data-i18n="Misc">Postes</div>
-      </a>
-     
-    </li>
   </ul>
 </aside>
 <!-- / Menu -->

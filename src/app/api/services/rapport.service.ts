@@ -11,8 +11,8 @@ export class RapportService {
 
   constructor(private http:HttpClient) { }
 
-  getBySexe():Observable<object>{
-    return this.http.get<object>(this.url + '/par-sexe');
+  getBySexe():Observable<{ [key: string]: number }>{
+    return this.http.get<{[key:string]:number}>(this.url + '/par-sexe');
   }
 
   getByAge():Observable<object>{

@@ -31,4 +31,5 @@ update(id: number, depart: Depart): Observable<Depart> {
 delete(id: number): Observable<void> {
   return this.http.delete<void>(`${this.baseurl}/supprimer/${id}`);
 }
+
 }

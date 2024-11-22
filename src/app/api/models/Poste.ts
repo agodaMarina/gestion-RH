@@ -1,3 +1,5 @@
+import { Secteur } from "./secteur";
+
 export interface Poste{
     id?:number;
     reference?:string;
@@ -5,6 +7,6 @@ export interface Poste{
     niveauEtude?:string;
     description?:string;
     niveauDeSalaire?:number;
-    recruteur?:string;
     remarque?:string;
+    secteur?:Secteur;
 }

@@ -1,4 +1,5 @@
-import { Poste } from "./Poste";
+import { Evaluation } from "./evaluation";
+import { Recrutement } from "./recrutement";
 
 export interface Candidature {
   id?: number;
@@ -12,10 +13,9 @@ export interface Candidature {
   dateEntretien2?:String;
   dateEntretien3?:String;
   stadeDeRecrutement?: String;
-  noteExperience?: number;
-  noteCompetence?: number;
   moyenne?: number;
-  noteSavoirEtre?: number;
-  apreciationGlobale?: number;
-  poste?:Poste;
+  apreciationGlobale?: string;
+  recrutement?:Recrutement;
+  evaluation?:Evaluation;
+  estRetenu?:boolean;
 }

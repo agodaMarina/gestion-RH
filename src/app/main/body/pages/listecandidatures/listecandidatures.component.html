@@ -2,16 +2,18 @@
   <span class="text-muted fw-light">Candidatures /</span> Liste des candidatures
 </h4>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Champ de recherche -->
-  <div class="search-box">
-    <input type="text" class="form-control" placeholder="Rechercher..." />
-  </div>
-
+<div class="d-flex justify-content-end align-items-center mb-3">
+  
+  <div>
   <!-- Bouton Ajouter -->
   <button class="btn btn-primary" [routerLink]="['/main/add-candidat']">
     Ajouter
   </button>
+  <!-- Bouton exporter -->
+  <a class="btn btn-secondary m-2" (click)="export()">
+    <span class="tf-icons bx bx-export bx-18px me-2"></span> Exporter
+  </a>
+</div>
 </div>
 <!-- Striped Rows -->
 <div class="card">
@@ -19,55 +21,69 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>Poste Concerné</th>
           <th>Nom</th>
           <th>Prenom</th>
-          <th>Poste à pourvoir</th>
           <th>Moyenne</th>
           <th>Stade de recrutement</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        <tr *ngFor="let item of candidats">
-          <td>
-            <strong>{{ item.nom }}</strong>
-          </td>
-          <td>{{ item.prenom }}</td>
-          <td >
-            <strong>{{ item.poste?.libelle }}</strong>
-          </td>
-          <td>
-            {{ item.moyenne | number : "1.0-2" }}
-          </td>
-          <td>
-            <span [ngClass]="stadeClass">{{ item.stadeDeRecrutement }}</span>
-          </td>
-          <td>
-            <div class="dropdown">
-              <button
-                type="button"
-                class="btn p-0 dropdown-toggle hide-arrow"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a
-                  class="dropdown-item"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editModal"
-                  (click)="modifier(item)"
-                  ><i class="bx bx-edit-alt me-1"></i> modifier</a
+        <ng-container *ngFor="let item of candidats">
+          <tr >
+            <td >
+              <strong></strong>
+            </td>
+            <td>
+              <strong>{{ item.nom }}</strong>
+            </td>
+            <td>{{ item.prenom }}</td>
+           
+            <td>
+              {{ item.moyenne | number : "1.0-2" }}
+            </td>
+            <td>
+              @switch (item.stadeDeRecrutement) {
+                @case ('En cours') {
+                  <span class="badge bg-label-warning me-1">{{ item.stadeDeRecrutement }}</span>
+                }
+                @case ('recruter') {
+                  <span class="badge bg-label-success me-1">{{ item.stadeDeRecrutement }}</span>
+                }
+                @case ('refuser') {
+                  <span class="badge bg-label-danger me-1">{{ item.stadeDeRecrutement }}</span>
+                }
+              }
+            </td>
+            <td>
+              <div class="dropdown">
+                <button
+                  type="button"
+                  class="btn p-0 dropdown-toggle hide-arrow"
+                  data-bs-toggle="dropdown"
                 >
-                <a
-                  class="dropdown-item"
-                  (click)="item.id ? supprimer(item.id) : null"
-                  ><i class="bx bx-trash me-1"></i> supprimer</a
-                >
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a
+                    class="dropdown-item"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                    (click)="modifier(item)"
+                    ><i class="bx bx-edit-alt me-1"></i> détail</a
+                  >
+                  <a
+                    class="dropdown-item"
+                    (click)="item.id ? supprimer(item.id) : null"
+                    ><i class="bx bx-trash me-1"></i> supprimer</a
+                  >
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
+            </td>
+          </tr>
+        </ng-container>
+        
       </tbody>
     </table>
   </div>

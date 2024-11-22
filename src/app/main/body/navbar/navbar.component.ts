@@ -28,10 +28,10 @@ export class NavbarComponent implements OnInit {
   }
 
   // Fonction appelée lorsque l'utilisateur saisit dans le champ de recherche
-  onSearchInput(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const searchTerm = inputElement.value;
-    this.searchService.updateSearchTerm(searchTerm);
+  onSearch(event: Event) {
+    const query = (event.target as HTMLInputElement).value;
+    this.searchService.setSearchQuery(query);
+    console.log(query);
   }
   profile(){
     this.service.getProfile().subscribe({
@@ -43,7 +43,9 @@ export class NavbarComponent implements OnInit {
       }
     })
   }
+  
   logout() {
     this.service.logout();
   }
+
 }

@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
-  private searchTerm = new BehaviorSubject<string>(''); // Terme de recherche initialisé à vide
-  currentSearchTerm = this.searchTerm.asObservable(); // Observable pour que d'autres composants puissent s'abonner
-
-  // Mise à jour du terme de recherche
-  updateSearchTerm(term: string) {
-    this.searchTerm.next(term);
+  // Signal pour stocker la valeur de recherche
+  searchQuery = signal('');
+  
+  setSearchQuery(query: string) {
+    this.searchQuery.set(query);
   }
 }

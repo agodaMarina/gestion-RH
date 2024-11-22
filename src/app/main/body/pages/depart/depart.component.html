@@ -1,12 +1,8 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Départs /</span> Liste des Départs
 </h4>
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Champ de recherche -->
-  <div class="search-box">
-    <input type="text" class="form-control" placeholder="Rechercher..." />
-  </div>
-
+<div class="d-flex justify-content-end align-items-center mb-3">
+ 
   <!-- Bouton Ajouter -->
   <button
     class="btn btn-primary"
@@ -25,17 +21,18 @@
         <tr>
           <th>Employé</th>
           <th>Raison</th>
-
+          <th>Date de sortie</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        <tr *ngFor="let item of departs">
+        <tr *ngFor="let item of paginate">
           <td>
             <strong>{{item.employe}}</strong>
           </td>
 
           <td>{{item.raison}}</td>
+          <td>{{item.dateDepart}}</td>
           <td>
             <div class="dropdown">
               <button
@@ -58,6 +55,15 @@
         </tr>
       </tbody>
     </table>
+    <div class="card flex justify-content-center">
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="departs.length"
+        [rowsPerPageOptions]="[10, 20, 30]"
+      />
+    </div>
   </div>
 </div>
 <!--/ Striped Rows -->

@@ -54,12 +54,7 @@ export class httpInterceptor implements HttpInterceptor {
           case 404: // Not Found
             this.router.navigate(['/error/404']);
             break;
-          case 500: // Internal Server Error
-            this.router.navigate(['/error/500']);
-            break;
-          default:
-            this.router.navigate(['/error/unexpected']); // Pour toute autre erreur
-            break;
+         
         }
         return throwError(() => new Error(error.message));
       })

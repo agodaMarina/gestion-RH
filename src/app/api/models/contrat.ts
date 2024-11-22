@@ -1,9 +1,7 @@
-export enum Contrat{
-    CDI = 'CDI',
-    CDD = 'CDD',
-    INTERIM = 'INTERIM',
-    STAGE = 'STAGE',
-    APPRENTISSAGE = 'APPRENTISSAGE',
-    ALTERNANCE = 'ALTERNANCE',
-    AUTRE = 'AUTRE'
+export interface Contrat{
+    id?:number,
+    type?:string,
+    dateDebut?:string,
+    dateFin?:string
+    etat?:string
 }

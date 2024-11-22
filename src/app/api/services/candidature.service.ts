@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Candidature } from '../models/Candidature';
 
@@ -32,5 +32,10 @@ export class CandidatureService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/supprimer/${id}`);
+  }
+
+  exportToExcel():Observable<Blob> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get(this.baseUrl+"/export",{ headers, responseType: 'blob' });
   }
 }

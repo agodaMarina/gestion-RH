@@ -40,12 +40,40 @@ export class AddCandidatComponent implements OnInit {
       apreciationGlobale: [''],
       poste: [null, Validators.required],
     });
+    this.onChanges();
   }
 
   ngOnInit(): void {
    this.liste();
   }
+  onChanges():void {
+    this.candidatureForm.get('noteExperience')?.valueChanges.subscribe((val) => {
+      this.updateTotals();
+    });
 
+    this.candidatureForm.get('noteCompetence')?.valueChanges.subscribe((val) => {
+      this.updateTotals();
+    });
+
+    this.candidatureForm.get('noteSavoirEtre')?.valueChanges.subscribe((val) => {
+      this.updateTotals();
+    });
+
+
+  }
+ updateTotals(): void {
+    const note1 = this.candidatureForm.get('noteExperience')?.value;
+    const note2 = this.candidatureForm.get('noteCompetence')?.value;
+    const note3 = this.candidatureForm.get('noteSavoirEtre')?.value;
+    if (note1 !== null && note2 !== null && note3 !==null) {
+      const total = (note1+note2+note3)/3;
+      console.log(total)
+      this.candidatureForm.patchValue({
+        moyenne: total
+        
+      });
+    }
+  }
   add() {
     if (this.candidatureForm.valid) {
       this.service.create(this.candidatureForm?.value).subscribe({

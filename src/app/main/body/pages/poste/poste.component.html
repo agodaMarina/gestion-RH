@@ -2,7 +2,7 @@
   <span class="text-muted fw-light">Postes /</span> Liste des postes à pourvoir 
 </h4>
 <p-toast />
-<div class="d-flex justify-content-between align-items-right mb-3">
+<div class="d-flex justify-content-end align-items-right mb-3">
   <!-- Bouton Ajouter -->
   <button
     class="btn btn-primary"
@@ -22,19 +22,19 @@
           <th>libellé</th>
           <th>Niveau d'étude</th>
           <th>Niveau de Salaire</th>
-          <th>Recruteur</th>
+          
           <th>Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        <tr *ngFor="let item of postes">
+        <tr *ngFor="let item of filteredData() ">
           <td>
             <strong>{{ item.reference }}</strong>
           </td>
           <td>{{ item.libelle }}</td>
           <td>{{ item.niveauEtude }}</td>
-          <td>{{ item.niveauDeSalaire }}</td>
-          <td>{{ item.recruteur }}</td>
+          <td>{{ item.niveauDeSalaire | currency:'XOF':'code' }}</td>
+          
           <td>
             <div class="dropdown">
               <button
@@ -50,7 +50,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#editModal"
                   (click)="afficher(item)"
-                  ><i class="bx bx-eye-alt me-1"></i>detail</a
+                  ><i class="bx bx-eye-alt me-1"></i>détail</a
                 >
                 <a class="dropdown-item" (click)="item.id ? deletePoste(item.id) : null"
                   ><i class="bx bx-trash me-1"></i>supprimer</a
@@ -61,7 +61,17 @@
         </tr>
       </tbody>
     </table>
+    <div class="card flex justify-content-center">
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="postes.length"
+        [rowsPerPageOptions]="[10, 20, 30]"
+      />
+    </div>
   </div>
+  
 </div>
 <!--/ Striped Rows -->
 <!-- Modal (Fenêtre add) -->
@@ -126,16 +136,7 @@
               placeholder="niveau de salaire"
             />
           </div>
-          <div class="mb-3">
-            <label for="prenom" class="form-label">Recruteur</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="recruteur"
-              name="recruteur"
-              placeholder="recruteur"
-            />
-          </div>
+          
           <div class="mb-3">
             <label for="prenom" class="form-label">Remarque</label>
             <input
@@ -178,7 +179,7 @@
       </div>
       <div class="modal-body">
         <!-- Contenu du formulaire ou autre contenu à ajouter -->
-        <form [formGroup]="posteForm" (ngSubmit)="addPoste()">
+        <form [formGroup]="posteForm">
           <div class="mb-3">
             <label for="nom" class="form-label">Libellé</label>
             <input
@@ -219,16 +220,7 @@
               placeholder="niveau de salaire"
             />
           </div>
-          <div class="mb-3">
-            <label for="prenom" class="form-label">Recruteur</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="recruteur"
-              name="recruteur"
-              placeholder="recruteur"
-            />
-          </div>
+         
           <div class="mb-3">
             <label for="prenom" class="form-label">Remarque</label>
             <input
@@ -271,13 +263,13 @@
         <div class="flex align-items-center gap-2 mt-4">
           <button
             pButton
-            label="Save"
+            label="Supprimer"
             (click)="cd.accept()"
-            class="w-8rem"
+            class="w-8rem m-2"
           ></button>
           <button
             pButton
-            label="Cancel"
+            label="Annuler"
             (click)="cd.reject()"
             class="p-button-outlined w-8rem"
           ></button>
