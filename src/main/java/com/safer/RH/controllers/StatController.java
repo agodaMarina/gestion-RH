@@ -29,10 +29,10 @@ public class StatController {
         return employeService.getNombrePersonneParSecteur();
     }
 
-    @GetMapping("/par-contrat")
-    public List<Object[]> getNombrePersonnesParContrat() {
-        return employeService.getNombrePersonnesParContrat();
-    }
+//    @GetMapping("/par-contrat")
+//    public List<Object[]> getNombrePersonnesParContrat() {
+//        return employeService.getNombrePersonnesParContrat();
+//    }
 
     @GetMapping("/par-depart")
     public List<Object[]> getNombrePersonnesParDepart() {

@@ -16,6 +16,6 @@ public class Secteur {
     @Column(nullable = false, unique = true)
     private String libelle;
 
-    @OneToMany(mappedBy = "secteur",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "secteur",fetch = FetchType.EAGER)
     private Collection<Poste> postes;
 }

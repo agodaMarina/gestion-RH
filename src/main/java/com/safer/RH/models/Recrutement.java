@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,10 +16,9 @@ public class Recrutement {
     @OneToOne
     private Poste poste;
     @OneToMany(mappedBy = "recrutement",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private Collection<Candidature> candidats;
+    private List<Candidature> candidats;
     @OneToOne
     private Recruteur recruteur;
-
     @Enumerated(EnumType.STRING)
     private StateRecrutement statut;//(EN_COURS, TERMINE)
     private String etapeActuelle;

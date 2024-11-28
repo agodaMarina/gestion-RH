@@ -1,6 +1,7 @@
 package com.safer.RH.models;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -23,17 +24,18 @@ public class Employe {
     private LocalDate dateEmbauche;
     private int anciennete;
     private LocalDate dateDepart;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "csp_id")
     private Csp csp;
     @ManyToOne
     private Poste poste;
-    @OneToMany(mappedBy = "employe",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employe",cascade = CascadeType.ALL)
     private Collection<Absence> absences;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Depart depart;
-    @OneToMany(mappedBy = "employe",fetch = FetchType.LAZY)
-    private Collection<Contrat> contrats;
-    @OneToMany(mappedBy = "employe",fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Contrat contrat;
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Evenement> evenements;
     private boolean isActif=true;
 

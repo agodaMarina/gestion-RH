@@ -2,6 +2,8 @@ package com.safer.RH.services;
 
 import com.safer.RH.models.Absence;
 import com.safer.RH.models.Employe;
+import com.safer.RH.models.Evenement;
+import com.safer.RH.models.Poste;
 import com.safer.RH.repositories.AbsenceRepository;
 import com.safer.RH.repositories.EmployeRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +37,9 @@ public class EmployeService {
         return employeRepository.countEmployesBySecteur();
     }
 
-    public List<Object[]> getNombrePersonnesParContrat() {
-        return employeRepository.countEmployesByContrat();
-    }
-
+//    public List<Object[]> getNombrePersonnesParContrat() {
+//        return employeRepository.countEmployesByContrat();
+//    }
     public List<Object[]> getNombrePersonnesParDepart() {
         return employeRepository.countEmployesByDepart();
     }
@@ -55,8 +56,25 @@ public class EmployeService {
         return employeRepository.save(employe);
     }
 
-    public Optional<Employe> getEmployeById(int id){
-        return employeRepository.findById(id);
+    //récupérer un employe grâce à son id
+    public Employe getEmployeById(int id){
+       Employe employe=employeRepository.getById(id);
+       employe.setAnciennete(LocalDate.now().getYear()-employe.getDateEmbauche().getYear());
+       return employe;
+    }
+
+    //mofier un poste
+    public Employe modifierPoste(Poste poste, int id){
+        Employe employe=employeRepository.getById(id);
+        enregistrerEvenement(employe,"Changement de poste","l'employé passe de "+employe.getPoste().getLibelle()+" à "+poste.getLibelle());
+        employe.setPoste(poste);
+        return employeRepository.save(employe);
+    }
+
+    //création d'un événement
+    public void enregistrerEvenement(Employe employe, String typeEvenement, String description){
+        employe.getEvenements().add(Evenement.builder().typeEvenement(typeEvenement).description(description).date(LocalDate.now()).build());
+        employeRepository.save(employe);
     }
 
     public ByteArrayInputStream exportEmployeToExcel() throws IOException {
@@ -95,42 +113,42 @@ public class EmployeService {
         }
     }
 
-    public void importDataFromExcel(String filePath){
-        try (FileInputStream fileInputStream = new FileInputStream(filePath);
-             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
-
-            Sheet sheet = workbook.getSheetAt(0); // On suppose que les données sont dans la première feuille
-            List<Employe> employes = new ArrayList<>();
-
-            for (Row row : sheet) {
-                // On ignore la première ligne si elle contient les en-têtes
-                if (row.getRowNum() == 0) {
-                    continue;
-                }
-
-                Employe employe = new Employe();
-
-                // Récupération des données depuis chaque cellule
-                employe.setNom(getCellValue(row.getCell(0)));
-                employe.setPrenom(getCellValue(row.getCell(1)));
-               // employe.setCsp(getCellValue(row.getCell(2)));
-                employe.setAdresse(getCellValue(row.getCell(3)));
-                //employe.setDateEmbauche(getCellValue(row.getCell(4)));
-
-
-                employes.add(employe);
-            }
-
-            // Enregistrer tous les employés dans la base de données
-            for (Employe employe : employes) {
-                employeRepository.save(employe);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Log et gérer l'exception selon les besoins
-        }
-    }
+//    public void importDataFromExcel(String filePath){
+//        try (FileInputStream fileInputStream = new FileInputStream(filePath);
+//             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+//
+//            Sheet sheet = workbook.getSheetAt(0); // On suppose que les données sont dans la première feuille
+//            List<Employe> employes = new ArrayList<>();
+//
+//            for (Row row : sheet) {
+//                // On ignore la première ligne si elle contient les en-têtes
+//                if (row.getRowNum() == 0) {
+//                    continue;
+//                }
+//
+//                Employe employe = new Employe();
+//
+//                // Récupération des données depuis chaque cellule
+//                employe.setNom(getCellValue(row.getCell(0)));
+//                employe.setPrenom(getCellValue(row.getCell(1)));
+//               // employe.setCsp(getCellValue(row.getCell(2)));
+//                employe.setAdresse(getCellValue(row.getCell(3)));
+//                //employe.setDateEmbauche(getCellValue(row.getCell(4)));
+//
+//
+//                employes.add(employe);
+//            }
+//
+//            // Enregistrer tous les employés dans la base de données
+//            for (Employe employe : employes) {
+//                employeRepository.save(employe);
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            // Log et gérer l'exception selon les besoins
+//        }
+//    }
 
     private String getCellValue(Cell cell) {
         if (cell == null) {
@@ -192,6 +210,8 @@ public class EmployeService {
         Cell cell = row.getCell(cellIndex);
         return cell != null ? cell.toString().trim() : "";
     }
+
+
 
     //vérifier si l'employé a plus de 60 ans pour le mettre à la retraite
     @Scheduled(cron = "0 0 0 * * ?")

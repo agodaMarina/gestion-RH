@@ -1,5 +1,6 @@
 package com.safer.RH.controllers;
 
+import com.safer.RH.Dto.DepartDto;
 import com.safer.RH.models.Depart;
 import com.safer.RH.services.DepartService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class DepartController {
     private final DepartService departService;
 
     @PostMapping("/ajouter")
-    public ResponseEntity<?> ajouter(@RequestBody Depart depart) {
+    public ResponseEntity<?> ajouter(@RequestBody DepartDto depart) {
         return ResponseEntity.ok().body(departService.ajouterDepart(depart));
     }
 

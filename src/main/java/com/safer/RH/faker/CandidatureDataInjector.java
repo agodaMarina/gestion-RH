@@ -30,9 +30,6 @@ public class CandidatureDataInjector {
             candidature.setProchaineAction(faker.lorem().sentence());
             candidature.setDateEntretien1(LocalDate.now().minusDays(faker.number().numberBetween(100, 1000)));
             candidature.setStadeDeRecrutement(faker.options().option("En cours", "recruter", "refuser"));
-            candidature.setNoteExperience(faker.number().numberBetween(1, 20));
-            candidature.setNoteCompetenceEtAtout(faker.number().numberBetween(1, 20));
-            candidature.setNoteSavoirEtre(faker.number().numberBetween(1,20));
             candidature.setMoyenne(candidature.getMoyenne());
             candidature.setApreciationGlobale((candidature.getStadeDeRecrutement().equals("recruter"))?"Convoquer pour être embauché": (candidature.getStadeDeRecrutement().equals("refuser")) ? "Convoquer pour un second entretien" : (candidature.getStadeDeRecrutement().equals("En cours")) ? "Convoquer pour une période d'essai" : " ");
 

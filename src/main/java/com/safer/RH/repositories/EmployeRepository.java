@@ -10,20 +10,20 @@ import java.util.List;
 @Repository
 public interface EmployeRepository extends JpaRepository<Employe, Integer>{
 
-    @Query("SELECT e.secteur.libelle, COUNT(e) FROM Employe e GROUP BY e.secteur.libelle")
+    @Query("SELECT e.poste.secteur.libelle, COUNT(e) FROM Employe e GROUP BY e.poste.secteur.libelle")
     List<Object[]> countEmployesBySecteur();
 
     @Query("SELECT e.sexe, COUNT(e) FROM Employe e  GROUP BY e.sexe")
     List<Object[]> countEmployesBySexe();
 
-    @Query("SELECT e.csp, COUNT(e) FROM Employe e  GROUP BY e.csp")
+    @Query("SELECT e.csp.libelle, COUNT(e) FROM Employe e  GROUP BY e.csp.libelle")
     List<Object[]> countEmployesByCsp();
 
     @Query("SELECT e.age, e.sexe, COUNT(e) FROM Employe e  GROUP BY e.sexe, e.age")
     List<Object[]> countEmployesByAge();
 
-    @Query("SELECT e.contrat, COUNT(e) FROM Employe e  GROUP BY e.contrat")
-    List<Object[]> countEmployesByContrat();
+//    @Query("SELECT e.contrat.type, COUNT(e) FROM Employe e  GROUP BY e.contrat.type")
+//    List<Object[]> countEmployesByContrat();
 
     @Query("SELECT e.depart.raison, COUNT(e) FROM Employe e  GROUP BY e.depart.raison")
     List<Object[]> countEmployesByDepart();
@@ -31,6 +31,7 @@ public interface EmployeRepository extends JpaRepository<Employe, Integer>{
     @Query("SELECT e FROM Employe e ORDER BY e.nom ASC")
     List<Employe> getAll();
 
+    Employe getEmployeByNomAndPrenom(String nom, String prenom);
 
     boolean existsByPosteId(int id);
 }

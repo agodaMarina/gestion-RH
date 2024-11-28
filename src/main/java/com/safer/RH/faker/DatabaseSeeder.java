@@ -22,6 +22,6 @@ public class DatabaseSeeder implements CommandLineRunner {
         //employeDataInjector.injectFakeEmployes(100);
 
         // Injecter les candidatures
-        candidatureDataInjector.injectCandidatureData(20);
+//        candidatureDataInjector.injectCandidatureData(20);
     }
 }

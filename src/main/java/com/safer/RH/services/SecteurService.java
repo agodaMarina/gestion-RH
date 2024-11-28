@@ -1,10 +1,12 @@
 package com.safer.RH.services;
 
+import com.safer.RH.Dto.SecteurDto;
 import com.safer.RH.models.Secteur;
 import com.safer.RH.repositories.SecteurRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,7 +31,15 @@ public class SecteurService {
         return secteurRepository.findById(id).orElse(null);
     }
 
-    public List<Secteur> listerSecteur() {
-        return secteurRepository.findAllOrderByLibelleAsc();
+    public Secteur getSecteurByLibelle(String libelle) {
+        return secteurRepository.findByLibelle(libelle);
+    }
+
+    public List<SecteurDto> listerSecteur() {
+        List<SecteurDto> liste = new ArrayList<>();
+        for (Secteur secteur : secteurRepository.findAllOrderByLibelleAsc()) {
+            liste.add(new SecteurDto(secteur.getId(), secteur.getLibelle()));
+        }
+        return liste;
     }
 }

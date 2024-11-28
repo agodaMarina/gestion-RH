@@ -13,6 +13,6 @@ public class Csp {
     private Long id;
     @Column(nullable = false, unique = true)
     private String libelle;
-    @OneToMany(mappedBy = "csp",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "csp",fetch = FetchType.EAGER)
     private Collection<Employe> employes;
 }

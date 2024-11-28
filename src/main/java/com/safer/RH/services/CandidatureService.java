@@ -1,7 +1,7 @@
 package com.safer.RH.services;
 
+import com.safer.RH.Dto.CandidatureDto;
 import com.safer.RH.models.Candidature;
-import com.safer.RH.models.Employe;
 import com.safer.RH.repositories.CandidatureRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,8 +38,20 @@ public class CandidatureService {
         return candidatureRepository.findById(id).orElse(null);
     }
 
-    public List<Candidature> getListCandidature(){
-        return candidatureRepository.getListeAsc();
+    public List<CandidatureDto> getListCandidatureByRecrutementId(Long id){
+        List <CandidatureDto> candidatures = new ArrayList<>();
+        for (Candidature c : candidatureRepository.findByRecrutementId(id)) {
+            candidatures.add(new CandidatureDto(c.getId(),c.getNom(),c.getPrenom(),c.getEmail(),c.getTelephone(),c.getAdresse(),c.getDateEntretien1(),c.getStadeDeRecrutement(),c.getMoyenne(),c.getApreciationGlobale(),c.getRecrutement().getPoste().getLibelle()));
+        }
+        return candidatures;
+    }
+
+    public List<CandidatureDto> getListCandidature(){
+        List <CandidatureDto> candidatures = new ArrayList<>();
+        for (Candidature c : candidatureRepository.getListeAsc()) {
+            candidatures.add(new CandidatureDto(c.getId(),c.getNom(),c.getPrenom(),c.getEmail(),c.getTelephone(),c.getAdresse(),c.getDateEntretien1(),c.getStadeDeRecrutement(),c.getMoyenne(),c.getApreciationGlobale(),c.getRecrutement().getPoste().getLibelle()));
+        }
+        return candidatures;
     }
 
     public ByteArrayInputStream exportCandidatToExcel() throws IOException {
@@ -52,9 +65,9 @@ public class CandidatureService {
                 cell.setCellValue(columns[col]);
             }
             // Data rows
-            List<Candidature> candidatures = getListCandidature();
+            List<CandidatureDto> candidatures = getListCandidature();
             int rowIdx = 1;
-            for (Candidature c : candidatures) {
+            for (CandidatureDto c : candidatures) {
                 Row row = sheet.createRow(rowIdx++);
                 row.createCell(0).setCellValue(c.getNom());
                 row.createCell(1).setCellValue(c.getPrenom());
@@ -63,7 +76,7 @@ public class CandidatureService {
                 row.createCell(4).setCellValue(c.getAdresse());
                 row.createCell(6).setCellValue(c.getStadeDeRecrutement());
                 row.createCell(7).setCellValue(c.getMoyenne());
-                row.createCell(8).setCellValue(c.getRecrutement().getPoste().getLibelle());
+                row.createCell(8).setCellValue(c.getPoste());
             }
 
             workbook.write(out);

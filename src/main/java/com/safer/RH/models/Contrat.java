@@ -13,10 +13,11 @@ public class Contrat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false,unique = false)
     private  String type;
     private  LocalDate dateDebut;
     private LocalDate dateFin;
     private boolean etat;
+
 
 }

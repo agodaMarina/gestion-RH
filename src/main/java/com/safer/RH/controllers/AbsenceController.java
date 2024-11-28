@@ -1,6 +1,7 @@
 package com.safer.RH.controllers;
 
 
+import com.safer.RH.Dto.AbsenceDto;
 import com.safer.RH.models.Absence;
 import com.safer.RH.services.AbsenceService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class AbsenceController {
     private final AbsenceService absenceService;
 
     @PostMapping("/ajouter")
-    public ResponseEntity<?> ajouter(@RequestBody Absence absence) {
+    public ResponseEntity<?> ajouter(@RequestBody AbsenceDto absence) {
         return ResponseEntity.ok().body(absenceService.ajouterAbsence(absence));
     }
 
@@ -28,7 +29,7 @@ public class AbsenceController {
     }
 
     @GetMapping("/lister")
-    public ResponseEntity<List<Absence>> lister() {
+    public ResponseEntity<List<AbsenceDto>> lister() {
         return ResponseEntity.ok(absenceService.listerAbsence());
     }
 

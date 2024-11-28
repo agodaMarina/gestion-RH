@@ -1,5 +1,6 @@
 package com.safer.RH.controllers;
 
+import com.safer.RH.Dto.PosteDto;
 import com.safer.RH.exception.LibelleDejaExistantException;
 import com.safer.RH.exception.PosteAssigneException;
 import com.safer.RH.models.Candidature;
@@ -23,7 +24,7 @@ public class PosteController {
     private final PosteService posteService;
 
     @PostMapping("/ajouter")
-    public ResponseEntity<?> ajouterPoste(@RequestBody Poste poste) {
+    public ResponseEntity<?> ajouterPoste(@RequestBody PosteDto poste) {
         return ResponseEntity.ok().body(posteService.ajouterPoste(poste));
     }
     // Gestionnaire d'exception pour LibelleDejaExistantException
@@ -41,9 +42,10 @@ public class PosteController {
     }
 
     @GetMapping("/lister")
-    public ResponseEntity<List<Poste>> lister() {
+    public ResponseEntity<List<PosteDto>> lister() {
         return ResponseEntity.ok(posteService.listerPoste());
     }
+
 
     @DeleteMapping("/supprimer/{id}")
     public ResponseEntity<?> supprimer(@RequestParam int id) {

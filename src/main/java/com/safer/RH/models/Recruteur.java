@@ -15,6 +15,6 @@ public class Recruteur {
     @Column(nullable = false)
     private String nom;
 
-    @OneToMany(mappedBy = "recruteur", fetch = FetchType.LAZY)
-    private Collection<Poste>postes;
+    @OneToMany(mappedBy = "recruteur")
+    private Collection<Recrutement>recrutements;
 }

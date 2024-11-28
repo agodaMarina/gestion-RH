@@ -1,6 +1,7 @@
 package com.safer.RH.controllers;
 
 
+import com.safer.RH.Dto.SecteurDto;
 import com.safer.RH.models.Secteur;
 import com.safer.RH.services.SecteurService;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +28,13 @@ public class SecteurController {
     }
 
     @GetMapping("/lister")
-    public ResponseEntity<List<Secteur>> lister() {
+    public ResponseEntity<List<SecteurDto>> lister() {
         return ResponseEntity.ok(secteurService.listerSecteur());
     }
 
     @DeleteMapping("/supprimer")
     public ResponseEntity<String> supprimer(@RequestParam int id) {
         secteurService.supprimerSecteur(id);
-        return ResponseEntity.ok("Candidature supprimée");
+        return ResponseEntity.ok("Secteur supprimée");
     }
 }

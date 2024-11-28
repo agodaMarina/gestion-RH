@@ -13,4 +13,6 @@ public interface SecteurRepository extends JpaRepository<Secteur,Integer> {
     @Query("SELECT s FROM Secteur s ORDER BY s.libelle ASC")
     public List<Secteur> findAllOrderByLibelleAsc();
 
+    public Secteur findByLibelle(String libelle);
+
 }

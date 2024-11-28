@@ -1,5 +1,6 @@
 package com.safer.RH.controllers;
 
+import com.safer.RH.Dto.CandidatureDto;
 import com.safer.RH.auth.AuthenticationService;
 import com.safer.RH.models.Candidature;
 import com.safer.RH.services.CandidatureService;
@@ -25,7 +26,7 @@ public class CandidatureController {
     }
 
     @GetMapping("/lister")
-    public ResponseEntity<List<Candidature>> lister() {
+    public ResponseEntity<List<CandidatureDto>> lister() {
         return ResponseEntity.ok(candidatureService.getListCandidature());
     }
 

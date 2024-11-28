@@ -1,10 +1,12 @@
 package com.safer.RH.services;
 
+import com.safer.RH.Dto.RecruteurDto;
 import com.safer.RH.models.Recruteur;
 import com.safer.RH.repositories.RecruteurRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,8 +22,12 @@ public class RecruteurService {
         return recruteurRepository.findById(id).orElse(null);
     }
 
-    public List<Recruteur> getAllRecruteurs () {
-        return recruteurRepository.findAll();
+    public List<RecruteurDto> getAllRecruteurs () {
+       var recruteurs=new ArrayList<RecruteurDto>();
+       for (Recruteur recruteur:recruteurRepository.getAll()) {
+           recruteurs.add(new RecruteurDto(recruteur.getId(),recruteur.getNom()));
+        }
+       return recruteurs;
     }
 
     public Recruteur updateRecruteur (Recruteur recruteur) {

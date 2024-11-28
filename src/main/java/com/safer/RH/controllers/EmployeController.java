@@ -27,16 +27,13 @@ public class EmployeController {
     private final SecteurService secteurService;
     private final EmployeDataInjector employeDataInjector;
 
-    @GetMapping("/inject-fake-data")
-    public String injectData() {
-        employeDataInjector.injectFakeEmployes(100); // Injecter 100 employés fictifs
-        return "Données fictives injectées avec succès!";
-    }
+//    @GetMapping("/inject-fake-data")
+//    public String injectData() {
+//        employeDataInjector.injectFakeEmployes(100); // Injecter 100 employés fictifs
+//        return "Données fictives injectées avec succès!";
+//    }
 
-    @GetMapping("/contrats")
-    public ResponseEntity<?> listerContrat() {
-        return ResponseEntity.ok().body(contratService.listerContrat());
-    }
+
 
     @PostMapping("/import")
     public ResponseEntity<String> importEmployees(@RequestParam("file") MultipartFile file) {

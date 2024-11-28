@@ -14,4 +14,7 @@ public interface CandidatureRepository extends JpaRepository<Candidature,Long> {
     public List<Candidature>getListeAsc();
 
     public Candidature findByNom(String nom);
+
+    public List<Candidature> findByRecrutementId(Long id);
+
 }

@@ -1,5 +1,6 @@
 package com.safer.RH.services;
 
+import com.safer.RH.Dto.PosteDto;
 import com.safer.RH.exception.LibelleDejaExistantException;
 import com.safer.RH.exception.PosteAssigneException;
 import com.safer.RH.models.Poste;
@@ -8,6 +9,7 @@ import com.safer.RH.repositories.PosteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,13 +18,23 @@ public class PosteService {
 
     private final PosteRepository posteRepository;
     private final EmployeRepository employeRepository;
+    private final SecteurService secteurService;
 
-    public Poste ajouterPoste(Poste poste) {
-        // Vérification de l'unicité du libellé
-        if (posteRepository.existsByLibelle(poste.getLibelle())) {
-            throw new LibelleDejaExistantException("Un poste avec le libellé '" + poste.getLibelle() + "' existe déjà.");
+    public Poste ajouterPoste(PosteDto posteDto) {
+        var poste=new Poste();
+        if (posteRepository.existsByLibelle(posteDto.getLibelle())) {
+            throw new LibelleDejaExistantException("Un poste avec le libellé '" + posteDto.getLibelle() + "' existe déjà.");
+        }else {
+            poste.setId(posteDto.getId());
+            poste.setLibelle(posteDto.getLibelle());
+            poste.setNiveauEtude(posteDto.getNiveauEtude());
+            poste.setDescription(posteDto.getDescription());
+            poste.setNiveauDeSalaire(posteDto.getNiveauDeSalaire());
+            poste.setRemarque(posteDto.getRemarque());
+            poste.setSecteur(secteurService.getSecteurByLibelle(posteDto.getSecteur()));
+            poste.setReference(generatereference());
         }
-        poste.setReference(generatereference());
+
         return posteRepository.save(poste);
     }
 
@@ -39,8 +51,12 @@ public class PosteService {
         posteRepository.deleteById(id);
     }
 
-    public List<Poste> listerPoste() {
-        return posteRepository.getAll();
+    public List<PosteDto> listerPoste() {
+        List<PosteDto> liste = new ArrayList<>();
+        for (Poste poste : posteRepository.getAll()) {
+            liste.add(new PosteDto(poste.getId(), poste.getReference(),poste.getLibelle(),poste.getNiveauEtude(),poste.getDescription(),poste.getNiveauDeSalaire(),poste.getRemarque(),poste.getSecteur().getLibelle()));
+        }
+        return liste;
     }
 
     public Poste getPosteById(int id) {
