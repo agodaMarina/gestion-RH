@@ -1,7 +1,9 @@
 package com.safer.RH.controllers;
 
+import com.safer.RH.Dto.AbsenceDto;
 import com.safer.RH.faker.EmployeDataInjector;
 import com.safer.RH.models.Contrat;
+import com.safer.RH.models.Depart;
 import com.safer.RH.models.Employe;
 import com.safer.RH.models.EmployeDto;
 import com.safer.RH.services.ContratService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/employe")
@@ -64,6 +67,31 @@ public class EmployeController {
     public ResponseEntity<?> export() throws IOException {
         return ResponseEntity.ok().body(employeService.exportEmployeToExcel());
     }
+
+    // Endpoint pour récupérer le contrat d'un employé par son ID
+    @GetMapping("/{id}/contrat")
+    public ResponseEntity<Contrat> getContratByUserId(@PathVariable int id) {
+        Contrat contrat = employeService.getContratByUserId(id);
+        if (contrat == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(contrat);
+    }
+
+    // Endpoint pour récupérer toutes les absences d'un employé par son ID
+    @GetMapping("/{id}/absences")
+    public ResponseEntity<List<AbsenceDto>> getAllAbsencesByUserId(@PathVariable int id) {
+        List<AbsenceDto> absences = employeService.getAllAbsencesByUserId(id);
+        return ResponseEntity.ok(absences);
+    }
+
+    // Endpoint pour récupérer le départ d'un employé par son ID
+    @GetMapping("/{id}/depart")
+    public ResponseEntity<Depart> getDepartByUserId(@PathVariable int id) {
+        Depart depart = employeService.getDepartByUserId(id);
+        return ResponseEntity.ok(depart);
+    }
+
 
 
 }

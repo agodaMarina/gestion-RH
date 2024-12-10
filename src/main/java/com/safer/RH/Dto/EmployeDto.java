@@ -1,12 +1,14 @@
 package com.safer.RH.Dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @Data
+@Builder
 public class EmployeDto {
     private int id;
     private String nom;

@@ -1,5 +1,6 @@
 package com.safer.RH.controllers;
 
+import com.safer.RH.Dto.CandidatureDto;
 import com.safer.RH.models.Candidature;
 import com.safer.RH.models.Evaluation;
 import com.safer.RH.models.Poste;
@@ -29,7 +30,7 @@ public class RecrutementController {
     @PutMapping("/add/candidature")
     public ResponseEntity<?> ajouterCandidats(
             @RequestParam Long recrutementId,
-            @RequestBody List<Candidature> candidatsRequest) {
+            @RequestBody List<CandidatureDto> candidatsRequest) {
         recrutementService.ajouterCandidats(recrutementId, candidatsRequest);
         return ResponseEntity.ok().build();
     }
@@ -46,6 +47,11 @@ public class RecrutementController {
     public ResponseEntity<?> endRecrutement(@RequestParam Long recrutementId,List<Long> ids) {
         recrutementService.selectionnerCandidats(recrutementId, ids);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{recrutementId}/allCandidates")
+    public ResponseEntity<?> getAllCandidates(@PathVariable Long recrutementId) {
+        return ResponseEntity.ok(recrutementService.getCandidats(recrutementId));
     }
 
     @GetMapping("/all")

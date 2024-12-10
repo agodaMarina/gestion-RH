@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 @AllArgsConstructor
@@ -12,10 +13,11 @@ import java.util.Collection;
 public class RecrutementDto {
     private Long id;
     private String poste;
+    private double salaire;
+    private String niveauEtude;
     private String recruteur;
     private String statut;
     private String etapeActuelle;
-    private String dateDebut;
-    private String dateFin;
-    private Collection<CandidatureDto> candidats;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
 }

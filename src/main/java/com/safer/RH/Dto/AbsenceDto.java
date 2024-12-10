@@ -15,5 +15,7 @@ public class AbsenceDto {
     private String motif;
     private LocalDate dateDebut;
     private LocalDate dateFin;
+    private int idEmploye;
     private String employe;
+    private Long joursRestants;
 }

@@ -19,7 +19,8 @@ public class AbsenceController {
 
     @PostMapping("/ajouter")
     public ResponseEntity<?> ajouter(@RequestBody AbsenceDto absence) {
-        return ResponseEntity.ok().body(absenceService.ajouterAbsence(absence));
+        absenceService.ajouterAbsence(absence);
+        return ResponseEntity.ok().body("absence ajouté");
     }
 
     @PutMapping("/modifier")
@@ -30,7 +31,11 @@ public class AbsenceController {
 
     @GetMapping("/lister")
     public ResponseEntity<List<AbsenceDto>> lister() {
-        return ResponseEntity.ok(absenceService.listerAbsence());
+        return ResponseEntity.ok(absenceService.AllAbsences());
+    }
+    @GetMapping("/listeActives")
+    public ResponseEntity<List<AbsenceDto>> listeDesAbsencesActives() {
+        return ResponseEntity.ok(absenceService.AbsencesActives());
     }
 
     @DeleteMapping("/supprimer")

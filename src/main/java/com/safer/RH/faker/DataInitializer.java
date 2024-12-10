@@ -68,26 +68,26 @@ public class DataInitializer {
 //            }
 
             // 4. Créer des Employés avec Contrats, Départs et Absences
-            List<Employe> employes = new ArrayList<>();
+            List<Employe> employes = employeRepository.findAll();
             List<Depart> departs = new ArrayList<>();
             List<Absence> absences = new ArrayList<>();
 
-            for (int i = 1; i <= 100; i++) {
-                // Employé
-                Employe employe = new Employe();
-                employe.setNom(faker.name().lastName());
-                employe.setPrenom(faker.name().firstName());
-                employe.setTel(faker.phoneNumber().phoneNumber());
-                employe.setAdresse(faker.address().fullAddress());
-                employe.setSexe(random.nextBoolean() ? "M" : "F");
-                employe.setSituationFamiliale(random.nextBoolean() ? "Marié" : "Célibataire");
-                employe.setDateNaissance(LocalDate.now().minus(20 + random.nextInt(40), ChronoUnit.YEARS)); // Âge entre 20 et 50 ans
-                employe.setPoste(postes.get(random.nextInt(postes.size()))); // Associer un poste
-                employe.setCsp(csps.get(random.nextInt(csps.size()))); // Associer un CSP
-                employe.setDateEmbauche(LocalDate.now().minus(random.nextInt(10 * 365), ChronoUnit.DAYS)); // Embauche dans les 10 dernières années
-                employe.setAnciennete((int) ChronoUnit.YEARS.between(employe.getDateEmbauche(), LocalDate.now()));
-                employe.setActif(true);
-                employeRepository.save(employe);
+//            for (int i = 1; i <= 100; i++) {
+//                // Employé
+//                Employe employe = new Employe();
+//                employe.setNom(faker.name().lastName());
+//                employe.setPrenom(faker.name().firstName());
+//                employe.setTel(faker.phoneNumber().phoneNumber());
+//                employe.setAdresse(faker.address().fullAddress());
+//                employe.setSexe(random.nextBoolean() ? "M" : "F");
+//                employe.setSituationFamiliale(random.nextBoolean() ? "Marié" : "Célibataire");
+//                employe.setDateNaissance(LocalDate.now().minus(20 + random.nextInt(40), ChronoUnit.YEARS)); // Âge entre 20 et 50 ans
+//                employe.setPoste(postes.get(random.nextInt(postes.size()))); // Associer un poste
+//                employe.setCsp(csps.get(random.nextInt(csps.size()))); // Associer un CSP
+//                employe.setDateEmbauche(LocalDate.now().minus(random.nextInt(10 * 365), ChronoUnit.DAYS)); // Embauche dans les 10 dernières années
+//                employe.setAnciennete((int) ChronoUnit.YEARS.between(employe.getDateEmbauche(), LocalDate.now()));
+//                employe.setActif(true);
+//                employeRepository.save(employe);
                 // Contrat
 //                Contrat contrat = new Contrat();
 //                String typeContrat = switch (random.nextInt(4)) {
@@ -146,6 +146,42 @@ public class DataInitializer {
 //                }
 
 //                employes.add(employeRepository.save(employe));
+//            }
+            for (Employe employe : employes) {
+                // Créer un contrat
+                Contrat contrat = new Contrat();
+
+                // Générer un type de contrat aléatoire
+                String typeContrat = switch (random.nextInt(4)) {
+                    case 0 -> "CDI";
+                    case 1 -> "CDD";
+                    case 2 -> "STAGE";
+                    default -> "INTERIM";
+                };
+                contrat.setType(typeContrat);
+
+                // Date de début du contrat (date d'embauche de l'employé ou une date fictive)
+                LocalDate dateDebut = employe.getDateEmbauche() != null
+                        ? employe.getDateEmbauche()
+                        : LocalDate.now().minus(random.nextInt(365), ChronoUnit.DAYS);
+                contrat.setDateDebut(dateDebut);
+
+                // Si le contrat est à durée déterminée, générer une date de fin
+                if (!typeContrat.equals("CDI")) {
+                    LocalDate dateFin = dateDebut.plus(1 + random.nextInt(3), ChronoUnit.YEARS); // Durée de 1 à 3 ans
+                    contrat.setDateFin(dateFin);
+                    contrat.setEtat(dateFin.isAfter(LocalDate.now())); // État actif si la date de fin est future
+                } else {
+                    contrat.setDateFin(null); // Pas de date de fin pour un CDI
+                    contrat.setEtat(true); // Toujours actif
+                }
+
+                // Sauvegarder le contrat
+                contratRepository.save(contrat);
+
+                // Optionnel : Associer le contrat à l'employé
+                employe.setContrat(contrat);
+                employeRepository.save(employe);
             }
 
             // Log des données générées

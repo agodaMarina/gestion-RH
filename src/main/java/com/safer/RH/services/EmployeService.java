@@ -1,9 +1,8 @@
 package com.safer.RH.services;
 
-import com.safer.RH.models.Absence;
-import com.safer.RH.models.Employe;
-import com.safer.RH.models.Evenement;
-import com.safer.RH.models.Poste;
+import com.safer.RH.Dto.AbsenceDto;
+import com.safer.RH.Dto.DepartDto;
+import com.safer.RH.models.*;
 import com.safer.RH.repositories.AbsenceRepository;
 import com.safer.RH.repositories.EmployeRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -24,6 +24,7 @@ import java.util.Optional;
 public class EmployeService {
     private final EmployeRepository employeRepository;
     private final AbsenceRepository absenceRepository;
+    private final AbsenceService absencesService;
 
     public List<Object[]> getNombrePersonnesParSexe() {
         return employeRepository.countEmployesBySexe();
@@ -48,8 +49,30 @@ public class EmployeService {
         return employeRepository.countEmployesByCsp();
     }
 
-    public  List<Employe>listeEmploye(){
-        return employeRepository.getAll();
+    public  List<EmployeDto>listeEmploye(){
+        List<EmployeDto> employeDtos=new ArrayList<>();
+        for (Employe employe:employeRepository.findAll()){
+
+            employeDtos.add( new EmployeDto(employe.getId(),employe.getNom(),employe.getPrenom(),employe.getTel()
+                    ,employe.getAdresse(),employe.getSexe(),employe.getSituationFamiliale(),employe.getDateNaissance()
+                    ,employe.calculateAge(),employe.getDateEmbauche(),employe.getAnciennete(),employe.getDateDepart()
+                    ,employe.getCsp().getLibelle(),employe.getPoste().getLibelle(),employe.getDepart() !=null ?employe.getDepart().getRaison():null
+                    ,employe.getContrat() !=null ? employe.getContrat().getType():null ,employe.getContrat() !=null ? employe.getContrat().getDateDebut():null,employe.getContrat() !=null ? employe.getContrat().getDateFin():null
+                    ,employe.isActif()) );
+        }
+        return employeDtos;
+    }
+
+    public Contrat getContratByUserId(int id){
+        return employeRepository.findById(id).get().getContrat();
+    }
+
+    public List<AbsenceDto>getAllAbsencesByUserId(int id){
+        return absencesService.listerAbsenceParEmployeId(id);
+    }
+
+    public Depart getDepartByUserId(int id){
+        return employeRepository.findById(id).get().getDepart();
     }
 
     public Employe ajouterEmploye(Employe employe){
@@ -57,10 +80,15 @@ public class EmployeService {
     }
 
     //récupérer un employe grâce à son id
-    public Employe getEmployeById(int id){
-       Employe employe=employeRepository.getById(id);
-       employe.setAnciennete(LocalDate.now().getYear()-employe.getDateEmbauche().getYear());
-       return employe;
+    @Transactional
+    public EmployeDto getEmployeById(int id){
+       Employe employe=employeRepository.findById(id).orElseThrow();
+        return new EmployeDto(employe.getId(),employe.getNom(),employe.getPrenom(),employe.getTel()
+                ,employe.getAdresse(),employe.getSexe(),employe.getSituationFamiliale(),employe.getDateNaissance()
+                ,employe.calculateAge(),employe.getDateEmbauche(),employe.getAnciennete(),employe.getDateDepart()
+                ,employe.getCsp().getLibelle(),employe.getPoste().getLibelle(),employe.getDepart() !=null ?employe.getDepart().getRaison():null
+                ,employe.getContrat() !=null ? employe.getContrat().getType():null ,employe.getContrat() !=null ? employe.getContrat().getDateDebut():null,employe.getContrat() !=null ? employe.getContrat().getDateFin():null
+                ,employe.isActif());
     }
 
     //mofier un poste
@@ -89,7 +117,7 @@ public class EmployeService {
                 cell.setCellValue(columns[col]);
             }
             // Data rows
-            List<Employe> employes = listeEmploye();
+            List<Employe> employes = employeRepository.findAll();
             int rowIdx = 1;
             for (Employe e : employes) {
                Row row = sheet.createRow(rowIdx++);

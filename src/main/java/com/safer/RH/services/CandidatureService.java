@@ -38,18 +38,18 @@ public class CandidatureService {
         return candidatureRepository.findById(id).orElse(null);
     }
 
-    public List<CandidatureDto> getListCandidatureByRecrutementId(Long id){
-        List <CandidatureDto> candidatures = new ArrayList<>();
-        for (Candidature c : candidatureRepository.findByRecrutementId(id)) {
-            candidatures.add(new CandidatureDto(c.getId(),c.getNom(),c.getPrenom(),c.getEmail(),c.getTelephone(),c.getAdresse(),c.getDateEntretien1(),c.getStadeDeRecrutement(),c.getMoyenne(),c.getApreciationGlobale(),c.getRecrutement().getPoste().getLibelle()));
-        }
-        return candidatures;
-    }
+//    public List<CandidatureDto> getListCandidatureByRecrutementId(Long id){
+//        List <CandidatureDto> candidatures = new ArrayList<>();
+//        for (Candidature c : candidatureRepository.findByRecrutementId(id)) {
+//            candidatures.add(new CandidatureDto(c.getId(),c.getNom(),c.getPrenom(),c.getEmail(),c.getTelephone(),c.getAdresse(),c.getDateEntretien1(),c.getStadeDeRecrutement(),c.getMoyenne(),c.getApreciationGlobale(),c.getRecrutement().getPoste().getLibelle()));
+//        }
+//        return candidatures;
+//    }
 
     public List<CandidatureDto> getListCandidature(){
         List <CandidatureDto> candidatures = new ArrayList<>();
         for (Candidature c : candidatureRepository.getListeAsc()) {
-            candidatures.add(new CandidatureDto(c.getId(),c.getNom(),c.getPrenom(),c.getEmail(),c.getTelephone(),c.getAdresse(),c.getDateEntretien1(),c.getStadeDeRecrutement(),c.getMoyenne(),c.getApreciationGlobale(),c.getRecrutement().getPoste().getLibelle()));
+            candidatures.add(new CandidatureDto(c.getId(),c.getNom(),c.getPrenom(),c.getEmail(),c.getTelephone(),c.getAdresse(),c.getDateEntretien1(),c.getStadeDeRecrutement(),c.getMoyenne(),c.getApreciationGlobale(),c.isEstRetenu(),c.getRecrutement().getPoste().getLibelle()));
         }
         return candidatures;
     }

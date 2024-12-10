@@ -45,7 +45,7 @@ public class PosteService {
     public void supprimerPoste(int id) {
         // Vérifier si des employés sont associés à ce poste
         if (employeRepository.existsByPosteId(id)) {
-            throw new PosteAssigneException("Impossible de supprimer le poste car il est assigné à au moins un employé.");
+            throw new PosteAssigneException("Impossible de supprimer le poste car il est assigné à un employé.");
         }
 
         posteRepository.deleteById(id);

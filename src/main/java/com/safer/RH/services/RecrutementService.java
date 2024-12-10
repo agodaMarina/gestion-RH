@@ -64,11 +64,7 @@ public class RecrutementService {
         recrutementRepository.save(recrutement);
     }
 
-    public List<Candidature> getCandidats(Long recrutementId) {
-        Recrutement recrutement = recrutementRepository.findById(recrutementId)
-                .orElseThrow();
-        return recrutement.getCandidats();
-    }
+
 
     public void Evaluation(Long recrutementId,List<Evaluation> evaluations) {
         Recrutement recrutement = recrutementRepository.findById(recrutementId)
@@ -134,14 +130,34 @@ public class RecrutementService {
             RecrutementDto recrutementDto=new RecrutementDto();
             recrutementDto.setId(recrutement.getId());
             recrutementDto.setPoste(recrutement.getPoste().getLibelle());
+            recrutementDto.setSalaire(recrutement.getPoste().getNiveauDeSalaire());
+            recrutementDto.setNiveauEtude(recrutement.getPoste().getNiveauEtude());
             recrutementDto.setRecruteur(recrutement.getRecruteur().getNom());
             recrutementDto.setStatut(recrutement.getStatut().name());
             recrutementDto.setEtapeActuelle(recrutement.getEtapeActuelle());
-            recrutementDto.setDateDebut(recrutement.getDateDebut().toString());
-            recrutementDto.setDateFin(recrutement.getDateFin().toString());
-            recrutementDto.setCandidats(candidatureService.getListCandidature());
+            recrutementDto.setDateDebut(recrutement.getDateDebut());
+            recrutementDto.setDateFin(recrutement.getDateFin());
             listeDesRecrutems.add(recrutementDto);
         }
         return listeDesRecrutems;
+    }
+
+    public List<CandidatureDto> getCandidats(Long recrutementId) {
+        List<CandidatureDto> candidatureDtos = new ArrayList<>();
+        for (Candidature candidature : recrutementRepository.getCandidaturesById(recrutementId)) {
+            CandidatureDto candidatureDto = new CandidatureDto();
+            candidatureDto.setId(candidature.getId());
+            candidatureDto.setNom(candidature.getNom());
+            candidatureDto.setPrenom(candidature.getPrenom());
+            candidatureDto.setAdresse(candidature.getAdresse());
+            candidatureDto.setTelephone(candidature.getTelephone());
+            candidatureDto.setEmail(candidature.getEmail());
+            candidatureDto.setApreciationGlobale(candidature.getApreciationGlobale());
+            candidatureDto.setEstRetenu(candidature.isEstRetenu());
+            candidatureDto.setDateEntretien1(candidature.getDateEntretien1());
+            candidatureDtos.add(candidatureDto);
+        }
+        return candidatureDtos;
+
     }
 }

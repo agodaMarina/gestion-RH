@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Collection;
 
 @Entity
@@ -39,5 +40,11 @@ public class Employe {
     private Collection<Evenement> evenements;
     private boolean isActif=true;
 
-
+    public int calculateAge() {
+        if (this.dateNaissance != null) {
+            LocalDate birthDate = this.dateNaissance;
+            return Period.between(birthDate, LocalDate.now()).getYears();
+        }
+        return 0; // Si la date de naissance est null ou mal formatée
+    }
 }

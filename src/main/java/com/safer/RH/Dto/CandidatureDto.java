@@ -22,5 +22,6 @@ public class CandidatureDto {
     private String stadeDeRecrutement;
     private double moyenne;
     private String  apreciationGlobale;
+    private boolean estRetenu = false;
     private String poste;
 }

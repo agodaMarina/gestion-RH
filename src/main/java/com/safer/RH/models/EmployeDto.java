@@ -1,13 +1,15 @@
 package com.safer.RH.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Period;
 
-@RequiredArgsConstructor
 @Data
+@AllArgsConstructor
 public class EmployeDto {
     private int id;
     private String nom;
@@ -16,22 +18,17 @@ public class EmployeDto {
     private String adresse;
     private String sexe;
     private String situationFamiliale;
-    private String dateNaissance;
+    private LocalDate dateNaissance;
     private int age;
     private LocalDate dateEmbauche;
+    private int anciennete;
     private LocalDate dateDepart;
     private String csp;
-
-    private int secteurId;  // ID du Secteur
-    private int posteId;    // ID du Poste
-    private int departId;   // ID du Depart
+    private String poste;
+    private String depart;
     private String contrat;
+    private LocalDate datedebutContrat;
+    private LocalDate dateFinContrat;
+    private boolean isActif;
 
-    public int getAge() {
-        if (this.dateNaissance != null) {
-            LocalDate birthDate = LocalDate.parse(this.dateNaissance);
-            return Period.between(birthDate, LocalDate.now()).getYears();
-        }
-        return 0; // Si la date de naissance est null ou mal formatée
-    }
 }
