@@ -1,7 +1,7 @@
 import { Component, ViewChild, computed, effect, signal } from '@angular/core';
 
 import { EmployeService } from '../../../../api/services/employe.service';
-import { Employe } from '../../../../api/models/employe';
+import { Employe, EmployeDto } from '../../../../api/models/employe';
 import { Router } from '@angular/router';
 
 import { DepartService } from '../../../../api/services/depart.service';
@@ -21,10 +21,10 @@ interface PageEvent {
   styleUrl: './listeemploye.component.css',
 })
 export class ListeemployeComponent {
-  employes: Employe[] = [];
-  paginateEmploye: Employe[] = [];
-  first = 0;
-  rows = 10;
+  employes: EmployeDto[] = [];
+  paginateEmploye: EmployeDto[] = [];
+  itemsPerPage = 8;
+  currentPage = 1;
   departNumber!: number;
   totalAbsence!: number;
   totalEmployeActif!: number;
@@ -59,38 +59,47 @@ export class ListeemployeComponent {
   // Récupère la référence de l'input de fichier pour déclencher le clic
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  onPageChange(event: PageEvent) {
-    this.first = event.first ?? 0;
-    this.rows = event.rows ?? 10;
-    this.paginateEmploye = this.employes.slice(
-      this.first,
-      this.first + this.rows
-    );
+  onPageChange(page: number) {
+    this.currentPage = page;
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginateEmploye = this.employes.slice(start, end);
+
+  }
+  initials(nom:string, prenom:string): string {
+    return nom.charAt(0)+prenom.charAt(0).toUpperCase();
   }
 
+  getClass(index:number):string {
+    const classes = ['avatar bg-primary text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;', 
+      'avatar bg-danger text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;', 
+      'avatar bg-success text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;',
+       'avatar bg-info text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;'];
+    return classes[index % classes.length];
+
+  }
   get() {
     this.service.getEmployes().subscribe(
-      (data: Employe[]) => {
+      (data: EmployeDto[]) => {
         this.employes = data;
+       
         // Signal calculé pour filtrer la liste d'employés
         this.filteredEmployees = computed(() => {
           const query = this.searchService.searchQuery().toLowerCase();
-          // return this.employes.filter((emp) =>
-          //   emp.nom.toLowerCase().includes(query)
-          // );
+          
           // Applique le filtre de recherche
           const filtered = this.employes.filter((emp) =>
             emp.nom.toLowerCase().includes(query)
           );
 
           // Calcule les indices de début et de fin pour la pagination
-          const start = this.first;
-          const end = start + this.rows;
+          const start = (this.currentPage - 1) * this.itemsPerPage;
+          const end = start + this.itemsPerPage;
 
           // Applique la pagination sur les résultats filtrés
           return filtered.slice(start, end);
         });
-        this.paginateEmploye = this.filteredEmployees().slice(0, this.rows);
+        this.paginateEmploye = this.filteredEmployees().slice(0, this.itemsPerPage);
       },
       (error) => {
         console.log(error);
@@ -117,7 +126,7 @@ export class ListeemployeComponent {
     });
   }
 
-  goToDetail(item: Employe) {
+  goToDetail(item: EmployeDto) {
     this.router.navigate(['/main/detail', item.id]);
   }
 

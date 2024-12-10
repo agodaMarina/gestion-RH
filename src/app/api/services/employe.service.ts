@@ -1,7 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Employe } from '../models/employe';
+import { Employe, EmployeDto } from '../models/employe';
+import { Contrat } from '../models/contrat';
+import { Depart } from '../models/Depart';
+import { Absence } from '../models/Absence';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +15,27 @@ export class EmployeService {
 
   constructor(private http:HttpClient) { }
 
-  getEmployes():Observable<Employe[]>{
-    return this.http.get<Employe[]>(this.url+'/lister');
+  getEmployes():Observable<EmployeDto[]>{
+    return this.http.get<EmployeDto[]>(this.url+'/lister');
   }
 
-  getEmploye(id:number):Observable<Employe>{
-    return this.http.get<Employe>(this.url+'/detail/'+id);
+  getEmploye(id:number):Observable<EmployeDto>{
+    return this.http.get<EmployeDto>(this.url+'/detail/'+id);
+  }
+
+  // Récupérer le contrat d'un employé
+  getContratByUserId(id: number): Observable<Contrat> {
+    return this.http.get<Contrat>(`${this.url}/${id}/contrat`);
+  }
+
+  // Récupérer toutes les absences d'un employé
+  getAllAbsencesByUserId(id: number): Observable<Absence[]> {
+    return this.http.get<Absence[]>(`${this.url}/${id}/absences`);
+  }
+
+  // Récupérer le départ d'un employé
+  getDepartByUserId(id: number): Observable<Depart> {
+    return this.http.get<Depart>(`${this.url}/${id}/depart`);
   }
 
   importEmployees(file: File): Observable<any> {

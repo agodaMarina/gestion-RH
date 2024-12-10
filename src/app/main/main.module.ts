@@ -38,7 +38,9 @@ import { AddPosteComponent } from './body/pages/recrutement/etapes/add-poste/add
 import { EvaluationComponent } from './body/pages/recrutement/etapes/evaluation/evaluation.component';
 import { SelectionComponent } from './body/pages/recrutement/etapes/selection/selection.component';
 
-
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { PaginationComponent } from './body/pagination/pagination.component';
+import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus.component';
 @NgModule({
   declarations: [
     MainComponent,
@@ -63,6 +65,8 @@ import { SelectionComponent } from './body/pages/recrutement/etapes/selection/se
     AddPosteComponent,
     EvaluationComponent,
     SelectionComponent,
+    PaginationComponent,
+    ListprocessusComponent,
   ],
   imports: [
     CommonModule,
@@ -78,7 +82,8 @@ import { SelectionComponent } from './body/pages/recrutement/etapes/selection/se
     TabViewModule,
     StepsModule,
     BadgeModule,
-    DividerModule
+    DividerModule,
+    ScrollPanelModule
   ],
   providers: [ConfirmationService, MessageService],
 })

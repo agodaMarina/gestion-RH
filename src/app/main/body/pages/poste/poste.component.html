@@ -1,5 +1,5 @@
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light">Postes /</span> Liste des postes à pourvoir 
+  <span class="text-muted fw-light">Postes /</span> Liste des postes
 </h4>
 <p-toast />
 <div class="d-flex justify-content-end align-items-right mb-3">
@@ -12,7 +12,7 @@
     Ajouter
   </button>
 </div>
-<!-- Striped Rows -->
+
 <div class="card">
   <div class="table-responsive text-nowrap">
     <table class="table table-striped">
@@ -22,19 +22,21 @@
           <th>libellé</th>
           <th>Niveau d'étude</th>
           <th>Niveau de Salaire</th>
-          
+
           <th>Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        <tr *ngFor="let item of filteredData() ">
+        <tr *ngFor="let item of paginate">
           <td>
             <strong>{{ item.reference }}</strong>
           </td>
-          <td>{{ item.libelle }}</td>
+          <td>
+            <a> {{ item.libelle }}</a>
+          </td>
           <td>{{ item.niveauEtude }}</td>
-          <td>{{ item.niveauDeSalaire | currency:'XOF':'code' }}</td>
-          
+          <td>{{ item.niveauDeSalaire | currency : "XOF" : "code" }}</td>
+
           <td>
             <div class="dropdown">
               <button
@@ -52,7 +54,9 @@
                   (click)="afficher(item)"
                   ><i class="bx bx-eye-alt me-1"></i>détail</a
                 >
-                <a class="dropdown-item" (click)="item.id ? deletePoste(item.id) : null"
+                <a
+                  class="dropdown-item"
+                  (click)="item.id ? deletePoste(item.id) : null"
                   ><i class="bx bx-trash me-1"></i>supprimer</a
                 >
               </div>
@@ -61,19 +65,19 @@
         </tr>
       </tbody>
     </table>
-    <div class="card flex justify-content-center">
-      <p-paginator
-        (onPageChange)="onPageChange($event)"
-        [first]="first"
-        [rows]="rows"
-        [totalRecords]="postes.length"
-        [rowsPerPageOptions]="[10, 20, 30]"
-      />
-    </div>
   </div>
-  
 </div>
-<!--/ Striped Rows -->
+<div class="row mt-3">
+  <div class="d-flex justify-content-end align-items-center">
+    <app-pagination
+      [totalItems]="postes.length"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage"
+      (pageChanged)="onPageChange($event)"
+    >
+    </app-pagination>
+  </div>
+</div>
 <!-- Modal (Fenêtre add) -->
 <div
   class="modal fade"
@@ -136,7 +140,7 @@
               placeholder="niveau de salaire"
             />
           </div>
-          
+
           <div class="mb-3">
             <label for="prenom" class="form-label">Remarque</label>
             <input
@@ -153,7 +157,9 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fermer
         </button>
-        <button type="submit" class="btn btn-primary" (click)="addPoste()">Enregistrer</button>
+        <button type="submit" class="btn btn-primary" (click)="addPoste()">
+          Enregistrer
+        </button>
       </div>
     </div>
   </div>
@@ -169,7 +175,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addModalLabel">Detail du Poste </h5>
+        <h5 class="modal-title" id="addModalLabel">Detail du Poste</h5>
         <button
           type="button"
           class="btn-close"
@@ -220,7 +226,7 @@
               placeholder="niveau de salaire"
             />
           </div>
-         
+
           <div class="mb-3">
             <label for="prenom" class="form-label">Remarque</label>
             <input
@@ -237,7 +243,9 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fermer
         </button>
-        <button type="submit" class="btn btn-primary" (click)="update()">Modifier</button>
+        <button type="submit" class="btn btn-primary" (click)="update()">
+          Modifier
+        </button>
       </div>
     </div>
   </div>

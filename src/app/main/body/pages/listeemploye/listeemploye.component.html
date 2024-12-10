@@ -1,148 +1,131 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Employés /</span> Liste des employés
 </h4>
-<div class="row mb-3">
-  <div class="col-sm-6 col-xl-3">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex align-items-start justify-content-between">
-          <div class="content-left">
-            <span class="text-heading">Total</span>
-            <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">{{employes.length}}</h4>
+<div class="container py-3">
+  <div class="row mb-3">
+    <div class="col-sm-6 col-xl-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span class="text-heading">Total</span>
+              <div class="d-flex align-items-center my-1">
+                <h4 class="mb-0 me-2">{{ employes.length }}</h4>
+              </div>
+              <small class="mb-0">Total des employés</small>
             </div>
-            <small class="mb-0">Total des employés</small>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-primary">
+                <i class="bx bx-group bx-lg"></i>
+              </span>
+            </div>
           </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-primary">
-              <i class="bx bx-group bx-lg"></i>
-            </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span class="text-heading">Absences</span>
+              <div class="d-flex align-items-center my-1">
+                <h4 class="mb-0 me-2">{{ totalAbsence || 0 }}</h4>
+              </div>
+              <small class="mb-0">Total des abscences</small>
+            </div>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-danger">
+                <i class="bx bx-user-plus bx-lg"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span class="text-heading">Employés actifs</span>
+              <div class="d-flex align-items-center my-1">
+                <h4 class="mb-0 me-2">{{ totalEmployeActif || 0 }}</h4>
+              </div>
+              <small class="mb-0">Total des employés actifs</small>
+            </div>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-success">
+                <i class="bx bx-user-check bx-lg"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between">
+            <div class="content-left">
+              <span class="text-heading">Départs</span>
+              <div class="d-flex align-items-center my-1">
+                <h4 class="mb-0 me-2">{{ departNumber || 0 }}</h4>
+                <p class="text-success mb-0"></p>
+              </div>
+              <small class="mb-0">Total des départs</small>
+            </div>
+            <div class="avatar">
+              <span class="avatar-initial rounded bg-label-warning">
+                <i class="bx bx-user-voice bx-lg"></i>
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-sm-6 col-xl-3">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex align-items-start justify-content-between">
-          <div class="content-left">
-            <span class="text-heading">Absences</span>
-            <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">{{totalAbsence|| 0}}</h4>
-            </div>
-            <small class="mb-0">Total des abscences actives </small>
-          </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-danger">
-              <i class="bx bx-user-plus bx-lg"></i>
-            </span>
-          </div>
-        </div>
-      </div>
+  <div class="row">
+    <div class="d-flex justify-content-end align-items-center mb-3">
+      <button class="btn btn-secondary" (click)="triggerFileInput()">
+        <i class="bx bx-download bx-18px m-2"></i>importer
+      </button>
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        style="display: none"
+      />
     </div>
-  </div>
-  <div class="col-sm-6 col-xl-3">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex align-items-start justify-content-between">
-          <div class="content-left">
-            <span class="text-heading">Employés actifs</span>
-            <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">{{totalEmployeActif || 0}}</h4>
-            </div>
-            <small class="mb-0">Total des employés actifs</small>
-          </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-success">
-              <i class="bx bx-user-check bx-lg"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-xl-3">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex align-items-start justify-content-between">
-          <div class="content-left">
-            <span class="text-heading">Départs</span>
-            <div class="d-flex align-items-center my-1">
-              <h4 class="mb-0 me-2">{{departNumber || 0}}</h4>
-              <p class="text-success mb-0"></p>
-            </div>
-            <small class="mb-0">Total des départs</small>
-          </div>
-          <div class="avatar">
-            <span class="avatar-initial rounded bg-label-warning">
-              <i class="bx bx-user-voice bx-lg"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="d-flex justify-content-end align-items-center mb-3">
-    <button class="btn btn-secondary" (click)="triggerFileInput()"><i class="bx bx-download bx-18px m-2"></i>importer</button>
-    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" />
-  </div>
-  <!-- Striped Rows -->
-  <div class="card">
+    <!-- Striped Rows -->
+    <!-- <div class="card">
     <div class="table-responsive text-nowrap">
       <table class="table table-striped">
         <thead>
           <tr>
             <th>Nom</th>
             <th>Prenom</th>
+            <th>Poste</th>
             <th>Csp</th>
-            <th>Secteur</th>
-            <th>Type de contrat</th>
-            <th>Actions</th>
+            <th>contrat</th>
           </tr>
         </thead>
         <tbody class="table-border-bottom-0">
           
-          @for (item of filteredEmployees(); track $index) {
-          <tr (click)="goToDetail(item)" style="cursor: pointer;">
+          @for (item of employes; track $index) {
+          <tr  style="cursor: pointer;" (click)="goToDetail(item)">
             <td>
-              <strong>{{ item.nom }}</strong>
+              <strong>{{ item.nom.toUpperCase() }}</strong>
             </td>
             <td>{{ item.prenom }}</td>
             <td>
-              <strong>{{ item.csp }}</strong>
+              <strong>{{ item.poste }}</strong>
             </td>
             <td>
-              {{ item.secteur.libelle }}
+              {{ item.csp }}
             </td>
-            <td></td>
-            <td>
-              <div class="dropdown">
-                <button
-                  type="button"
-                  class="btn p-0 dropdown-toggle hide-arrow"
-                  data-bs-toggle="dropdown"
-                >
-                  <i class="bx bx-dots-vertical-rounded"></i>
-                </button>
-                <div class="dropdown-menu">
-                  <a
-                    class="dropdown-item"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editModal"
-                    (click)="modifier(item)"
-                    ><i class="bx bx-edit-alt me-1"></i> modifier</a
-                  >
-                  <a
-                    class="dropdown-item"
-                    (click)="item.id ? supprimer(item.id) : null"
-                    ><i class="bx bx-trash me-1"></i> supprimer</a
-                  >
-                </div>
-              </div>
-            </td>
+            <td>{{item.contrat}} </td>
+          
           </tr>}@empty {
             <tr>Aucun employé portant ce nom</tr>
           }
@@ -159,6 +142,71 @@
       </div>
     </div>
     
+  </div>-->
+  </div>
+  <div class="nav-align-top">
+    <ul class="nav nav-tabs mb-4" role="tablist">
+      <li class="nav-item">
+        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-home" aria-controls="navs-pills-top-home" aria-selected="true">Tous ({{employes.length}})</button>
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile" aria-controls="navs-pills-top-profile" aria-selected="false">Actifs (13)</button>
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-messages" aria-controls="navs-pills-top-messages" aria-selected="false">Inactifs (2)</button>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="navs-pills-top-home" role="tabpanel">
+        <div class="row g-3">
+          @for (item of paginateEmploye; track $index) {
+          <!-- Card 4 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div [ngClass]="getClass($index+1)">
+                  {{ initials(item.nom, item.prenom) }} 
+                </div>
+                <div>
+                  <h6 class="mb-1">{{item.nom}} {{item.prenom}}</h6>
+                  <small class="text-muted">{{item.dateEmbauche|date:'mediumDate'}}</small>
+                </div>
+                <i class="bx bx-dots-vertical-rounded"></i>
+              </div>
+              <hr>
+              <div class="mt-1">
+                <div class="mt-1">
+                  <p class="mb-1"><i class="bx bx-briefcase me-2"></i>{{item.poste}}</p>
+                  <p class="mb-1"><i class="bx bx-phone me-2"></i>{{item.tel}}</p>
+                  <p class="mb-0"><i class="bx bx-link-alt me-2"></i>{{item.contrat}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        </div>
+      </div>
+      <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel">
+       
+      </div>
+      <div class="tab-pane fade" id="navs-pills-top-messages" role="tabpanel">
+       
+      </div>
+    </div>
+  </div>
+ 
+ 
+  <div class="row mt-3">
+    <div class="d-flex justify-content-end align-items-center">
+      <app-pagination
+        [totalItems]="employes.length"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChanged)="onPageChange($event)"
+      >
+      </app-pagination>
+    </div>
   </div>
 </div>
+
 <!--/ Striped Rows -->

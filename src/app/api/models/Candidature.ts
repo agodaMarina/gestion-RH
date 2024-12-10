@@ -19,3 +19,15 @@ export interface Candidature {
   evaluation?:Evaluation;
   estRetenu?:boolean;
 }
+
+export interface CandidatureCreation {
+  nom: String;
+  prenom: String;
+  email: String;
+  telephone: String;
+  adresse: String;
+  dateEntretien1:string;
+  prochaineAction:String;
+  apreciationGlobale: string;
+ 
+}

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PageEvent } from '../../../../api/models/pageEvent';
 import { SearchService } from '../../../../api/services/search.service';
+import { PosteDto } from '../../../../api/models/PosteDto';
 
 @Component({
   selector: 'app-poste',
@@ -14,16 +15,19 @@ import { SearchService } from '../../../../api/services/search.service';
 export class PosteComponent implements OnInit {
   poste: Poste = {};
   posteForm: FormGroup;
-  postes: Poste[] = [];
-  paginate: Poste[] = [];
+  postes: PosteDto[] = [];
+  paginate: PosteDto[] = [];
   first: number = 0;
   rows: number = 10;
   filteredData: any;
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
 
-  onPageChange(event: PageEvent) {
-    this.first = event.first ?? 0;
-    this.rows = event.rows ?? 10;
-    this.paginate = this.postes.slice(this.first, this.first + this.rows);
+  onPageChange(event: number) {
+    this.currentPage = event;
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginate = this.postes.slice(start, end);
   }
 
   constructor(
@@ -72,8 +76,9 @@ export class PosteComponent implements OnInit {
 
   liste() {
     this.service.getAllPostes().subscribe({
-      next: (data: Poste[]) => {
+      next: (data: PosteDto[]) => {
         this.postes = data;
+
         this.filteredData = computed(() => {
           const query = this.searchService.searchQuery().toLowerCase();
           const filtered = this.postes.filter((poste) =>
@@ -85,7 +90,7 @@ export class PosteComponent implements OnInit {
           // Applique la pagination sur les résultats filtrés
           return filtered.slice(start, end);
         });
-        this.paginate = this.postes.slice(0, this.rows);
+        this.paginate = this.filteredData().slice(0, this.rows);
       },
       error: (err) => {
         this.messageService.add({

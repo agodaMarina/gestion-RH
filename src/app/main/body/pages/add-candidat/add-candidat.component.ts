@@ -2,25 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { CandidatureService } from '../../../../api/services/candidature.service';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Candidature } from '../../../../api/models/Candidature';
-import { PosteService } from '../../../../api/services/poste.service';
-import { Poste } from '../../../../api/models/Poste';
+import {
+
+  CandidatureCreation,
+} from '../../../../api/models/Candidature';
+
+import { RecrutementService } from '../../../../api/services/recrutement.service';
 
 @Component({
   selector: 'app-add-candidat',
   templateUrl: './add-candidat.component.html',
   styleUrl: './add-candidat.component.css',
 })
-export class AddCandidatComponent implements OnInit {
-  postes: Poste[] = [];
-
+export class 
+AddCandidatComponent implements OnInit {
+  Listcandidats: CandidatureCreation[] = [];
+  recrutementId: number | null = null
   candidatureForm: FormGroup;
 
   constructor(
     private service: CandidatureService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private posteService: PosteService
+    private recrutementService: RecrutementService
   ) {
     this.candidatureForm = this.formBuilder.group({
       nom: ['', Validators.required],
@@ -30,101 +34,58 @@ export class AddCandidatComponent implements OnInit {
       adresse: ['', Validators.required],
       prochaineAction: ['', Validators.required],
       dateEntretien1: ['', Validators.required],
-      dateEntretien2: [''],
-      dateEntretien3: [''],
-      stadeDeRecrutement: ['', Validators.required],
-      noteExperience: [0, [Validators.required, Validators.max(20)]],
-      noteCompetence: [0, [Validators.required, Validators.max(20)]],
-      moyenne: [{ value: 0, disabled: true }],
-      noteSavoirEtre: [0, [Validators.required, Validators.max(20)]],
       apreciationGlobale: [''],
-      poste: [null, Validators.required],
     });
-    this.onChanges();
   }
 
   ngOnInit(): void {
-   this.liste();
+    this.loadFromLocalStorage();
   }
-  onChanges():void {
-    this.candidatureForm.get('noteExperience')?.valueChanges.subscribe((val) => {
-      this.updateTotals();
-    });
 
-    this.candidatureForm.get('noteCompetence')?.valueChanges.subscribe((val) => {
-      this.updateTotals();
-    });
-
-    this.candidatureForm.get('noteSavoirEtre')?.valueChanges.subscribe((val) => {
-      this.updateTotals();
-    });
-
-
-  }
- updateTotals(): void {
-    const note1 = this.candidatureForm.get('noteExperience')?.value;
-    const note2 = this.candidatureForm.get('noteCompetence')?.value;
-    const note3 = this.candidatureForm.get('noteSavoirEtre')?.value;
-    if (note1 !== null && note2 !== null && note3 !==null) {
-      const total = (note1+note2+note3)/3;
-      console.log(total)
-      this.candidatureForm.patchValue({
-        moyenne: total
-        
-      });
-    }
-  }
   add() {
     if (this.candidatureForm.valid) {
-      this.service.create(this.candidatureForm?.value).subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Succès',
-            detail: 'Candidature ajoutée avec succès',
-          });
-          this.liste();
-          this.candidatureForm?.reset();
-        },
-        error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erreur',
-            detail: "erreur lors de l'ajout de la candidature",
-          });
-        },
-      });
-      
+      const candidature: CandidatureCreation = {
+        nom: this.candidatureForm.get('nom')?.value,
+        prenom: this.candidatureForm.get('prenom')?.value,
+        email: this.candidatureForm.get('email')?.value,
+        telephone: this.candidatureForm.get('telephone')?.value,
+        adresse: this.candidatureForm.get('adresse')?.value,
+        prochaineAction: this.candidatureForm.get('prochaineAction')?.value,
+        dateEntretien1: this.candidatureForm.get('dateEntretien1')?.value,
+        apreciationGlobale:
+          this.candidatureForm.get('apreciationGlobale')?.value,
+      };
+      this.Listcandidats.push(candidature);
+      this.saveToLocalStorage();
     }
   }
-
-  liste() {
-    this.posteService.getAllPostes().subscribe({
-      next: (data: Candidature[]) => {
-        this.postes = data;
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la récupération de la liste des postes',
-        });
-      },
-    });
-  }
-  supprimer(id: number) {
-    this.service.delete(id).subscribe({
-      next: () => {
-        this.liste();
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la suppression de la candidature',
-        });
-      },
-    });
+  //fonction pour sauvegarder les candidats dans le local storage
+  saveToLocalStorage() {
+    localStorage.setItem('candidats', JSON.stringify(this.Listcandidats));
   }
 
+  //fonction pour charger les candidats depuis le local storage
+  loadFromLocalStorage() {
+    const saved = localStorage.getItem('candidats');
+    this.Listcandidats = saved ? JSON.parse(saved) : [];
+  }
+
+//fonction pour enregistrer les candidats dans la base de données
+  ajoutCandidature() {
+    const recrutementIdValue = this.recrutementService.getRecrutementId();
+    if (recrutementIdValue !== null) {
+      this.recrutementId = recrutementIdValue
+    } else {
+      // handle the case where recrutementId is null
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'veuillez référencer le processus' });
+    }
+    this.recrutementService.ajouterCandidats(this.recrutementId!,this.Listcandidats)
+  }
+
+
+  supprimer(c: CandidatureCreation) {
+    if (confirm(`Voulez-vous vraiment supprimer ${c.nom} ${c.prenom} ?`)) {
+      this.Listcandidats = this.Listcandidats.filter(item => item !== c);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Secteur } from '../models/secteur';
+import { SecteurDto } from '../models/secteur';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,20 +11,20 @@ export class SecteurService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Secteur[]> {
-    return this.http.get<Secteur[]>(this.baseurl + '/lister');
+  getAll(): Observable<SecteurDto[]> {
+    return this.http.get<SecteurDto[]>(this.baseurl + '/lister');
   }
 
-  getSecteurById(id: number): Observable<Secteur> {
-    return this.http.get<Secteur>(`${this.baseurl}/${id}`);
+  getSecteurById(id: number): Observable<SecteurDto> {
+    return this.http.get<SecteurDto>(`${this.baseurl}/${id}`);
   }
 
-  create(secteur: Secteur): Observable<Secteur> {
-    return this.http.post<Secteur>(this.baseurl + '/ajouter', secteur);
+  create(secteur: SecteurDto): Observable<SecteurDto> {
+    return this.http.post<SecteurDto>(this.baseurl + '/ajouter', secteur);
   }
 
-  update(id: number, secteur: Secteur): Observable<Secteur> {
-    return this.http.put<Secteur>(`${this.baseurl}/modifier/${id}`, secteur);
+  update(id: number, secteur: SecteurDto): Observable<SecteurDto> {
+    return this.http.put<SecteurDto>(`${this.baseurl}/modifier/${id}`, secteur);
   }
 
   delete(id: number): Observable<void> {

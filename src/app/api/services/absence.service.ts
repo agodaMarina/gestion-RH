@@ -15,6 +15,9 @@ constructor(private http: HttpClient) { }
 getAllAbsences(): Observable<Absence[]> {
   return this.http.get<Absence[]>(`${this.baseurl}/lister`);
 }
+getAbsencesActive(): Observable<Absence[]> {
+  return this.http.get<Absence[]>(`${this.baseurl}/listeActives`);
+}
 
 getAbsenceById(id: number): Observable<Absence> {
   return this.http.get<Absence>(`${this.baseurl}/${id}`);

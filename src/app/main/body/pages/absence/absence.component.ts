@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Absence } from '../../../../api/models/Absence';
-import { Form, FormBuilder, FormGroup } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AbsenceService } from '../../../../api/services/absence.service';
 import { EmployeService } from '../../../../api/services/employe.service';
-import { Employe } from '../../../../api/models/employe';
+import { Employe, EmployeDto } from '../../../../api/models/employe';
 
 @Component({
   selector: 'app-absence',
@@ -13,10 +13,14 @@ import { Employe } from '../../../../api/models/employe';
 })
 export class AbsenceComponent implements OnInit {
   absence: Absence = {};
+  absencesActive: Absence[] = [];
   abForm: FormGroup;
-
+  counts: { [key: string]: number } = {};
   absences: Absence[] = [];
-  employes!: Employe[];
+  employes!: EmployeDto[];
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
+  typeConge = ['CONGE MALADIE', 'CONGE ANNUEL', 'CONGE OCCASIONNEL', 'AUTRE'];
 
   constructor(
     private service: AbsenceService,
@@ -26,11 +30,19 @@ export class AbsenceComponent implements OnInit {
     private emploiyerService: EmployeService
   ) {
     this.abForm = this.formbuilder.group({
-      type: [''],
-      dateDebut: [''],
-      dateFin: [''],
-      employe: [],
+      type: ['', Validators.required],
+      motif: [''],
+      dateDebut: ['', Validators.required],
+      dateFin: ['', Validators.required],
+      idEmploye: [],
     });
+  }
+
+  onPageChange($event: number) {
+    this.currentPage = $event;
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.absences = this.absences.slice(start, end);
   }
 
   ngOnInit(): void {
@@ -38,16 +50,13 @@ export class AbsenceComponent implements OnInit {
     this.listeEmploye();
   }
 
-  
-
   add() {
-   
     this.service.createAbsence(this.abForm?.value).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: 'Absence ajoutée avec succès',
+          detail: 'Nouvelle absence ajoutée avec succès',
         });
         this.liste();
         this.abForm?.reset();
@@ -70,6 +79,7 @@ export class AbsenceComponent implements OnInit {
     this.service.getAllAbsences().subscribe({
       next: (value: Absence[]) => {
         this.absences = value;
+        this.countAbsenceTypes(value);
       },
       error: (err) => {
         this.messageService.add({
@@ -79,6 +89,39 @@ export class AbsenceComponent implements OnInit {
         });
       },
     });
+    this.service.getAbsencesActive().subscribe({
+      next: (value: Absence[]) => {
+        this.absencesActive = value;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Erreur lors de l'affichage des absences actives",
+        });
+      },
+    });
+  }
+
+  getClass(item: Absence) {
+    return item.type === 'CONGE MALADIE'
+      ? 'badge bg-primary'
+      : item.type === 'CONGE ANNUEL'
+      ? 'badge bg-success'
+      : item.type === 'CONGE OCCASIONNEL'
+      ? 'badge bg-info'
+      : 'badge bg-warning';
+  }
+
+  details(absence: Absence) {
+    this.abForm?.patchValue({
+      type: absence.type,
+      motif: absence.motif,
+      dateDebut: absence.dateDebut,
+      dateFin: absence.dateFin,
+      idEmploye: absence.employe,
+    });
+    this.abForm?.disable();    
   }
 
   supprimer(id: number) {
@@ -116,35 +159,35 @@ export class AbsenceComponent implements OnInit {
     });
   }
 
-  modifier(item:Absence) {
-    if (item.id) 
-    this.service.updateAbsence(item.id,this.absence).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Absence modifiée avec succès',
-        });
-        this.liste();
-        this.abForm?.reset();
-        const modal = document.querySelector('.modal');
-        if (modal) {
-          modal.classList.remove('show');
-        }
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: "Erreur lors de la modification de l'absence",
-        });
-      },
-    });
+  modifier(item: Absence) {
+    if (item.id)
+      this.service.updateAbsence(item.id, this.absence).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Absence modifiée avec succès',
+          });
+          this.liste();
+          this.abForm?.reset();
+          const modal = document.querySelector('.modal');
+          if (modal) {
+            modal.classList.remove('show');
+          }
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: "Erreur lors de la modification de l'absence",
+          });
+        },
+      });
   }
 
   listeEmploye() {
     this.emploiyerService.getEmployes().subscribe({
-      next: (value: Employe[]) => {
+      next: (value: EmployeDto[]) => {
         this.employes = value;
       },
       error: (err) => {
@@ -156,4 +199,24 @@ export class AbsenceComponent implements OnInit {
       },
     });
   }
+
+  countAbsenceTypes(absences:Absence[]): { [key: string]: number } {
+    this.counts = {
+      'CONGE MALADIE': 0,
+      'CONGE ANNUEL': 0,
+      'CONGE OCCASIONNEL': 0,
+      'AUTRE': 0,
+    };
+
+    absences.forEach((absence) => {
+      if (absence.type && absence.type in this.counts) {
+        // Incrémente le type spécifique
+        this.counts[absence.type as keyof typeof this.counts]++;
+      }
+    });
+
+    return this.counts;
+  }
+
+ 
 }

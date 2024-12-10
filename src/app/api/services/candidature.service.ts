@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Candidature } from '../models/Candidature';
+import { Candidature, CandidatureCreation } from '../models/Candidature';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,12 @@ export class CandidatureService {
 
   getCandidatureById(id: number): Observable<Candidature> {
     return this.http.get<Candidature>(`${this.baseUrl}/${id}`);
+  }
+
+  listerParRecrutement(id: number): Observable<CandidatureCreation[]> {
+    return this.http.get<CandidatureCreation[]>(`${this.baseUrl}/listerParRecrutement`, {
+      params: { id: id.toString() }
+    });
   }
 
   create(candidature: Candidature): Observable<Candidature> {

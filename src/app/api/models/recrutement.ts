@@ -12,3 +12,15 @@ export interface Recrutement {
     dateFin?: string;
     
 }
+
+export interface RecrutementDto {
+    id?:number;
+    poste?:string;
+    salaire?:number;
+    niveauEtude?:string;
+    recruteur:string;
+    statut?:string;
+    etapeActuelle?:string;
+    dateDebut?:string;
+    dateFin?:string;
+}

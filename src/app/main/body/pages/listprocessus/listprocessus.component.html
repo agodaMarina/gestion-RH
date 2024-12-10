@@ -1,0 +1,56 @@
+<div class="container">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Recrutement /</span> Liste des postes à
+    pourvoir
+  </h4>
+
+  <div class="d-flex justify-content-end align-items-center mb-3">
+    <button class="btn btn-primary">
+      <i class="bx bx-add bx-18px m-2"></i>Ajouter
+    </button>
+  </div>
+
+  <div class="row g-4">
+    @for (job of recrutements; track $index) {
+    <div class="col-md-3 col-lg-3">
+      <div class="job-card">
+        <div class="header">
+          <img src="" alt="" />
+          <div class="title">
+            <h5 class="mb-1">{{ job.poste?.toUpperCase() }}</h5>
+            <small class="text-muted">{{ nombreCandidats }} Candidatures</small>
+          </div>
+        </div>
+        <div class="details">
+          <ul class="list-unstyled mb-3">
+            <li><i class="bx bx-user"></i> {{ job.recruteur }}</li>
+            <li>
+              <i class="bx bx-money"></i>
+              {{ job.salaire | currency : "XOF" }} /mois
+            </li>
+            <li><i class="bx bxs-graduation"></i> {{ job.niveauEtude }}</li>
+          </ul>
+        </div>
+        <div class="tags">
+          @switch (job.statut) { @case ('EN_COURS'){
+          <span class="badge bg-success">En Cours</span>
+          } @case ('TERMINE') {
+          <span class="badge bg-danger">Full Time</span>
+          } }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="row mt-3">
+    <div class="d-flex justify-content-end align-items-center">
+      <app-pagination
+        [totalItems]="recrutements.length"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChanged)="onPageChange($event)"
+      >
+      </app-pagination>
+    </div>
+  </div>
+</div>

@@ -6,19 +6,15 @@
       <div class="card-body pt-12">
         <div class="user-avatar-section">
           <div class="d-flex align-items-center flex-column">
-            <img
-              class="img-fluid rounded mb-4"
-              src="../../assets/img/avatars/1.png"
-              height="120"
-              width="120"
-              alt="User avatar"
-            />
+            <div class="avatar mb-4" >
+              {{initials}}
+            </div>
             <div class="user-info text-center">
               <h5>{{ employe.nom }} {{ employe.prenom }}</h5>
-              <span class="badge bg-label-secondary">{{ employe.csp.libelle }}</span
+              <span class="badge bg-label-secondary">{{ employe.csp }}</span
               ><br />
               <span class="badge bg-label-primary">{{
-                employe.poste.libelle
+                employe.poste
               }}</span>
             </div>
           </div>
@@ -27,6 +23,16 @@
         <h5 class="pb-4 border-bottom mb-4">Details</h5>
         <div class="info-container">
           <ul class="list-unstyled mb-6">
+        
+          
+            <li class="mb-2">
+              <span class="h6">Date d'embauche: </span>
+              <span>{{ employe.dateEmbauche | date: 'dd-MM-YYYY' }}</span>
+            </li>
+            <li class="mb-2">
+              <span class="h6">Ancienneté: </span>
+              <span>{{ employe.anciennete }} ans</span>
+            </li>
             <li class="mb-2">
               <span class="h6">Téléphone: </span>
               <span>{{ employe.tel }}</span>
@@ -40,26 +46,18 @@
               <span>{{ employe.sexe }}</span>
             </li>
             <li class="mb-2">
+              <span class="h6">Age: </span>
+              <span>{{ employe.age }} ans</span>
+            </li>
+            <li class="mb-2">
               <span class="h6">Date de Naissance: </span>
-              <span>{{ employe.dateNaissance | date : "dd/MM/yyyy" }}</span>
+              <span>{{ employe.dateNaissance | date : "dd-MM-yyyy" }}</span>
             </li>
             <li class="mb-2">
               <span class="h6">Situation Familiale: </span>
               <span>{{ employe.situationFamiliale }}</span>
             </li>
-            <!--
-            <li class="mb-2">
-              <span class="h6">Secteur: </span>
-              <span>{{ employe.secteur.libelle }}</span>
-            </li>
-            <li class="mb-2">
-              <span class="h6">Contrat: </span>
-              <span>{{ employe.contrat }}</span>
-            </li>
-            <li class="mb-2">
-              <span class="h6">Date d'embauche: </span>
-              <span>{{ employe.dateEmbauche | date : "dd/MM/yyyy" }}</span>
-            </li>-->
+           
           </ul>
           <div class="d-flex justify-content-center">
             <a
@@ -94,7 +92,7 @@
               aria-controls="navs-pills-justified-home"
               aria-selected="true"
             >
-              <i class="tf-icons bx bx-home"></i> Home
+              <i class="tf-icons bx bx-home"></i> Historique
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger">3</span>
             </button>
           </li>
@@ -108,7 +106,7 @@
               aria-controls="navs-pills-justified-profile"
               aria-selected="false"
             >
-              <i class="tf-icons bx bx-user"></i> Profile
+              <i class="tf-icons bx bx-user"></i> Contrat
             </button>
           </li>
           <li class="nav-item">
@@ -121,7 +119,7 @@
               aria-controls="navs-pills-justified-messages"
               aria-selected="false"
             >
-              <i class="tf-icons bx bx-message-square"></i> Messages
+              <i class="tf-icons bx bx-message-square"></i> Absences
             </button>
           </li>
         </ul>

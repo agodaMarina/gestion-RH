@@ -5,7 +5,7 @@ import { NotfoundComponent } from './error/notfound/notfound.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+  { path: '', redirectTo: 'main', pathMatch: 'full' },
   
   {
     path: 'auth',
@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'main',
-    loadChildren: () => import('./main/main.module').then((m) => m.MainModule),
+    loadChildren: () => import('./main/main.module').then((m) => m.MainModule), canActivate:[authGuard]
      
   },
   {

@@ -1,42 +1,265 @@
-<div class="d-flex justify-content-between align-items-center ">
-  <span class="badge rounded-pill bg-primary">Etape 1</span>
-  <div class="d-flex flex-column align-items-start mb-3">
-    <div class="row">
-      <div class="col-lg-12 col-md-4">
-        <div class="w-100">
-          <h4 class="mb-3">Veuillez sélectionner le poste à pourvoir</h4>
-          <p-dropdown
-            [options]=""
-            optionLabel="name"
-            [filter]="true"
-            filterBy="name"
-            [showClear]="true"
-            placeholder="Select a Country"
-            class="w-100"
+<div class="container py-3">
+
+  <!-- Step Card -->
+  <div class="card mb-5">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <span class="badge rounded-pill bg-primary mb-5">Étape 1</span>
+        <button class="btn btn-outline-primary">
+          <i class="bi bi-info-circle"></i> Aide
+        </button>
+      </div>
+
+      <figure class="text-center my-4">
+        <blockquote class="blockquote">
+          <p class="fs-5">
+            Renseignez le poste à pourvoir pour ce recrutement.
+          </p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+          Tous les champs <cite>sont obligatoires</cite>
+        </figcaption>
+      </figure>
+
+      <!-- Form -->
+      <form #f="ngForm" class="mb-4">
+        <!-- Poste Select -->
+        <div class="mb-4">
+          <label for="posteSelect" class="form-label fw-semibold"
+            >Poste à pourvoir</label
           >
-          </p-dropdown>
+          <div class="input-group">
+            <select
+              id="posteSelect"
+              class="form-select shadow-sm"
+              [(ngModel)]="posteId"
+              name="posteId"
+              required
+            >
+              <option selected disabled>Choisir un poste...</option>
+              @for (item of posteList; track $index) {
+              <option [ngValue]="item.id">{{ item.libelle }}</option>
+              }
+            </select>
+            <button
+              class="btn btn-primary ms-2 shadow-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#addModal"
+            >
+              <i class="bi bi-plus-circle"></i> Ajouter
+            </button>
+          </div>
+          <div class="text-danger mt-1" *ngIf="!posteId">
+            Veuillez sélectionner un poste !
+          </div>
+        </div>
+
+        <!-- Recruteur Select -->
+        <div class="mb-4">
+          <label for="recruteurSelect" class="form-label fw-semibold"
+            >Recruteur</label
+          >
+          <div class="input-group">
+            <select
+              id="recruteurSelect"
+              class="form-select shadow-sm"
+              [(ngModel)]="recuteurId"
+              name="recuteurId"
+              required
+            >
+              <option selected disabled>Choisir un recruteur...</option>
+              @for (item of recruteurList; track $index) {
+              <option [ngValue]="item.id">{{ item.nom }}</option>
+              }
+            </select>
+            <button
+              class="btn btn-primary ms-2 shadow-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#add"
+            >
+              <i class="bi bi-person-plus"></i> Ajouter
+            </button>
+          </div>
+          <div class="text-danger mt-1" *ngIf="!recuteurId">
+            Veuillez sélectionner un recruteur !
+          </div>
+        </div>
+      </form>
+
+      <!-- Save Button -->
+      <div class="text-center">
+        <button
+          class="btn btn-success px-4 py-2 shadow-sm"
+          (click)="saveRecrutement()"
+        >
+          <i class="bi bi-check-circle" (click)="saveRecrutement()"></i> Sauvegarder
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Modal (Fenêtre add poste) -->
+  <div
+    class="modal fade"
+    id="addModal"
+    tabindex="-1"
+    aria-labelledby="addModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">
+            Ajouter un nouveau Poste
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenu du formulaire ou autre contenu à ajouter -->
+          <form #f="ngForm">
+            <div class="mb-3">
+              <label for="nom" class="form-label">Libellé</label>
+              <input
+                type="text"
+                [(ngModel)]="poste.libelle"
+                name="libelle"
+                class="form-control"
+                placeholder="Entrez le libellé du poste"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="inputGroupSelect04">
+                Veuillez sélectionner le secteur</label
+              >
+              <div class="input-group">
+                <select
+                  class="form-select"
+                  id="inputGroupSelect04"
+                  required
+                  [(ngModel)]="poste"
+                >
+                  <option selected>Choisir...</option>
+                  @for (item of secteurList; track $index) {
+                  <option [ngValue]="[item.id]">{{ item.libelle }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="prenom" class="form-label">Niveau d'étude</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="poste.niveauEtude"
+                name="niveauEtude"
+                placeholder="bac+2"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="prenom" class="form-label">Description</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="poste.description"
+                name="description"
+                placeholder="description du poste"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="prenom" class="form-label">Salaire</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="poste.niveauDeSalaire"
+                name="niveauDeSalaire"
+                placeholder="niveau de salaire"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="prenom" class="form-label">Remarque</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="poste.remarque"
+                name="remarque"
+                placeholder="remarque "
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary" (click)="addPoste()">
+            Enregistrer
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <div>
-    <p-divider layout="vertical" styleClass="hidden ">
-      <b>OU</b>
-    </p-divider>
-  </div>
-  <div class="d-flex flex-column align-items-start mb-3">
-    <div class="row">
-      <div class="col-lg-12 col-md-4">
-        <h4>Veuillez sélectionner le poste à pourvoir</h4>
-        <p-dropdown
-          [options]=""
-          optionLabel="name"
-          [filter]="true"
-          filterBy="name"
-          [showClear]="true"
-          placeholder="Select a Country"
-        >
-        </p-dropdown>
+  <!-- Modal (Fenêtre add recruteur) -->
+  <div
+    class="modal fade"
+    id="add"
+    tabindex="-1"
+    aria-labelledby="addModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">
+            Ajouter un nouveau Recruteur
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenu du formulaire ou autre contenu à ajouter -->
+          <form #f="ngForm">
+            <div class="mb-3">
+              <label for="nom" class="form-label">Libellé</label>
+              <input
+                type="text"
+                [(ngModel)]="recruteur.nom"
+                name="libelle"
+                class="form-control"
+                required
+                placeholder="Entrez le libellé du poste"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            (click)="addRecruteur()"
+          >
+            Enregistrer
+          </button>
+        </div>
       </div>
     </div>
   </div>

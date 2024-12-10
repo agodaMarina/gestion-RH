@@ -2,60 +2,259 @@
   <span class="text-muted fw-light">Absences /</span> Liste des absences
 </h4>
 
-<div class="d-flex justify-content-end align-items-center mb-3">
+<div class="container py-3">
+  <div class="row g-4">
+    <!-- Annual Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>Congés Annuels</h6>
+          <h4>{{ counts["CONGE ANNUEL"] }}</h4>
+        </div>
+        <div class="leave-card-icon bg-success">
+          <i class="bx bx-calendar"></i>
+        </div>
+      </div>
+    </div>
 
+    <!-- Medical Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>Congés Maladies</h6>
+          <h4>{{ counts["CONGE MALADIE"] }}</h4>
+        </div>
+        <div class="leave-card-icon bg-primary">
+          <i class="bx bx-plus-medical"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Casual Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>Congés Occasionnels</h6>
+          <h4>{{ counts["CONGE OCCASIONNEL"] }}</h4>
+        </div>
+        <div class="leave-card-icon bg-info">
+          <i class="bx bx-calendar-check"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>Autres</h6>
+          <h4>{{ counts["AUTRE"] }}</h4>
+        </div>
+        <div class="leave-card-icon bg-warning">
+          <i class="bx bx-box"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end align-items-center mb-3">
   <!-- Bouton Ajouter -->
   <button
+  type="button"
     class="btn btn-primary"
     data-bs-toggle="modal"
     data-bs-target="#addModal"
-  >
+  > 
     Ajouter
   </button>
 </div>
-<!-- Striped Rows -->
-<div class="card">
-  <div class="table-respon sive text-nowrap">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Motif</th>
-          <th>Date de début</th>
-          <th>Date de retour</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody class="table-border-bottom-0">
-        <tr *ngFor="let item of absences">
-          <td> <a [routerLink]="">{{item.employe?.nom}}{{item.employe?.prenom}} </a></td>
-         
-          <td>{{item.type}}</td>
-          <td>{{item.dateDebut | date:'dd-MM-yyyy'}}</td>
-          <td>{{item.dateFin | date:'dd-MM-yyyy'}}</td>
-          <td>
-            <div class="dropdown">
-              <button
-                type="button"
-                class="btn p-0 dropdown-toggle hide-arrow"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="javascript:void(0);"
-                  ><i class="bx bx-edit-alt me-1"></i> modifier</a
-                >
-                <a class="dropdown-item" (click)="item.id ? supprimer(item.id) : null"
-                  ><i class="bx bx-trash me-1"></i> supprimer</a
-                >
-              </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="nav-align-top">
+  <ul class="nav nav-pills mb-4" role="tablist">
+    <li class="nav-item">
+      <button
+        type="button"
+        class="nav-link active"
+        role="tab"
+        data-bs-toggle="tab"
+        data-bs-target="#navs-pills-top-home"
+        aria-controls="navs-pills-top-home"
+        aria-selected="true"
+      >
+        Tous ({{absences.length}})
+      </button>
+    </li>
+    <li class="nav-item">
+      <button
+        type="button"
+        class="nav-link"
+        role="tab"
+        data-bs-toggle="tab"
+        data-bs-target="#navs-pills-top-profile"
+        aria-controls="navs-pills-top-profile"
+        aria-selected="false"
+      >
+        Actifs ({{absencesActive.length}})
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div
+      class="tab-pane fade show active"
+      id="navs-pills-top-home"
+      role="tabpanel"
+    >
+      <!-- Striped Rows -->
+      <div class="card">
+        <div class="table-respon sive text-nowrap">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Date de début</th>
+                <th>Date de retour</th>
+                <th>Nombre de jours Restants</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              <ng-container>
+                @for (item of absences; track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td>
+                    <a [routerLink]="">{{ item.employe }} </a>
+                  </td>
+
+                  <td>
+                    <span [ngClass]="getClass(item)">{{ item.type }}</span>
+                  </td>
+                  <td>{{ item.dateDebut | date : "dd-MM-yyyy" }}</td>
+                  <td>{{ item.dateFin | date : "dd-MM-yyyy" }}</td>
+                  <td><span class="text-center">{{ item.joursRestants }} jour(s)</span></td>
+                  <td>
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        class="btn p-0 dropdown-toggle hide-arrow"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewModal"
+                          (click)="details(item)"
+                          ><i class="bx bx-edit-alt me-1"></i> details</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          (click)="item.id ? supprimer(item.id) : null"
+                          ><i class="bx bx-trash me-1"></i> supprimer</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                }@empty {
+                <tr>
+                  <td colspan="5" class="text-center">
+                    Aucune donnée disponible
+                  </td>
+                </tr>
+                }
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel">
+       <!-- Striped Rows -->
+       <div class="card">
+        <div class="table-respon sive text-nowrap">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Date de début</th>
+                <th>Date de retour</th>
+                <th>Nombre de jours Restants</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              <ng-container>
+                @for (item of absencesActive; track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td>
+                    <a [routerLink]="">{{ item.employe }} </a>
+                  </td>
+
+                  <td>
+                    <span [ngClass]="getClass(item)">{{ item.type }}</span>
+                  </td>
+                  <td>{{ item.dateDebut | date : "dd-MM-yyyy" }}</td>
+                  <td>{{ item.dateFin | date : "dd-MM-yyyy" }}</td>
+                  <td><span class="text-center">{{ item.joursRestants }} jour(s)</span></td>
+                  <td>
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        class="btn p-0 dropdown-toggle hide-arrow"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#viewModal"
+                          (click)="details(item)"
+                          ><i class="bx bx-edit-alt me-1"></i> details</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          (click)="item.id ? supprimer(item.id) : null"
+                          ><i class="bx bx-trash me-1"></i> supprimer</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                }@empty {
+                <tr>
+                  <td colspan="5" class="text-center">
+                    Aucune donnée disponible
+                  </td>
+                </tr>
+                }
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+   
   </div>
+</div>
+
+<div class="mt-3">
+  <app-pagination
+    [totalItems]="absences.length"
+    [itemsPerPage]="itemsPerPage"
+    [currentPage]="currentPage"
+    (pageChanged)="onPageChange($event)"
+  >
+  </app-pagination>
 </div>
 <!-- Modal (Fenêtre) pour l'ajout d'absence -->
 <div
@@ -68,9 +267,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addModalLabel">
-          Ajouter une absence
-        </h5>
+        <h5 class="modal-title" id="addModalLabel">Ajouter une absence</h5>
         <button
           type="button"
           class="btn-close"
@@ -80,11 +277,20 @@
       </div>
       <div class="modal-body">
         <!-- Contenu du formulaire ou autre contenu à ajouter -->
-        <form [formGroup]="abForm" >
+        <form [formGroup]="abForm">
           <div class="mb-3">
-            <label for="nom" class="form-label">Veuillez sélectionner l'employé concerné</label>
-            <select id="defaultSelect" class="form-select" name="employe" formControlName="employe">
-              <option *ngFor="let item of employes" [ngValue]="item">{{item.nom}} {{item.prenom}}</option>
+            <label for="nom" class="form-label"
+              >Veuillez sélectionner l'employé concerné</label
+            >
+            <select
+              id="defaultSelect"
+              class="form-select"
+              name="idEmploye"
+              formControlName="idEmploye"
+            >
+              <option *ngFor="let item of employes" [ngValue]="item.id">
+                {{ item.nom }} {{ item.prenom }}
+              </option>
             </select>
           </div>
           <div class="mb-3">
@@ -92,9 +298,104 @@
             <input
               type="text"
               class="form-control"
+              formControlName="motif"
+              name="motif"
+              placeholder="Entrez le motif"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="prenom" class="form-label">Type</label>
+            <select
+              id="defaultSelect"
+              class="form-select"
+              name="type"
+              formControlName="type"
+            >
+              <option *ngFor="let item of typeConge" [ngValue]="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="moyenne" class="form-label">Début</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="dateDebut"
+              name="dateDebut"
+              placeholder="Entrez la la date de début"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="moyenne" class="form-label">Retour</label>
+            <input
+              type="date"
+              formControlName="dateFin"
+              name="dateFin"
+              class="form-control"
+              placeholder="Entrez la date de retour"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fermer
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="add()">
+          Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal (Fenêtre) pour l'affichage de details -->
+<div
+  class="modal fade"
+  id="viewModal"
+  tabindex="-1"
+  aria-labelledby="viewModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenu du formulaire ou autre contenu à ajouter -->
+        <form [formGroup]="abForm">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Employé concerné</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="idEmploye"
+              name="idEmploye"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="prenom" class="form-label">Motif</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="motif"
+              name="motif"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="prenom" class="form-label">Type</label>
+            <input
+              type="text"
+              class="form-control"
               formControlName="type"
               name="type"
-              placeholder="Entrez le motif"
             />
           </div>
           <div class="mb-3">
@@ -114,8 +415,6 @@
               formControlName="dateFin"
               name="dateFin"
               class="form-control"
-          
-              placeholder="Entrez la date de retour"
             />
           </div>
         </form>
@@ -124,7 +423,6 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fermer
         </button>
-        <button type="submit" class="btn btn-primary" (click)="add()">Enregistrer</button>
       </div>
     </div>
   </div>

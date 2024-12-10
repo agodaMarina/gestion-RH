@@ -3,7 +3,6 @@ import { Csp } from "./csp";
 import { Depart } from "./Depart";
 import { Evenement } from "./evenement";
 import { Poste } from "./Poste";
-import { Secteur } from "./secteur";
 
 export interface Employe{
     id: number;
@@ -23,4 +22,26 @@ export interface Employe{
     depart?: Depart;        // L'objet Depart, optionnel
     contrat: Contrat;
     Evenements?: Evenement[];    // Tableau d'objets Evenement  
+}
+
+export interface EmployeDto{
+    id: number;
+    nom: string;
+    prenom: string;
+    tel: string;
+    adresse: string;
+    sexe: string;
+    situationFamiliale: string;
+    dateNaissance: string; 
+    age:number;
+    dateEmbauche: string;   
+    anciennete:number;
+    dateDepart?: string;    
+    csp: string;
+    poste: string;     
+    depart?: string;        
+    contrat: string;
+    dateDebutContrat: string;
+    dateFinContrat?: string;
+    isActif: boolean;
 }

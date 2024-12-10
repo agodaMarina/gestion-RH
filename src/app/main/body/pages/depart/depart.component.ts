@@ -16,14 +16,16 @@ export class DepartComponent implements OnInit{
   paginate: Depart[] = [];
   first: number = 0;
   rows: number = 10;
+itemsPerPage: number=10;
+currentPage: number=0;
   
 
-  onPageChange(event: PageEvent) {
-    this.first = event.first ?? 0;
-    this.rows = event.rows ?? 10;
+  onPageChange(event: number) {
+    this.currentPage = event;
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
     this.paginate = this.departs.slice(
-      this.first,
-      this.first + this.rows
+      start,end
     );
   }
 
@@ -51,7 +53,7 @@ export class DepartComponent implements OnInit{
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: 'Départ ajouté avec succès',
+          detail: 'Départ de avec succès',
         });
         this.liste();
         this.departForm?.reset();

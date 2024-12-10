@@ -6,5 +6,7 @@ export interface Absence {
   motif?:string;
   dateDebut?: string;
   dateFin?: string;
-  employe?: Employe;
+  idEmploye?:number;
+  employe?: string;
+  joursRestants?: number;
 }

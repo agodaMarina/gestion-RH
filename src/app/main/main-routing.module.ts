@@ -18,6 +18,7 @@ import { CspComponent } from './body/pages/csp/csp.component';
 import { AddPosteComponent } from './body/pages/recrutement/etapes/add-poste/add-poste.component';
 import { EvaluationComponent } from './body/pages/recrutement/etapes/evaluation/evaluation.component';
 import { SelectionComponent } from './body/pages/recrutement/etapes/selection/selection.component';
+import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus.component';
 
 
 const routes: Routes = [
@@ -36,13 +37,15 @@ const routes: Routes = [
       { path: 'detail/:id', component: DetailemployeComponent },
       { path: 'add-employe', component: AddemployeComponent },
       { path: 'rapport', component: RapportComponent },
+      { path:'posteApourvoir',component:ListprocessusComponent},
       { path: 'recrutement',component:RecrutementComponent,
         children:[
-          {path:'',redirectTo:'add-poste',pathMatch:'full'},
-          {path:'add-poste',component:AddPosteComponent},
-          {path:'add-candidats',component:AddCandidatComponent},
-          {path:'add-evaluation',component:EvaluationComponent},
-          {path:'end-recrutement',component:SelectionComponent},
+          
+          {path:'etape/1',component:AddPosteComponent},
+          {path:'',redirectTo:'etape/1',pathMatch:'full'},
+          {path:'etape/2',component:AddCandidatComponent},
+          {path:'etape/3',component:EvaluationComponent},
+          {path:'etape/4',component:SelectionComponent},
         ]
     },
       { path: 'secteur',component:SecteurComponent},

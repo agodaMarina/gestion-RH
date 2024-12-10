@@ -12,7 +12,7 @@ export class RecruteurService {
   constructor(private http: HttpClient) {}
 
   findAll(): Observable<Recruteur[]> {
-    return this.http.get<Recruteur[]>(this.baseurl + '/lister');
+    return this.http.get<Recruteur[]>(this.baseurl + '/all');
   }
 
   getrecruteurById(id: number): Observable<Recruteur> {
@@ -20,11 +20,11 @@ export class RecruteurService {
   }
 
   create(recruteur: Recruteur): Observable<Recruteur> {
-    return this.http.post<Recruteur>(this.baseurl + '/ajouter', recruteur);
+    return this.http.post<Recruteur>(this.baseurl + '/add', recruteur);
   }
 
   update(id: number, recruteur: Recruteur): Observable<Recruteur> {
-    return this.http.put<Recruteur>(`${this.baseurl}/modifier/${id}`, recruteur);
+    return this.http.put<Recruteur>(`${this.baseurl}/update/${id}`, recruteur);
   }
 
   delete(id: number): Observable<void> {

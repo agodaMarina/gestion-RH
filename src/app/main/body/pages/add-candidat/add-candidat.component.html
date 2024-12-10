@@ -1,6 +1,15 @@
-<div  class="card-body">
-  <span class="badge rounded-pill bg-primary mb-3">Etape 2</span>
-  <div class="alert alert-primary" role="alert">This is a primary alert — check it out!</div>
+<div class="card-body">
+  <span class="badge rounded-pill bg-primary mb-5">Etape 2</span>
+  <figure class="text-center mb-3">
+    <blockquote class="blockquote">
+      <p>Veuillez ajouter les candidatures pour ce recrutement.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+      En cliquant sur "Ajouter "
+      <cite title="Source Title">vous rempliez les informations</cite>
+    </figcaption>
+  </figure>
+
   <div class="d-flex justify-content-end align-items-right mb-3">
     <!-- Bouton Ajouter -->
     <button
@@ -22,17 +31,28 @@
             <th>Prenom</th>
             <th>Adresse</th>
             <th>Téléphone</th>
+            <th>Date d'entretien</th>
+            <th>Action</th>
+
           </tr>
         </thead>
         <tbody class="table-border-bottom-0">
+          @for (item of Listcandidats; track $index) {
           <tr>
             <td>
-              <strong></strong>
+              <strong> {{item.nom}} </strong>
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+            <td> {{item.prenom}} </td>
+            <td> {{item.adresse}}</td>
+            <td>{{item.telephone}}</td>
+            <td>{{item.dateEntretien1 | date : "dd-MM-YYYY"}}</td>
+            <td> <a (click)="supprimer(item)"><i class="bx bx-trash"></i></a></td>
+
+          </tr>}@empty {
+            <tr>
+              <td colspan="5" class="text-center">Aucun Candidat</td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
@@ -60,7 +80,7 @@
         </div>
         <div class="modal-body">
           <!-- Contenu du formulaire ou autre contenu à ajouter -->
-          <form>
+          <form [formGroup]="candidatureForm">
             <div class="row">
               <div class="col-md-6">
                 <div class="mb-3">
@@ -246,7 +266,7 @@
           >
             Fermer
           </button>
-          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="submit" class="btn btn-primary" (click)="add()">Enregistrer</button>
         </div>
       </div>
     </div>

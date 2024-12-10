@@ -11,16 +11,16 @@ export class PosteService {
 
   constructor(private http: HttpClient) {}
 
-  getAllPostes(): Observable<Poste[]> {
-    return this.http.get<Poste[]>(this.baseurl + '/lister');
+  getAllPostes(): Observable<object[]> {
+    return this.http.get<object[]>(this.baseurl + '/lister');
   }
 
   getPosteById(id: number): Observable<Poste> {
     return this.http.get<Poste>(`${this.baseurl}/${id}`);
   }
 
-  createPoste(poste: Poste): Observable<Poste> {
-    return this.http.post<Poste>(this.baseurl + '/ajouter', poste);
+  createPoste(poste: object): Observable<object> {
+    return this.http.post<object>(this.baseurl + '/ajouter', poste);
   }
 
   updatePoste(id: number, poste: Poste): Observable<Poste> {

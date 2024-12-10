@@ -16,18 +16,25 @@ interface PageEvent {
   styleUrl: './listecandidatures.component.css',
 })
 export class ListecandidaturesComponent implements OnInit {
- 
+initials(arg0: String|undefined,arg1: String|undefined) {
+throw new Error('Method not implemented.');
+}
+  candidates = [
+    { id: '001', name: 'Harold Gaynor', photo: 'path-to-photo', role: 'Accountant', date: '12 Sep 2024', status: 'New' },
+    { id: '002', name: 'Sandra Ornellas', photo: 'path-to-photo', role: 'Accountant', date: '12 Sep 2024', status: 'Scheduled' },
+    // ... Ajoutez d'autres candidats
+  ];
   candidats: Candidature[] = [];
   candidat: Candidature = {
 
   };
-  first: number = 0;
+  itemsPerPage = 8;
+  currentPage = 1;
 
-  rows: number = 10;
-
-  onPageChange(event: PageEvent) {
-    this.first = event.first ?? 0;
-    this.rows = event.rows ?? 10;
+  onPageChange(page: number) {
+    this.currentPage = page;
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
   }
 
   stadeClass = '';
@@ -89,6 +96,17 @@ export class ListecandidaturesComponent implements OnInit {
         });
       },
     });
+  }
+  getStatusClass(status: string) {
+    switch (status) {
+      case 'New': return 'bg-purple text-white';
+      case 'Scheduled': return 'bg-pink text-white';
+      case 'Interviewed': return 'bg-primary text-white';
+      case 'Offered': return 'bg-warning text-dark';
+      case 'Hired': return 'bg-success text-white';
+      case 'Rejected': return 'bg-danger text-white';
+      default: return 'bg-secondary text-white';
+    }
   }
 
   details(id: number) {
