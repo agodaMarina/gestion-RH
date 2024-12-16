@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Candidature } from '../models/Candidature';
+import { Candidature, CandidatureCreation } from '../models/Candidature';
 import { Evaluation } from '../models/evaluation';
 import { Poste } from '../models/Poste';
 import { Recrutement, RecrutementDto } from '../models/recrutement';
@@ -17,23 +17,30 @@ export class RecrutementService {
 
   constructor(private http: HttpClient) {}
 
-  addRecrutement(posteId: number, recruteurId: number, nouveauPoste?: Poste): Observable<object> {
+  addRecrutement(posteId: number, recruteurId: number, nouveauPoste?: Poste): Observable<number> {
     const params: any = { posteId, recruteurId };
-    return this.http.post<object>(`${this.baseUrl}/add`, nouveauPoste || {}, { params });
+    return this.http.post<number>(`${this.baseUrl}/add`, nouveauPoste || {}, { params });
   }
 
-  ajouterCandidats(recrutementId: number, candidatsRequest: Candidature[]): Observable<void> {
+  ajouterCandidats(recrutementId: number, candidatsRequest: CandidatureCreation[]): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/add/candidature`, candidatsRequest, {
       params: { recrutementId }
     });
+  }
+  getRecrutementById(recrutementId: number): Observable<RecrutementDto> {
+    return this.http.get<RecrutementDto>(`${this.baseUrl}/${recrutementId}`);
+  }
+
+  getCandidats(recrutementId: number): Observable<CandidatureCreation[]> {
+    return this.http.get<CandidatureCreation[]>(`${this.baseUrl}/${recrutementId}/allCandidates`);
   }
 
   evaluation(recrutementId: number, evaluationsRequest: Evaluation[]): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/${recrutementId}/evaluations`, evaluationsRequest);
   }
 
-  endRecrutement(recrutementId: number, ids: number[]): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/end`, ids, {
+  endRecrutement(recrutementId: number): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/end`,{
       params: { recrutementId }
     });
   }

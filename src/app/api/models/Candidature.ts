@@ -1,5 +1,5 @@
-import { Evaluation } from "./evaluation";
-import { Recrutement } from "./recrutement";
+import { Evaluation } from './evaluation';
+import { Recrutement } from './recrutement';
 
 export interface Candidature {
   id?: number;
@@ -8,16 +8,16 @@ export interface Candidature {
   email?: String;
   telephone?: String;
   adresse?: String;
-  prochaineAction?:String;
-  dateEntretien1?:String;
-  dateEntretien2?:String;
-  dateEntretien3?:String;
+  prochaineAction?: String;
+  dateEntretien1?: String;
+  dateEntretien2?: String;
+  dateEntretien3?: String;
   stadeDeRecrutement?: String;
   moyenne?: number;
   apreciationGlobale?: string;
-  recrutement?:Recrutement;
-  evaluation?:Evaluation;
-  estRetenu?:boolean;
+  recrutement?: Recrutement;
+  evaluation?: Evaluation;
+  estRetenu?: boolean;
 }
 
 export interface CandidatureCreation {
@@ -26,8 +26,13 @@ export interface CandidatureCreation {
   email: String;
   telephone: String;
   adresse: String;
-  dateEntretien1:string;
-  prochaineAction:String;
+  dateEntretien1: string;
+  notePresentation?: number;
+  noteExperience?: number;
+  noteCompetenceEtAtout?: number;
+  noteSavoirEtre?: number;
+  noteQualiteEtDefaut?: number;
+  prochaineAction: String;
   apreciationGlobale: string;
- 
+  estRetenu?: boolean;
 }

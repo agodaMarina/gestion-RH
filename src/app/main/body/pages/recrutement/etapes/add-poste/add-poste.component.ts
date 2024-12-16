@@ -43,17 +43,17 @@ export class AddPosteComponent implements OnInit {
     this.listeDesRecruteurs();
   }
 
-  addPoste() {
-    this.posteService.createPoste(this.poste).subscribe(
-      (data) => {
-        console.log(data);
-        this.listeDesPotes();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+  // addPoste() {
+  //   this.posteService.createPoste(this.poste).subscribe(
+  //     (data) => {
+  //       console.log(data);
+  //       this.listeDesPotes();
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
 
   addRecruteur() {
     this.recruteurService.create(this.recruteur).subscribe(
@@ -89,19 +89,19 @@ export class AddPosteComponent implements OnInit {
     );
   }
 
-  saveRecrutement() {
-    this.recrutementService
-      .addRecrutement(this.posteId, this.recuteurId)
-      .subscribe({
-        next: (data:Recrutement) => {
-          if (data.id)
-          this.recrutementService.setRecrutementId(data.id);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-  }
+  // saveRecrutement() {
+  //   this.recrutementService
+  //     .addRecrutement(this.posteId, this.recuteurId)
+  //     .subscribe({
+  //       next: (data:Recrutement) => {
+  //         if (data.id)
+  //         this.recrutementService.setRecrutementId(data.id);
+  //       },
+  //       error: (error) => {
+  //         console.log(error);
+  //       },
+  //     });
+  // }
 
   getSecteur(){
     this.secteurService.getAll().subscribe({

@@ -20,7 +20,7 @@ export class AbsenceComponent implements OnInit {
   employes!: EmployeDto[];
   itemsPerPage: number = 10;
   currentPage: number = 1;
-  typeConge = ['CONGE MALADIE', 'CONGE ANNUEL', 'CONGE OCCASIONNEL', 'AUTRE'];
+  typeConge = ['CONGE', 'MATERNITE', 'PERMISSION','REPOS MEDICAL', 'SUSPENSION','MISE A PIED','CONGE FORMATION'];
 
   constructor(
     private service: AbsenceService,
@@ -67,9 +67,9 @@ export class AbsenceComponent implements OnInit {
       },
       error: (err) => {
         this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: "Erreur lors de l'ajout de l'absence",
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Nouvelle absence ajoutée avec succès',
         });
       },
     });
@@ -104,11 +104,11 @@ export class AbsenceComponent implements OnInit {
   }
 
   getClass(item: Absence) {
-    return item.type === 'CONGE MALADIE'
+    return item.type === 'MATERNITE' || item.type === 'REPOS MEDICAL'
       ? 'badge bg-primary'
-      : item.type === 'CONGE ANNUEL'
+      : item.type === 'PERMISSION' || item.type === 'CONGE FORMATION'
       ? 'badge bg-success'
-      : item.type === 'CONGE OCCASIONNEL'
+      : item.type === 'MISE A PIED' || item.type === 'SUSPENSION'
       ? 'badge bg-info'
       : 'badge bg-warning';
   }
@@ -202,10 +202,13 @@ export class AbsenceComponent implements OnInit {
 
   countAbsenceTypes(absences:Absence[]): { [key: string]: number } {
     this.counts = {
-      'CONGE MALADIE': 0,
-      'CONGE ANNUEL': 0,
-      'CONGE OCCASIONNEL': 0,
-      'AUTRE': 0,
+      'CONGE': 0,
+      'REPOS MEDICAL': 0,
+      'PERMISSION': 0,
+      'MATERNITE': 0,
+      'MISE A PIED': 0,
+      'SUSPENSION': 0,
+      'CONGE FORMATION': 0,
     };
 
     absences.forEach((absence) => {

@@ -23,7 +23,9 @@ interface PageEvent {
 export class ListeemployeComponent {
   employes: EmployeDto[] = [];
   paginateEmploye: EmployeDto[] = [];
-  itemsPerPage = 8;
+  employesActif: EmployeDto[] = [];
+  employesInactif: EmployeDto[] = [];
+  itemsPerPage = 12;
   currentPage = 1;
   departNumber!: number;
   totalAbsence!: number;
@@ -31,7 +33,6 @@ export class ListeemployeComponent {
   selectedFile: File | null = null;
   filteredEmployees: any;
 
-  
   constructor(
     private service: EmployeService,
     private router: Router,
@@ -64,29 +65,30 @@ export class ListeemployeComponent {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     this.paginateEmploye = this.employes.slice(start, end);
-
   }
-  initials(nom:string, prenom:string): string {
-    return nom.charAt(0)+prenom.charAt(0).toUpperCase();
+  initials(nom: string, prenom: string): string {
+    return nom.charAt(0) + prenom.charAt(0).toUpperCase();
   }
 
-  getClass(index:number):string {
-    const classes = ['avatar bg-primary text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;', 
-      'avatar bg-danger text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;', 
+  getClass(index: number): string {
+    const classes = [
+      'avatar bg-primary text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;',
+      'avatar bg-danger text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;',
       'avatar bg-success text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;',
-       'avatar bg-info text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;'];
+      'avatar bg-info text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; font-size: 18px; font-weight: bold;',
+    ];
     return classes[index % classes.length];
-
   }
+
   get() {
     this.service.getEmployes().subscribe(
       (data: EmployeDto[]) => {
         this.employes = data;
-       
+
         // Signal calculé pour filtrer la liste d'employés
         this.filteredEmployees = computed(() => {
           const query = this.searchService.searchQuery().toLowerCase();
-          
+
           // Applique le filtre de recherche
           const filtered = this.employes.filter((emp) =>
             emp.nom.toLowerCase().includes(query)
@@ -99,7 +101,10 @@ export class ListeemployeComponent {
           // Applique la pagination sur les résultats filtrés
           return filtered.slice(start, end);
         });
-        this.paginateEmploye = this.filteredEmployees().slice(0, this.itemsPerPage);
+        this.paginateEmploye = this.filteredEmployees().slice(
+          0,
+          this.itemsPerPage
+        );
       },
       (error) => {
         console.log(error);
@@ -107,6 +112,10 @@ export class ListeemployeComponent {
     );
   }
 
+  afficherDetail(itemId: number) {
+   this.router.navigate(['/main/employe/detail', itemId]);
+  }
+ 
   getTotaldepart() {
     this.departService.getAll().subscribe((data) => {
       this.departNumber = data.length;
@@ -126,10 +135,7 @@ export class ListeemployeComponent {
     });
   }
 
-  goToDetail(item: EmployeDto) {
-    this.router.navigate(['/main/detail', item.id]);
-  }
-
+ 
   supprimer(arg0: number) {
     throw new Error('Method not implemented.');
   }

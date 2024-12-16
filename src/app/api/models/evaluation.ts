@@ -1,4 +1,3 @@
-import { Candidature } from "./Candidature";
 
 export interface Evaluation{
     id?:number;
@@ -7,5 +6,5 @@ export interface Evaluation{
     noteCompetenceEtAtout:number;
     noteSavoirEtre:number;
     noteQualiteEtDefaut:number;
-    candidat:Candidature;
+    candidat:number;
 }

@@ -4,17 +4,13 @@
 <div class="container py-3">
   <div class="d-flex justify-content-end align-items-center mb-3">
     <div>
-      <!-- Bouton Ajouter -->
-      <button class="btn btn-primary" [routerLink]="['/main/add-candidat']">
-        Ajouter
-      </button>
       <!-- Bouton exporter -->
       <a class="btn btn-secondary m-2" (click)="export()">
         <span class="tf-icons bx bx-export bx-18px me-2"></span> Exporter
       </a>
     </div>
   </div>
-  <!-- Striped Rows 
+   
 <div class="card">
   <div class="table-responsive text-nowrap">
     <table class="table table-striped">
@@ -24,7 +20,7 @@
           <th>Nom</th>
           <th>Prenom</th>
           <th>Moyenne</th>
-          <th>Stade de recrutement</th>
+          <th>Date d'entretien</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -40,20 +36,10 @@
             <td>{{ item.prenom }}</td>
            
             <td>
-              {{ item.moyenne | number : "1.0-2" }}
+              {{ item.email}}
             </td>
             <td>
-              @switch (item.stadeDeRecrutement) {
-                @case ('En cours') {
-                  <span class="badge bg-label-warning me-1">{{ item.stadeDeRecrutement }}</span>
-                }
-                @case ('recruter') {
-                  <span class="badge bg-label-success me-1">{{ item.stadeDeRecrutement }}</span>
-                }
-                @case ('refuser') {
-                  <span class="badge bg-label-danger me-1">{{ item.stadeDeRecrutement }}</span>
-                }
-              }
+              {{ item.dateEntretien1 | date: "dd/MM/yyyy" }}
             </td>
             <td>
               <div class="dropdown">
@@ -69,12 +55,12 @@
                     class="dropdown-item"
                     data-bs-toggle="modal"
                     data-bs-target="#editModal"
-                    (click)="modifier(item)"
+                   
                     ><i class="bx bx-edit-alt me-1"></i> détail</a
                   >
                   <a
                     class="dropdown-item"
-                    (click)="item.id ? supprimer(item.id) : null"
+                    
                     ><i class="bx bx-trash me-1"></i> supprimer</a
                   >
                 </div>
@@ -87,46 +73,9 @@
     </table>
   </div>
   <div class="card flex justify-content-center">
-    <p-paginator
-      (onPageChange)="onPageChange($event)"
-      [first]="first"
-      [rows]="rows"
-      [totalRecords]="candidats.length"
-      [rowsPerPageOptions]="[10, 20, 30]"
-    />
+   
   </div>
 </div>
- Striped Rows -->
-
-  <div class="row">
-    @for (candidate of candidats; track candidate.id) {
-    <div class="col-lg-3 col-md-6 mb-4">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <div class="d-flex align-items-center mb-3">
-            <div class="avatar">
-              {{ initials(candidate.nom, candidate.prenom) }}
-            </div>
-            <div>
-              <h5 class="mb-0">{{ candidate.nom }}</h5>
-              <small class="text-muted">{{ candidate.email }}</small>
-            </div>
-          </div>
-          <p class="mb-1">
-            <strong>Poste:</strong> {{ candidate.recrutement?.poste?.libelle }}
-          </p>
-          <p class="mb-1">
-            <strong>Date:</strong> {{ candidate.dateEntretien1 }}
-          </p>
-          <p>
-            <strong>Status:</strong>
-            <span [ngClass]="" class="badge"></span>
-          </p>
-        </div>
-      </div>
-    </div>
-    }
-  </div>
   <div class="row mt-3">
     <div class="d-flex justify-content-end align-items-center">
       <app-pagination
@@ -140,6 +89,7 @@
   </div>
 </div>
 
+<!-- Modal (Fenêtre) pour la modification
 <div
   class="modal fade"
   id="editModal"
@@ -458,7 +408,7 @@
     </div>
   </div>
 </div>
-
+ -->
 <!-- Modal (Fenêtre) pour la suppression -->
 <div class="card flex justify-content-center">
   <p-toast />

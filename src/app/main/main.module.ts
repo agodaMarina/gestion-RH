@@ -38,9 +38,10 @@ import { AddPosteComponent } from './body/pages/recrutement/etapes/add-poste/add
 import { EvaluationComponent } from './body/pages/recrutement/etapes/evaluation/evaluation.component';
 import { SelectionComponent } from './body/pages/recrutement/etapes/selection/selection.component';
 
-import { ScrollPanelModule } from 'primeng/scrollpanel';
+
 import { PaginationComponent } from './body/pagination/pagination.component';
 import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 @NgModule({
   declarations: [
     MainComponent,
@@ -83,7 +84,7 @@ import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus
     StepsModule,
     BadgeModule,
     DividerModule,
-    ScrollPanelModule
+    FullCalendarModule
   ],
   providers: [ConfirmationService, MessageService],
 })

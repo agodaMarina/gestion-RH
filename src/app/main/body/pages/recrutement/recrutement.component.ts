@@ -12,6 +12,7 @@ import { PosteService } from '../../../../api/services/poste.service';
 import { RecruteurService } from '../../../../api/services/recruteur.service';
 import { SecteurService } from '../../../../api/services/secteur.service';
 import { Recrutement } from '../../../../api/models/recrutement';
+import { Steps } from 'primeng/steps';
 
 @Component({
   selector: 'app-recrutement',
@@ -19,11 +20,8 @@ import { Recrutement } from '../../../../api/models/recrutement';
   styleUrl: './recrutement.component.css',
 })
 export class RecrutementComponent implements OnInit {
-submitScore(_t335: any) {
-throw new Error('Method not implemented.');
-}
   Listcandidats: CandidatureCreation[] = [];
-  recrutementId: number | null = null
+  recrutementId: number | null = null;
   candidatureForm!: FormGroup;
   items!: MenuItem[];
   subscription!: Subscription;
@@ -38,18 +36,23 @@ throw new Error('Method not implemented.');
   };
   posteList: PosteDto[] = [];
   recruteurList: Recruteur[] = [];
-  secteurList:SecteurDto[] = [];
+  secteurList: SecteurDto[] = [];
   recruteur: Recruteur = { nom: '' };
   posteId: number = 0;
   recuteurId: number = 0;
   candidates: any;
-
-  
+  evaluations: any;
+  formData = {
+    step1: { posteId: 0, recruteurId: 0 },
+    step2: { candidats: [] },
+    step3: { evaluations: [] },
+    step4: {},
+  };
 
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private recrutementService:RecrutementService,
+    private recrutementService: RecrutementService,
     private posteService: PosteService,
     private recruteurService: RecruteurService,
     private secteurService: SecteurService
@@ -62,6 +65,12 @@ throw new Error('Method not implemented.');
       adresse: ['', Validators.required],
       prochaineAction: ['', Validators.required],
       dateEntretien1: ['', Validators.required],
+      notePresentation: [0],
+      noteExperience: [0],
+      noteCompetenceEtAtout: [0],
+      noteSavoirEtre: [0],
+      noteQualiteEtDefaut: [0],
+      estRetenu: [],
       apreciationGlobale: [''],
     });
   }
@@ -70,19 +79,58 @@ throw new Error('Method not implemented.');
     this.getSecteur();
     this.listeDesPotes();
     this.listeDesRecruteurs();
-    this.loadFromLocalStorage();
   }
+
   goToNextStep() {
-    if (this.currentStep < 4) {
-      this.currentStep++;
+    if (this.validateStep(this.currentStep)) {
+      this.saveCurrentStepData();
+      if (this.currentStep < 3) {
+        this.currentStep++;
+      }
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Veuillez remplir les champs obligatoires',
+      });
     }
   }
-  
   goToPreviousStep() {
     if (this.currentStep > 1) {
       this.currentStep--;
     }
   }
+  validateStep(step: number): boolean {
+    switch (step) {
+      case 1:
+        return !!this.posteId && !!this.recuteurId;
+      case 2:
+        return this.Listcandidats.length > 0;
+      default:
+        return true; // L'étape 4 n'a pas besoin de validation
+    }
+  }
+  saveCurrentStepData() {
+    switch (this.currentStep) {
+      case 1:
+        this.formData.step1 = {
+          posteId: this.posteId,
+          recruteurId: this.recuteurId,
+        };
+        this.etape1();
+        break;
+      case 2:
+        this.etape2();
+        break;
+      case 3:
+        this.formData.step3 = { evaluations: this.evaluations };
+        break;
+      default:
+        break;
+    }
+  }
+
+  /*----------------------------------------------fonction por l'étape 2--------------------------------------------- */
   add() {
     if (this.candidatureForm.valid) {
       const candidature: CandidatureCreation = {
@@ -93,6 +141,13 @@ throw new Error('Method not implemented.');
         adresse: this.candidatureForm.get('adresse')?.value,
         prochaineAction: this.candidatureForm.get('prochaineAction')?.value,
         dateEntretien1: this.candidatureForm.get('dateEntretien1')?.value,
+        noteExperience: this.candidatureForm.get('noteExperience')?.value,
+        notePresentation: this.candidatureForm.get('notePresentation')?.value,
+        noteCompetenceEtAtout:
+          this.candidatureForm.get('noteCompetenceEtAtout')?.value,
+        noteSavoirEtre: this.candidatureForm.get('noteSavoirEtre')?.value,
+        noteQualiteEtDefaut:
+          this.candidatureForm.get('noteQualiteEtDefaut')?.value,
         apreciationGlobale:
           this.candidatureForm.get('apreciationGlobale')?.value,
       };
@@ -109,22 +164,41 @@ throw new Error('Method not implemented.');
     const saved = localStorage.getItem('candidats');
     this.Listcandidats = saved ? JSON.parse(saved) : [];
   }
-//fonction pour enregistrer les candidats dans la base de données
+  //fonction pour enregistrer les candidats dans la base de données
   etape2() {
     const recrutementIdValue = this.recrutementService.getRecrutementId();
     if (recrutementIdValue !== null) {
-      this.recrutementId = recrutementIdValue
+      this.recrutementId = recrutementIdValue;
+      this.recrutementService
+        .ajouterCandidats(this.recrutementId, this.Listcandidats)
+        .subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Candidats ajoutés avec succès',
+            });
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
     } else {
       // handle the case where recrutementId is null
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'veuillez référencer le processus' });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'veuillez référencer le processus',
+      });
     }
-    this.recrutementService.ajouterCandidats(this.recrutementId!,this.Listcandidats)
   }
   supprimer(c: CandidatureCreation) {
     if (confirm(`Voulez-vous vraiment supprimer ${c.nom} ${c.prenom} ?`)) {
-      this.Listcandidats = this.Listcandidats.filter(item => item !== c);
+      this.Listcandidats = this.Listcandidats.filter((item) => item !== c);
     }
   }
+
+  /*-----------------------------------------fonction pour l'etape1------------------------------------------------*/
   addPoste() {
     this.posteService.createPoste(this.poste).subscribe(
       (data) => {
@@ -136,7 +210,6 @@ throw new Error('Method not implemented.');
       }
     );
   }
-
   addRecruteur() {
     this.recruteurService.create(this.recruteur).subscribe(
       (data) => {
@@ -148,7 +221,6 @@ throw new Error('Method not implemented.');
       }
     );
   }
-
   listeDesPotes() {
     this.posteService.getAllPostes().subscribe(
       (data) => {
@@ -159,7 +231,6 @@ throw new Error('Method not implemented.');
       }
     );
   }
-
   listeDesRecruteurs() {
     this.recruteurService.findAll().subscribe(
       (data) => {
@@ -170,29 +241,26 @@ throw new Error('Method not implemented.');
       }
     );
   }
-
-  etape1() {
-    this.recrutementService
-      .addRecrutement(this.posteId, this.recuteurId)
-      .subscribe({
-        next: (data:Recrutement) => {
-          if (data.id)
-          this.recrutementService.setRecrutementId(data.id);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-  }
-
-  getSecteur(){
+  getSecteur() {
     this.secteurService.getAll().subscribe({
-      next: (data:SecteurDto[]) => {
+      next: (data: SecteurDto[]) => {
         this.secteurList = data;
       },
       error: (error) => {
         console.log(error);
       },
     });
+  }
+  etape1() {
+    this.recrutementService
+      .addRecrutement(this.posteId, this.recuteurId)
+      .subscribe({
+        next: (data: number) => {
+          if (data) this.recrutementService.setRecrutementId(data);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
   }
 }

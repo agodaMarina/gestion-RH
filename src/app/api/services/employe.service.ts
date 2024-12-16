@@ -23,6 +23,10 @@ export class EmployeService {
     return this.http.get<EmployeDto>(this.url+'/detail/'+id);
   }
 
+  getEmployeActifs():Observable<EmployeDto[]>{
+    return this.http.get<EmployeDto[]>(this.url+'/listerActif');
+  }
+
   // Récupérer le contrat d'un employé
   getContratByUserId(id: number): Observable<Contrat> {
     return this.http.get<Contrat>(`${this.url}/${id}/contrat`);

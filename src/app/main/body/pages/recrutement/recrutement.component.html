@@ -2,7 +2,7 @@
   <div class="stepper">
     <div class="step" [class.active]="currentStep >= 1">
       <div class="circle">1</div>
-      <p>Poste concerné</p>
+      <p>Poste à Pourvoir</p>
     </div>
     <div class="line" [class.completed]="currentStep >= 2"></div>
 
@@ -14,21 +14,15 @@
 
     <div class="step" [class.active]="currentStep >= 3">
       <div class="circle">3</div>
-      <p>Sélection</p>
-    </div>
-    <div class="line" [class.completed]="currentStep >= 4"></div>
-
-    <div class="step" [class.active]="currentStep >= 4">
-      <div class="circle">4</div>
       <p>Résumé</p>
-    </div>
+    </div>    
   </div>
 </div>
-
+<p-toast></p-toast>
 @switch (currentStep) { @case (1) {
 <div class="container py-3">
   <!-- Step Card -->
-  <div class="card mb-5">
+  <div class="card">
     <div class="card-body p-4">
       <div class="d-flex align-items-center justify-content-between">
         <span class="badge rounded-pill bg-primary mb-5">Étape 1</span>
@@ -112,17 +106,6 @@
           </div>
         </div>
       </form>
-
-      <!-- Save Button
-      <div class="text-center">
-        <button
-          class="btn btn-success px-4 py-2 shadow-sm"
-          (click)=""
-        >
-          <i class="bi bi-check-circle" (click)=""></i>
-          Sauvegarder
-        </button>
-      </div> -->
     </div>
   </div>
   <!-- Modal (Fenêtre add poste) -->
@@ -148,7 +131,7 @@
         </div>
         <div class="modal-body">
           <!-- Contenu du formulaire ou autre contenu à ajouter -->
-          <form #f="ngForm">
+          <form #g="ngForm">
             <div class="mb-3">
               <label for="nom" class="form-label">Libellé</label>
               <input
@@ -168,7 +151,8 @@
                   class="form-select"
                   id="inputGroupSelect04"
                   required
-                  [(ngModel)]="poste"
+                  [(ngModel)]="poste.secteur"
+                  name="poste.secteur"
                 >
                   <option selected>Choisir...</option>
                   @for (item of secteurList; track $index) {
@@ -258,7 +242,7 @@
         </div>
         <div class="modal-body">
           <!-- Contenu du formulaire ou autre contenu à ajouter -->
-          <form #f="ngForm">
+          <form #h="ngForm">
             <div class="mb-3">
               <label for="nom" class="form-label">Libellé</label>
               <input
@@ -293,348 +277,385 @@
   </div>
 </div>
 } @case (2) {
-<div class="card-body">
-  <span class="badge rounded-pill bg-primary mb-5">Etape 2</span>
-  <figure class="text-center mb-3">
-    <blockquote class="blockquote">
-      <p>Veuillez ajouter les candidatures pour ce recrutement.</p>
-    </blockquote>
-    <figcaption class="blockquote-footer">
-      En cliquant sur "Ajouter "
-      <cite title="Source Title">vous rempliez les informations</cite>
-    </figcaption>
-  </figure>
-
-  <div class="d-flex justify-content-end align-items-right mb-3">
-    <!-- Bouton Ajouter -->
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#addModal"
-    >
-      Ajouter
-    </button>
-  </div>
-
-  <!-- Striped Rows -->
+<div class="container py-3">
   <div class="card">
-    <div class="table-responsive text-nowrap">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Adresse</th>
-            <th>Téléphone</th>
-            <th>Date d'entretien</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody class="table-border-bottom-0">
-          @for (item of Listcandidats; track $index) {
-          <tr>
-            <td>
-              <strong> {{ item.nom }} </strong>
-            </td>
-            <td>{{ item.prenom }}</td>
-            <td>{{ item.adresse }}</td>
-            <td>{{ item.telephone }}</td>
-            <td>{{ item.dateEntretien1 | date : "dd-MM-YYYY" }}</td>
-            <td>
-              <a (click)="supprimer(item)"><i class="bx bx-trash"></i></a>
-            </td>
-          </tr>
-          }@empty {
-          <tr>
-            <td colspan="5" class="text-center">Aucun Candidat</td>
-          </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <!--/ Striped Rows -->
-  <div
-    class="modal fade"
-    id="addModal"
-    tabindex="-1"
-    aria-labelledby="addModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addModalLabel">
-            Ajouter un nouveau Candidat
-          </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+    <div class="card-body">
+      <span class="badge rounded-pill bg-primary mb-5">Etape 2</span>
+      <figure class="text-center mb-3">
+        <blockquote class="blockquote">
+          <p>Veuillez ajouter les candidatures pour ce recrutement.</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+          En cliquant sur "Ajouter "
+          <cite title="Source Title">vous rempliez les informations</cite>
+        </figcaption>
+      </figure>
+
+      <div class="d-flex justify-content-end align-items-right mb-3">
+        <!-- Bouton Ajouter -->
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#addModal"
+        >
+          Ajouter
+        </button>
+      </div>
+
+      <!-- Striped Rows -->
+      <div class="card">
+        <div class="table-responsive text-nowrap">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Adresse</th>
+                <th>Téléphone</th>
+                <th>Date d'entretien</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              @for (item of Listcandidats; track $index) {
+              <tr>
+                <td>
+                  <strong> {{ item.nom }} </strong>
+                </td>
+                <td>{{ item.prenom }}</td>
+                <td>{{ item.adresse }}</td>
+                <td>{{ item.telephone }}</td>
+                <td>{{ item.dateEntretien1 | date : "dd-MM-YYYY" }}</td>
+                <td>
+                  <a (click)="supprimer(item)"><i class="bx bx-trash"></i></a>
+                </td>
+              </tr>
+              }@empty {
+              <tr>
+                <td colspan="5" class="text-center">Aucun Candidat</td>
+              </tr>
+              }
+            </tbody>
+          </table>
         </div>
-        <div class="modal-body">
-          <!-- Contenu du formulaire ou autre contenu à ajouter -->
-          <form [formGroup]="candidatureForm">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="name" class="form-label">Nom</label>
-                  <div class="input-group input-group-merge">
-                    <span
-                      id="basic-icon-default-fullname2"
-                      class="input-group-text"
-                      ><i class="bx bx-user"></i
-                    ></span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="nom"
-                      name="nom"
-                      placeholder="Doe"
-                      aria-label="John Doe"
-                      aria-describedby="basic-icon-default-fullname2"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="email" class="form-label">Prénom</label>
-                  <div class="input-group input-group-merge">
-                    <span
-                      id="basic-icon-default-fullname2"
-                      class="input-group-text"
-                      ><i class="bx bx-user"></i
-                    ></span>
-                    <input
-                      type="text"
-                      name="prenom"
-                      class="form-control"
-                      formControlName="prenom"
-                      placeholder="John"
-                      aria-label="John Doe"
-                      aria-describedby="basic-icon-default-fullname2"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="phone" class="form-label">Téléphone</label>
-                  <div class="input-group input-group-merge">
-                    <span
-                      id="basic-icon-default-phone2"
-                      class="input-group-text"
-                      ><i class="bx bx-phone"></i
-                    ></span>
-                    <input
-                      type="text"
-                      formControlName="telephone"
-                      name="telephone"
-                      class="form-control phone-mask"
-                      placeholder="65 87 99 89"
-                      aria-describedby="basic-icon-default-phone2"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="address" class="form-label">Email</label>
-                  <div class="input-group input-group-merge">
-                    <span
-                      id="basic-icon-default-phone2"
-                      class="input-group-text"
-                      ><i class="bx bx-envelope"></i
-                    ></span>
-                    <input
-                      type="text"
-                      formControlName="email"
-                      name="email"
-                      class="form-control"
-                      placeholder="test@exemple.com"
-                      aria-describedby="basic-icon-default-phone2"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="address" class="form-label">Adresse</label>
-                  <div class="input-group input-group-merge">
-                    <span
-                      id="basic-icon-default-phone2"
-                      class="input-group-text"
-                      ><i class="bx bx-home"></i
-                    ></span>
-                    <input
-                      type="text"
-                      formControlName="adresse"
-                      name="adresse"
-                      class="form-control"
-                      placeholder="Lomé, Togo"
-                      aria-label="658 799 8941"
-                      aria-describedby="basic-icon-default-phone2"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="city" class="form-label"
-                    >Prochaine action à mener</label
-                  >
-                  <div class="input-group input-group-merge">
-                    <span
-                      id="basic-icon-default-phone2"
-                      class="input-group-text"
-                      ><i class="bx bx-chevrons-right"></i>
-                    </span>
-                    <input
-                      type="text"
-                      formControlName="prochaineAction"
-                      name="prochaineAction"
-                      class="form-control"
-                      placeholder="quelle est la prochaine étape à mener ?"
-                      aria-label="658 799 8941"
-                      aria-describedby="basic-icon-default-phone2"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="state" class="form-label"
-                    >date d'entretien 1</label
-                  >
-                  <div class="input-group input-group-merge">
-                    <span
-                      id="basic-icon-default-phone2"
-                      class="input-group-text"
-                      ><i class="bx bx-calendar"></i
-                    ></span>
-                    <input
-                      type="date"
-                      formControlName="dateEntretien1"
-                      name="dateEntretien1"
-                      class="form-control"
-                      aria-describedby="basic-icon-default-phone2"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="defaultSelect" class="form-label"
-                    >Appréciation Globale
-                  </label>
-
-                  <select
-                    id="defaultSelect"
-                    class="form-select"
-                    name="apreciationGlobale"
-                    formControlName="apreciationGlobale"
-                  >
-                    <option value="Convoquer pour être embauché">
-                      Convoquer pour être embauché
-                    </option>
-                    <option value="Convoquer pour second entretien">
-                      Convoquer pour second entretien
-                    </option>
-                    <option value="Convoquer pour une période d'essai">
-                      Convoquer pour une période d'essai
-                    </option>
-                  </select>
-                </div>
-              </div>
+      </div>
+      <!--/ Striped Rows -->
+      <div
+        class="modal fade"
+        id="addModal"
+        tabindex="-1"
+        aria-labelledby="addModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addModalLabel">
+                Ajouter un nouveau Candidat
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Fermer
-          </button>
-          <button type="submit" class="btn btn-primary" (click)="add()">
-            Enregistrer
-          </button>
+            <div class="modal-body">
+              <!-- Contenu du formulaire ou autre contenu à ajouter -->
+              <form [formGroup]="candidatureForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Nom</label>
+                      <div class="input-group input-group-merge">
+                        <span
+                          id="basic-icon-default-fullname2"
+                          class="input-group-text"
+                          ><i class="bx bx-user"></i
+                        ></span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="nom"
+                          name="nom"
+                          placeholder="Doe"
+                          aria-label="John Doe"
+                          aria-describedby="basic-icon-default-fullname2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Prénom</label>
+                      <div class="input-group input-group-merge">
+                        <span
+                          id="basic-icon-default-fullname2"
+                          class="input-group-text"
+                          ><i class="bx bx-user"></i
+                        ></span>
+                        <input
+                          type="text"
+                          name="prenom"
+                          class="form-control"
+                          formControlName="prenom"
+                          placeholder="John"
+                          aria-label="John Doe"
+                          aria-describedby="basic-icon-default-fullname2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="phone" class="form-label">Téléphone</label>
+                      <div class="input-group input-group-merge">
+                        <span
+                          id="basic-icon-default-phone2"
+                          class="input-group-text"
+                          ><i class="bx bx-phone"></i
+                        ></span>
+                        <input
+                          type="text"
+                          formControlName="telephone"
+                          name="telephone"
+                          class="form-control phone-mask"
+                          placeholder="65 87 99 89"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Email</label>
+                      <div class="input-group input-group-merge">
+                        <span
+                          id="basic-icon-default-phone2"
+                          class="input-group-text"
+                          ><i class="bx bx-envelope"></i
+                        ></span>
+                        <input
+                          type="text"
+                          formControlName="email"
+                          name="email"
+                          class="form-control"
+                          placeholder="test@exemple.com"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Adresse</label>
+                      <div class="input-group input-group-merge">
+                        <span
+                          id="basic-icon-default-phone2"
+                          class="input-group-text"
+                          ><i class="bx bx-home"></i
+                        ></span>
+                        <input
+                          type="text"
+                          formControlName="adresse"
+                          name="adresse"
+                          class="form-control"
+                          placeholder="Lomé, Togo"
+                          aria-label="658 799 8941"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="city" class="form-label"
+                        >Prochaine action à mener</label
+                      >
+                      <div class="input-group input-group-merge">
+                        <span
+                          id="basic-icon-default-phone2"
+                          class="input-group-text"
+                          ><i class="bx bx-chevrons-right"></i>
+                        </span>
+                        <input
+                          type="text"
+                          formControlName="prochaineAction"
+                          name="prochaineAction"
+                          class="form-control"
+                          placeholder="quelle est la prochaine étape à mener ?"
+                          aria-label="658 799 8941"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="state" class="form-label"
+                        >date d'entretien 1</label
+                      >
+                      <div class="input-group input-group-merge">
+                        <span
+                          id="basic-icon-default-phone2"
+                          class="input-group-text"
+                          ><i class="bx bx-calendar"></i
+                        ></span>
+                        <input
+                          type="date"
+                          formControlName="dateEntretien1"
+                          name="dateEntretien1"
+                          class="form-control"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="defaultSelect" class="form-label"
+                        >Appréciation Globale
+                      </label>
+        
+                      <select
+                        id="defaultSelect"
+                        class="form-select"
+                        name="apreciationGlobale"
+                        formControlName="apreciationGlobale"
+                      >
+                        <option value="Convoquer pour être embauché">
+                          Convoquer pour être embauché
+                        </option>
+                        <option value="Convoquer pour second entretien">
+                          Convoquer pour second entretien
+                        </option>
+                        <option value="Convoquer pour une période d'essai">
+                          Convoquer pour une période d'essai
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="defaultSelect" class="form-label"
+                        >Note Expérience
+                      </label>
+        
+                      <input
+                          type="number"
+                          formControlName="noteExperience"
+                          name="noteExperience"
+                          class="form-control"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="defaultSelect" class="form-label"
+                        >Note Presentation
+                      </label>
+        
+                      <input
+                          type="number"
+                          formControlName="notePresentation"
+                          name="notePresentation"
+                          class="form-control"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="defaultSelect" class="form-label"
+                        >Note Compétence et Atout
+                      </label>
+        
+                      <input
+                      type="number"
+                      formControlName="noteCompetenceEtAtout"
+                      name="noteCompetenceEtAtout"
+                      class="form-control"
+                      aria-describedby="basic-icon-default-phone2"
+                    />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="defaultSelect" class="form-label"
+                        >Note Savoir être
+                      </label>
+        
+                      <input
+                          type="number"
+                          formControlName="noteSavoirEtre"
+                          name="noteSavoirEtre"
+                          class="form-control"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="defaultSelect" class="form-label"
+                        >Note Qualité et défaut
+                      </label>
+        
+                      <input
+                          type="number"
+                          formControlName="noteQualiteEtDefaut"
+                          name="noteQualiteEtDefaut"
+                          class="form-control"
+                          aria-describedby="basic-icon-default-phone2"
+                        />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="defaultSelect" class="form-label"
+                        >Statut
+                      </label>
+                      <select 
+                      id="defaultSelect"
+                        class="form-select"
+                      formControlName="estRetenu"
+                      name="estRetenu">
+                        <option ngValue=true>Accepté</option>
+                        <option ngValue=false>Rejeté</option>
+                      </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Fermer
+              </button>
+              <button type="submit" class="btn btn-primary" (click)="add()">
+                Enregistrer
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 } @case (3) {
-<div class="card-body">
-  <span class="badge rounded-pill bg-primary mb-3">Etape 3</span>
-  <h4 class="mb-5">Evaluation / Selection des candidats</h4>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">nom</th>
-        <th scope="col">Competence</th>
-        <th scope="col">Expérience</th>
-        <th scope="col">savoir Etre</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <p-scrollPanel [style]="{ width: '100%', height: '300px' }">
-        <tr *ngFor="let candidate of candidates">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <!-- Infos du candidat -->
-                <div class="col-md-6">
-                  <h5 class="card-title">{{ candidate.name }}</h5>
-                  <p class="card-text">Position: {{ candidate.roleFit }}</p>
-                </div>
-                <!-- Formulaire de notation -->
-                <div class="col-md-6 text-md-end text-center">
-                  <label for="note-{{ candidate.name }}" class="form-label"
-                    >Attribuez une note:</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control d-inline-block w-auto mx-2"
-                    id="note-{{ candidate.name }}"
-                    [(ngModel)]="candidate.note"
-                    min="0"
-                    max="10"
-                  />
-                  <button
-                    class="btn btn-primary"
-                    (click)="submitScore(candidate)"
-                  >
-                    Enregistrer
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </tr>
-      </p-scrollPanel>
-    </tbody>
-  </table>
-</div>
-} @case (4) {
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center">
-    <h1 class="text-primary">
+    <h3 class="text-primary">
       Processus de recrutement – Développeur Full Stack
-    </h1>
+    </h3>
     <span class="badge bg-success fs-5">En cours</span>
   </div>
   <p class="text-muted">Ouvert depuis le : <strong>5 novembre 2024</strong></p>
 </div>
-
 <!-- Poste et recruteur -->
 <div class="container mt-3 p-4 bg-white shadow-sm rounded">
   <h2 class="text-secondary">Poste à pourvoir</h2>
@@ -658,7 +679,6 @@
     </p>
   </div>
 </div>
-
 <!-- Liste des candidatures -->
 <div class="container mt-3 p-4 bg-white shadow-sm rounded">
   <h2 class="text-secondary">Candidatures</h2>
@@ -703,35 +723,8 @@
     </div>
   </div>
 </div>
-
-<!-- Timeline -->
-<div class="container mt-3 p-4 bg-white shadow-sm rounded">
-  <h2 class="text-secondary">Timeline</h2>
-  <ul class="timeline">
-    <li>
-      <div class="timeline-badge bg-primary"></div>
-      <div class="timeline-panel">
-        <h6 class="timeline-title">Candidature reçue</h6>
-        <p><small class="text-muted">5 novembre 2024</small></p>
-      </div>
-    </li>
-    <li>
-      <div class="timeline-badge bg-warning"></div>
-      <div class="timeline-panel">
-        <h6 class="timeline-title">Entretien terminé</h6>
-        <p><small class="text-muted">15 novembre 2024</small></p>
-      </div>
-    </li>
-    <li>
-      <div class="timeline-badge bg-success"></div>
-      <div class="timeline-panel">
-        <h6 class="timeline-title">Proposition envoyée</h6>
-        <p><small class="text-muted">20 novembre 2024</small></p>
-      </div>
-    </li>
-  </ul>
-</div>
-} }
+} 
+}
 
 <div class="d-flex justify-content-between mt-4">
   <div>
@@ -748,8 +741,8 @@
   <div>
     <button
       class="btn btn-primary"
-      [disabled]="currentStep === 4"
-      [hidden]="currentStep === 4"
+      [disabled]="currentStep === 3"
+      [hidden]="currentStep === 3"
       (click)="goToNextStep()"
     >
       Suivant <i class="bx bx-right-arrow-alt"></i>

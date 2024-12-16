@@ -88,7 +88,7 @@
         </div>
         <div class="modal-body">
           <!-- Contenu du formulaire ou autre contenu à ajouter -->
-          <form [formGroup]="departForm" (onsubmit)="add()">
+          <form [formGroup]="departForm">
             <div class="mb-3">
               <label for="nom" class="form-label">
                 Veuillez sélectionner l'employé Concerné</label
@@ -99,21 +99,34 @@
                 name="employe"
                 formControlName="employe"
               >
-                <option value="refuser">Kokou</option>
-                <option value="cours">Abalo</option>
-                <option value="recruter">Moussa</option>
+              @for (item of employes; track $index) {
+                <option [ngValue]="item.nom+' '+item.prenom">{{item.nom+' '+item.prenom}}</option>
+              }@empty {
+                <option >Aucun employé enregistré</option>
+              }
+              
               </select>
             </div>
             <div class="mb-3">
-              <label for="prenom" class="form-label">Raison</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="raison"
+              <label for="nom" class="form-label">
+                Veuillez sélectionner la cause du départ</label
+              >
+              <select
+                id="defaultSelect"
+                class="form-select"
                 name="raison"
-                placeholder="Veuillez entrer la raison du départ"
-              />
+                formControlName="raison"
+              >
+                <option selected>Choisissez une option ...</option>
+                <option ngValue="DEMISSION">DEMISSION</option>
+                <option ngValue="LICENCIEMENT">LICENCIEMENT</option>
+                <option ngValue="FIN DE CONTRAT">FIN DE CONTRAT</option>
+                <option ngValue="RUPTURE CONVENTIONNELLE">RUPTURE CONVENTIONNELLE</option>
+                <option ngValue="RETRAITE">RETRAITE</option>
+                <option ngValue="DECES">DECES</option>
+              </select>
             </div>
+            
           </form>
         </div>
         <div class="modal-footer">
@@ -124,7 +137,7 @@
           >
             Fermer
           </button>
-          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="submit" class="btn btn-primary" (click)="add()">Enregistrer</button>
         </div>
       </div>
     </div>

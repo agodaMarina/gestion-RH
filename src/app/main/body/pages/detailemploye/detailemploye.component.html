@@ -7,7 +7,7 @@
         <div class="user-avatar-section">
           <div class="d-flex align-items-center flex-column">
             <div class="avatar mb-4" >
-              {{initials}}
+              <img [src]="getProfileImg(employe.sexe)" alt="profile">
             </div>
             <div class="user-info text-center">
               <h5>{{ employe.nom }} {{ employe.prenom }}</h5>
@@ -125,37 +125,107 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
-            <p>
-              Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps
-              powder. Bear claw candy topping.
-            </p>
-            <p class="mb-0">
-              Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon
-              jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow
-              jujubes sweet.
-            </p>
+            <div class="container mt-4">
+              <div class="timeline">
+                <!-- Timeline Item 1 -->
+                <div class="d-flex align-items-start mb-4">
+                  <div class="timeline-icon">
+                    <span class="badge bg-primary rounded-circle">&nbsp;</span>
+                  </div>
+                  <div class="ms-3">
+                    <h6 class="fw-bold mb-0">12 Invoices have been paid <span class="text-muted small ms-2">12 min ago</span></h6>
+                    <p class="mb-2">Invoices have been paid to the company</p>
+                    <a href="#" class="btn btn-sm btn-light text-danger">
+                      <i class="bi bi-file-earmark-pdf"></i> invoices.pdf
+                    </a>
+                  </div>
+                </div>
+            
+                <!-- Timeline Item 2 -->
+                <div class="d-flex align-items-start mb-4">
+                  <div class="timeline-icon">
+                    <span class="badge bg-success rounded-circle">&nbsp;</span>
+                  </div>
+                  <div class="ms-3">
+                    <h6 class="fw-bold mb-0">Client Meeting <span class="text-muted small ms-2">45 min ago</span></h6>
+                    <p class="mb-2">Project meeting with John 10:15am</p>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="client">
+                      <div>
+                        <span class="fw-bold d-block">Lester McCarthy (Client)</span>
+                        <small class="text-muted">CEO of ThemeSelection</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+                <!-- Timeline Item 3 -->
+                <div class="d-flex align-items-start">
+                  <div class="timeline-icon">
+                    <span class="badge bg-info rounded-circle">&nbsp;</span>
+                  </div>
+                  <div class="ms-3">
+                    <h6 class="fw-bold mb-0">Create a new project for client <span class="text-muted small ms-2">2 Days ago</span></h6>
+                    <p class="mb-2">6 team members in a project</p>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/40" class="rounded-circle me-1" alt="member">
+                      <img src="https://via.placeholder.com/40" class="rounded-circle me-1" alt="member">
+                      <span class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">+3</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
           <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
-            <p>
-              Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice
-              cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream
-              cheesecake fruitcake.
-            </p>
-            <p class="mb-0">
-              Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah
-              cotton candy liquorice caramels.
-            </p>
+            <div class="container mt-4 p-3 border rounded bg-light">
+              <!-- Status -->
+              <div class="d-flex align-items-center mb-3">
+                <span class="me-2"><i class="bi bi-circle text-primary"></i> Type</span>
+                <span class="fw-bold ms-auto text-primary">{{contrat.type}}</span>
+              </div>
+            
+              <!-- Due Date -->
+              <div class="d-flex align-items-center mb-3">
+                <span class="me-2"><i class="bx bx-calendar"></i> Date de Début</span>
+                <span class="fw-bold ms-auto">{{contrat.dateDebut}}</span>
+              </div>
+            
+              <!-- Assignee -->
+              <div class="d-flex align-items-center mb-3">
+                <span class="me-2"><i class="bi bi-people"></i> Assignee</span>
+                <div class="ms-auto d-flex align-items-center">
+                  <img src="https://via.placeholder.com/30" class="rounded-circle me-2" alt="assignee">
+                  <span class="me-3 fw-bold">Calum Tyler</span>
+                  <span class="badge bg-success text-white rounded-pill me-2">DT</span>
+                  <span class="me-3 fw-bold">Dawson Tarman</span>
+                  <button class="btn btn-sm btn-outline-primary">Invite</button>
+                </div>
+              </div>
+            
+              <!-- Tags -->
+              <div class="d-flex align-items-center mb-3">
+                <span class="me-2"><i class="bx bx-tags"></i>Etat</span>
+                <div class="ms-auto">
+                  <span class="badge bg-primary text-white me-2">Dashboard</span>
+                  <span class="badge bg-warning text-dark">{{contrat.etat}}</span>
+                </div>
+              </div>
+            
+              <!-- Description -->
+              <div>
+                <span class="d-block mb-2"><i class="bi bi-card-text"></i> Description</span>
+                <textarea class="form-control" rows="3" readonly>
+            This page aims to provide real-time insights into employee performance metrics and key business indicators.
+                </textarea>
+              </div>
+            </div>
+            
           </div>
           <div class="tab-pane fade" id="navs-pills-justified-messages" role="tabpanel">
-            <p>
-              Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies
-              cupcake gummi bears cake chocolate.
-            </p>
-            <p class="mb-0">
-              Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet
-              roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly
-              jelly-o tart brownie jelly.
-            </p>
+            <full-calendar [options]="calendarOptions"></full-calendar>
+
           </div>
         </div>
       </div>

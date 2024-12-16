@@ -1,52 +1,33 @@
-<div class="container my-4">
-  <span class="badge rounded-pill bg-primary mb-3">Etape 3</span>
-  <h4 class="mb-5">Evaluation / Selection des candidats</h4>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Role Fit</th>
-        <th scope="col">Test Profile Score</th>
-        <th scope="col">Interview Score</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <p-scrollPanel [style]="{ width: '100%', height: '300px' }">
-        <tr *ngFor="let candidate of candidates">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <!-- Infos du candidat -->
-                <div class="col-md-6">
-                  <h5 class="card-title">{{ candidate.name }}</h5>
-                  <p class="card-text">Position: {{ candidate.roleFit }}</p>
-                </div>
-                <!-- Formulaire de notation -->
-                <div class="col-md-6 text-md-end text-center">
-                  <label for="note-{{ candidate.name }}" class="form-label"
-                    >Attribuez une note:</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control d-inline-block w-auto mx-2"
-                    id="note-{{ candidate.name }}"
-                    [(ngModel)]="candidate.note"
-                    min="0"
-                    max="10"
-                  />
-                  <button
-                    class="btn btn-primary"
-                    (click)="submitScore(candidate)"
-                  >
-                    Enregistrer
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </tr>
-      </p-scrollPanel>
-    </tbody>
-  </table>
+<div class="container py-3">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-5">Evaluation / Selection des candidats</h4>
+      <table class="table">
+        <thead class="table-light">
+          <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Entretien</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of Listcandidats; track $index) {
+          <tr>
+            <td>{{item.nom}}</td>
+            <td>{{item.prenom}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.telephone}}</td>
+            <td>{{item.dateEntretien1 | date: 'mediumDate'}}</td>
+          </tr>
+        }@empty {
+          <tr>
+            <td colspan="5" ><strong class="text-center">Aucun candidat enregisté pour ce processus</strong> </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

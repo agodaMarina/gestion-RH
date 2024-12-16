@@ -11,8 +11,8 @@ export class CandidatureService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Candidature[]> {
-    return this.http.get<Candidature[]>(`${this.baseUrl}/lister`);
+  getAll(): Observable<CandidatureCreation[]> {
+    return this.http.get<CandidatureCreation[]>(`${this.baseUrl}/lister`);
   }
 
   getCandidatureById(id: number): Observable<Candidature> {

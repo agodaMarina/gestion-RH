@@ -49,7 +49,7 @@ export class RecruteurComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: `Recruteur${data.nom?.bold}ajouté avec succès`,
+          detail: `Recruteur ${data.nom} ajouté avec succès`,
         });
         this.liste();
       },

@@ -42,23 +42,7 @@ AddCandidatComponent implements OnInit {
     this.loadFromLocalStorage();
   }
 
-  add() {
-    if (this.candidatureForm.valid) {
-      const candidature: CandidatureCreation = {
-        nom: this.candidatureForm.get('nom')?.value,
-        prenom: this.candidatureForm.get('prenom')?.value,
-        email: this.candidatureForm.get('email')?.value,
-        telephone: this.candidatureForm.get('telephone')?.value,
-        adresse: this.candidatureForm.get('adresse')?.value,
-        prochaineAction: this.candidatureForm.get('prochaineAction')?.value,
-        dateEntretien1: this.candidatureForm.get('dateEntretien1')?.value,
-        apreciationGlobale:
-          this.candidatureForm.get('apreciationGlobale')?.value,
-      };
-      this.Listcandidats.push(candidature);
-      this.saveToLocalStorage();
-    }
-  }
+ 
   //fonction pour sauvegarder les candidats dans le local storage
   saveToLocalStorage() {
     localStorage.setItem('candidats', JSON.stringify(this.Listcandidats));

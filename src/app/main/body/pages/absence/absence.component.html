@@ -8,8 +8,8 @@
     <div class="col-md-6 col-lg-3">
       <div class="leave-card bg-light">
         <div>
-          <h6>Congés Annuels</h6>
-          <h4>{{ counts["CONGE ANNUEL"] }}</h4>
+          <h6>Permission</h6>
+          <h4>{{ counts["PERMISSION"] }}</h4>
         </div>
         <div class="leave-card-icon bg-success">
           <i class="bx bx-calendar"></i>
@@ -22,7 +22,7 @@
       <div class="leave-card bg-light">
         <div>
           <h6>Congés Maladies</h6>
-          <h4>{{ counts["CONGE MALADIE"] }}</h4>
+          <h4>{{ counts["REPOS MEDICAL"] }}</h4>
         </div>
         <div class="leave-card-icon bg-primary">
           <i class="bx bx-plus-medical"></i>
@@ -34,8 +34,8 @@
     <div class="col-md-6 col-lg-3">
       <div class="leave-card bg-light">
         <div>
-          <h6>Congés Occasionnels</h6>
-          <h4>{{ counts["CONGE OCCASIONNEL"] }}</h4>
+          <h6>Suspension</h6>
+          <h4>{{ counts["SUSPENSION"] }}</h4>
         </div>
         <div class="leave-card-icon bg-info">
           <i class="bx bx-calendar-check"></i>
@@ -48,7 +48,7 @@
       <div class="leave-card bg-light">
         <div>
           <h6>Autres</h6>
-          <h4>{{ counts["AUTRE"] }}</h4>
+          <h4>{{ counts["MATERNITE"] + counts["CONGE FORMATION"] + counts["MISE A PIED"]}}</h4>
         </div>
         <div class="leave-card-icon bg-warning">
           <i class="bx bx-box"></i>
@@ -185,7 +185,7 @@
                 <th>Type</th>
                 <th>Date de début</th>
                 <th>Date de retour</th>
-                <th>Nombre de jours Restants</th>
+                <th>Nombre de jours</th>
                 <th>Actions</th>
               </tr>
             </thead>

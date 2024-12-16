@@ -18,7 +18,7 @@ export interface RecrutementDto {
     poste?:string;
     salaire?:number;
     niveauEtude?:string;
-    recruteur:string;
+    recruteur?:string;
     statut?:string;
     etapeActuelle?:string;
     dateDebut?:string;

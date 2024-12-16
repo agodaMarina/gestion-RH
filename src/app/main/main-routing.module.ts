@@ -20,7 +20,6 @@ import { EvaluationComponent } from './body/pages/recrutement/etapes/evaluation/
 import { SelectionComponent } from './body/pages/recrutement/etapes/selection/selection.component';
 import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -34,23 +33,16 @@ const routes: Routes = [
       { path: 'candidats', component: ListecandidaturesComponent },
       { path: 'add-candidat', component: AddCandidatComponent },
       { path: 'employes', component: ListeemployeComponent },
-      { path: 'detail/:id', component: DetailemployeComponent },
+      { path: 'employe/detail/:id', component: DetailemployeComponent },
       { path: 'add-employe', component: AddemployeComponent },
       { path: 'rapport', component: RapportComponent },
-      { path:'posteApourvoir',component:ListprocessusComponent},
-      { path: 'recrutement',component:RecrutementComponent,
-        children:[
-          
-          {path:'etape/1',component:AddPosteComponent},
-          {path:'',redirectTo:'etape/1',pathMatch:'full'},
-          {path:'etape/2',component:AddCandidatComponent},
-          {path:'etape/3',component:EvaluationComponent},
-          {path:'etape/4',component:SelectionComponent},
-        ]
-    },
-      { path: 'secteur',component:SecteurComponent},
-      { path: 'csp',component:CspComponent},
-      { path: 'recruteur',component:RecruteurComponent},
+      { path: 'posteApourvoir', component: ListprocessusComponent },
+      { path: 'recrutement', component: RecrutementComponent },
+      { path: 'recrutement/detail/:id', component: SelectionComponent },
+      { path: 'recrutement/evaluation/:id', component: EvaluationComponent },
+      { path: 'secteur', component: SecteurComponent },
+      { path: 'csp', component: CspComponent },
+      { path: 'recruteur', component: RecruteurComponent },
     ],
   },
 ];

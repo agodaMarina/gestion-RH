@@ -4,51 +4,67 @@ import { Depart } from '../../../../api/models/Depart';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DepartService } from '../../../../api/services/depart.service';
 import { PageEvent } from '../../../../api/models/pageEvent';
+import { EmployeService } from '../../../../api/services/employe.service';
+import { EmployeDto } from '../../../../api/models/employe';
 
 @Component({
   selector: 'app-depart',
   templateUrl: './depart.component.html',
   styleUrl: './depart.component.css',
 })
-export class DepartComponent implements OnInit{
+export class DepartComponent implements OnInit {
   departs: Depart[] = [];
   departForm: FormGroup;
   paginate: Depart[] = [];
+  employes: EmployeDto[] = [];
   first: number = 0;
   rows: number = 10;
-itemsPerPage: number=10;
-currentPage: number=0;
+  itemsPerPage: number = 10;
+  currentPage: number = 0;
   
 
   onPageChange(event: number) {
     this.currentPage = event;
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    this.paginate = this.departs.slice(
-      start,end
-    );
+    this.paginate = this.departs.slice(start, end);
   }
 
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private formBuilder:FormBuilder,
-    private service:DepartService
+    private employeService: EmployeService,
+    private formBuilder: FormBuilder,
+    private service: DepartService
   ) {
-    this.departForm=this.formBuilder.group({
-      raison:[''],
-      employe:[]
-    })
+    this.departForm = this.formBuilder.group({
+      raison: [''],
+      employe: [''],
+    });
   }
-
 
   ngOnInit(): void {
-      this.liste();
+    this.liste();
+    this.getEmployes();
   }
 
+  getEmployes() {
+    this.employeService.getEmployes().subscribe({
+      next: (data) => {
+        this.employes = data;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Erreur lors de la récupération de la liste des employés",
+        });
+      }
+    });
+  }
 
   add() {
-    this.service.create (this.departForm?.value).subscribe({
+    this.service.create(this.departForm?.value).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -60,9 +76,9 @@ currentPage: number=0;
       },
       error: (err) => {
         this.messageService.add({
-          severity: 'error', 
+          severity: 'error',
           summary: 'Erreur',
-          detail: 'Erreur lors de l\'ajout du départ',
+          detail: "Erreur lors de l'ajout du départ",
         });
       },
     });
@@ -72,7 +88,7 @@ currentPage: number=0;
     this.service.getAll().subscribe({
       next: (data: Depart[]) => {
         this.departs = data;
-        this.paginate=this.departs.slice(0,this.rows);
+        this.paginate = this.departs.slice(0, this.rows);
       },
       error: (err) => {
         this.messageService.add({
@@ -80,11 +96,11 @@ currentPage: number=0;
           summary: 'Erreur',
           detail: 'Erreur lors de la récupération de la liste des départs',
         });
-      }
-    })
+      },
+    });
   }
 
-  supprimer(id:number) {
+  supprimer(id: number) {
     this.confirmationService.confirm({
       header: 'Etes-Vous sûr ?',
       message: 'Veuillez confirmer la suppression',
@@ -119,25 +135,25 @@ currentPage: number=0;
     });
   }
 
-  modifier(item:Depart) {
-    if(item.id)
-    this.service.update(item.id, this.departForm?.value).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Départ modifié avec succès',
-        });
-        this.liste();
-        this.departForm?.reset();
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la modification du départ',
-        });
-      },
-    });
+  modifier(item: Depart) {
+    if (item.id)
+      this.service.update(item.id, this.departForm?.value).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Départ modifié avec succès',
+          });
+          this.liste();
+          this.departForm?.reset();
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Erreur lors de la modification du départ',
+          });
+        },
+      });
   }
 }

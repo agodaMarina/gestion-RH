@@ -145,15 +145,15 @@
   </div>-->
   </div>
   <div class="nav-align-top">
-    <ul class="nav nav-tabs mb-4" role="tablist">
+    <ul class="nav nav-pills mb-4" role="tablist">
       <li class="nav-item">
         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-home" aria-controls="navs-pills-top-home" aria-selected="true">Tous ({{employes.length}})</button>
       </li>
       <li class="nav-item">
-        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile" aria-controls="navs-pills-top-profile" aria-selected="false">Actifs (13)</button>
+        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile" aria-controls="navs-pills-top-profile" aria-selected="false">Actifs ({{employesActif.length}})</button>
       </li>
       <li class="nav-item">
-        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-messages" aria-controls="navs-pills-top-messages" aria-selected="false">Inactifs (2)</button>
+        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-messages" aria-controls="navs-pills-top-messages" aria-selected="false">Inactifs ({{employesInactif.length}})</button>
       </li>
     </ul>
     <div class="tab-content">
@@ -171,7 +171,26 @@
                   <h6 class="mb-1">{{item.nom}} {{item.prenom}}</h6>
                   <small class="text-muted">{{item.dateEmbauche|date:'mediumDate'}}</small>
                 </div>
-                <i class="bx bx-dots-vertical-rounded"></i>
+                <div class="dropdown">
+                  <button
+                    type="button"
+                    class="btn p-0 dropdown-toggle hide-arrow"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a
+                      class="dropdown-item"
+                      (click)="afficherDetail(item.id)"
+                      ><i class='bx bxs-user-detail me-1'></i>voir</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      ><i class="bx bx-trash me-1"></i>supprimer</a
+                    >
+                  </div>
+                </div>
               </div>
               <hr>
               <div class="mt-1">
