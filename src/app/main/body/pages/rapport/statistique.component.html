@@ -1,0 +1,105 @@
+<div class="container mt-4">
+  <div class="row g-4">
+    <!-- Revenue -->
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div [chart]="ContratPieChart"></div>
+      </div>
+    </div>
+
+    <!-- Weekly Expense -->
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div [chart]="SecteurPieChart"></div>
+      </div>
+    </div>
+
+    <!-- Saving Goal -->
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div [chart]="CspBarChart"></div>
+      </div>
+    </div>
+
+    <!-- Spending Limit -->
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div [chart]="SexePieChart"></div>
+      </div>
+    </div>
+
+    <!-- Daily Expense -->
+    <div class="col-md-8">
+      <div class="card p-3 shadow-sm">
+        <div [chart]="AgeBarChart"></div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card p-3 shadow-sm">
+        <div [chart]="RetraiteChart"></div>
+      </div>
+    </div>
+    <!-- Spending Limit -->
+    <div class="col-md-4">
+      <div class="card p-3 shadow-sm">
+        <div [chart]="DepartLineChart"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="custom-modal"
+  [class.show]="isModalVisible"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+  <div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Liste des employés</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="isModalVisible = false"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive" *ngIf="selectedEmployees.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Poste</th>
+                <th>Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of selectedEmployees; track $index) {
+              <tr>
+                <td><span>{{item.nom}} {{item.prenom}}</span></td>
+                <td>{{item.poste}}</td>
+                <td>
+                  <span>{{item.age}} ans</span>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        
+        <p *ngIf="selectedEmployees.length === 0">
+          Aucun employé pour cette période.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="isModalVisible = false">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,13 +17,6 @@ export class CspComponent implements OnInit {
   itemsPerPage: number = 10;
   currentPage: number = 1;
 
-  // onPageChange(event: number) {
-  //   this.currentPage = event;
-  //   const start = (this.currentPage - 1) * this.itemsPerPage;;
-  //   const end = start + this.itemsPerPage;
-  //   this.paginate = this.Csps.slice(start, end);
-  // }
-
   onPageChange(event: number) {
     this.currentPage = event;
     // Mise à jour explicite de `filteredData` via `currentPage`

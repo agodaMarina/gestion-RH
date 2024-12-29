@@ -21,6 +21,7 @@ export interface Candidature {
 }
 
 export interface CandidatureCreation {
+  id?: number;
   nom: String;
   prenom: String;
   email: String;
@@ -34,5 +35,6 @@ export interface CandidatureCreation {
   noteQualiteEtDefaut?: number;
   prochaineAction: String;
   apreciationGlobale: string;
+  moyenne?: number;
   estRetenu?: boolean;
 }

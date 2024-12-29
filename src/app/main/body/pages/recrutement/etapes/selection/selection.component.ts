@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RecrutementDto } from '../../../../../../api/models/recrutement';
-import {
-  Candidature,
-  CandidatureCreation,
-} from '../../../../../../api/models/Candidature';
+import { CandidatureCreation } from '../../../../../../api/models/Candidature';
 import { RecrutementService } from '../../../../../../api/services/recrutement.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-selection',
@@ -19,60 +17,14 @@ export class SelectionComponent implements OnInit {
   recrutement: RecrutementDto = {};
   candidats: CandidatureCreation[] = [];
   Listcandidats: CandidatureCreation[] = [];
-  candidates = [
-    {
-      nom: 'Dupont',
-      prenom: 'Jean',
-      email: 'jean.dupont@example.com',
-      telephone: '0601020304',
-      adresse: '10 rue de Paris, 75001 Paris',
-      dateEntretien1: '2024-03-15',
-      notePresentation: 8,
-      noteExperience: 7,
-      noteCompetenceEtAtout: 9,
-      noteSavoirEtre: 8,
-      noteQualiteEtDefaut: 7,
-      prochaineAction: 'Envoyer une offre',
-      apreciationGlobale: 'Bon profil, avec une excellente présentation.',
-      estRetenu: true,
-    },
-    {
-      nom: 'Martin',
-      prenom: 'Sophie',
-      email: 'sophie.martin@example.com',
-      telephone: '0612345678',
-      adresse: '20 avenue des Champs, 75008 Paris',
-      dateEntretien1: '2024-03-10',
-      notePresentation: 6,
-      noteExperience: 7,
-      noteCompetenceEtAtout: 8,
-      noteSavoirEtre: 6,
-      noteQualiteEtDefaut: 5,
-      prochaineAction: 'Planifier un second entretien',
-      apreciationGlobale:
-        'Compétences techniques solides mais présentation à travailler.',
-      estRetenu: false,
-    },
-    {
-      nom: 'Lemoine',
-      prenom: 'Antoine',
-      email: 'antoine.lemoine@example.com',
-      telephone: '0623456789',
-      adresse: '5 place Bellecour, 69002 Lyon',
-      dateEntretien1: '2024-03-12',
-      noteCompetenceEtAtout: 7,
-      noteSavoirEtre: 9,
-      prochaineAction: 'Attente de décision',
-      apreciationGlobale: "Très bon savoir-être mais manque d'expérience.",
-      estRetenu: false,
-    },
-  ];
+
 
   constructor(
     private recrutementService: RecrutementService,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private messageService: MessageService
   ) {
     this.candidatureForm = this.formBuilder.group({
       nom: ['', Validators.required],
@@ -104,7 +56,11 @@ export class SelectionComponent implements OnInit {
         this.recrutement = data;
       },
       error: (error: any) => {
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la récupération du recrutement',
+        });
       },
     });
 
@@ -113,7 +69,11 @@ export class SelectionComponent implements OnInit {
         this.candidats = data;
       },
       error: (error: any) => {
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'erreur:' + error,
+        });
       },
     });
   }
@@ -142,8 +102,24 @@ export class SelectionComponent implements OnInit {
         this.router.navigate(['recrutement']);
       },
       error: (error) => {
-        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la clôture du recrutement',
+        });
       },
     });
+  }
+
+  selectedIds: number[] = []; // Contient les IDs sélectionnés
+
+  onCheckboxChange(event: Event, id: number) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.selectedIds.push(id);
+    } else {
+      this.selectedIds = this.selectedIds.filter((itemId) => itemId !== id); // Supprimer l'ID
+    }
   }
 }

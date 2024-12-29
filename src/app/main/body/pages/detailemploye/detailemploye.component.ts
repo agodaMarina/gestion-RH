@@ -5,9 +5,7 @@ import { Employe, EmployeDto } from '../../../../api/models/employe';
 import { Contrat } from '../../../../api/models/contrat';
 import { Depart } from '../../../../api/models/Depart';
 import { Absence } from '../../../../api/models/Absence';
-import { CalendarOptions } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+
 @Component({
   selector: 'app-detailemploye',
   templateUrl: './detailemploye.component.html',
@@ -19,37 +17,7 @@ export class DetailemployeComponent implements OnInit {
   depart: Depart = {};
   absences: Absence[] = [];
   initials: string = '';
-  calendarOptions: CalendarOptions={
-    initialView: 'dayGridMonth',
-    plugins:[ dayGridPlugin, interactionPlugin],
-    headerToolbar:{
-      left: 'retour,suivant today', // Boutons pour naviguer
-      center: 'Absences', // Titre au centre
-      right: 'dayGridMonth,timeGridWeek,timeGridDay', // Changements de vu
-    },
-     events: [
-      // Événements dynamiques
-      {
-        title: 'Client Presentation Preparation',
-        start: '2024-03-25T08:00:00',
-        end: '2024-03-25T09:00:00',
-        backgroundColor: '#dcb5f4',
-      },
-      {
-        title: 'New Project Kickoff Meeting',
-        start: '2024-03-25T09:00:00',
-        end: '2024-03-25T10:00:00',
-        backgroundColor: '#b5d6f4',
-      },
-      {
-        title: 'Design Revisions',
-        start: '2024-03-25T09:00:00',
-        end: '2024-03-25T10:30:00',
-        backgroundColor: '#f4ddb5',
-      },
-    ],
-    editable: true, // Permet le glisser-déposer
-  };
+  message: string = '';
 
   constructor(private route: ActivatedRoute, private service: EmployeService) {}
 
@@ -114,5 +82,24 @@ export class DetailemployeComponent implements OnInit {
         console.log(error);
       },
     });
+  }
+
+  getinverted(index: number): string {
+    if (index % 2 === 0) {
+      return 'timeline-inverted';
+    }
+    return '';
+  }
+
+  verifiedActivity() {
+    if (!this.employe.isActif && this.employe.dateDepart) {
+      this.message =
+        'Cet employé est Inactif car il ne fait plus parti du personnel depuis le ' +
+        this.employe.dateDepart;
+    } else if (new Date(this.absences[this.absences.length - 1].dateDebut!) > new Date() && new Date(this.absences[this.absences.length - 1].dateFin!) > new Date()) {
+      this.message = 'Cet employé est Inactif car du ' + this.absences[this.absences.length - 1].dateDebut + ' au ' + this.absences[this.absences.length - 1].dateFin 
+      +'il est en permission de ' + this.absences[this.absences.length - 1].type;
+
+    }
   }
 }

@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { RapportService } from '../../../../api/services/rapport.service';
 import { Chart } from 'angular-highcharts';
+import { Retraite } from '../../../../api/models/retraite';
 
 @Component({
   selector: 'app-rapport',
-  templateUrl: './rapport.component.html',
+  templateUrl: './statistique.component.html',
   styleUrl: './rapport.component.css',
 })
 export class RapportComponent implements OnInit, AfterViewInit {
@@ -14,6 +15,9 @@ export class RapportComponent implements OnInit, AfterViewInit {
   ContratPieChart = new Chart({});
   CspBarChart = new Chart({});
   DepartLineChart = new Chart({});
+  RetraiteChart = new Chart({});
+  selectedEmployees: Retraite[] = [];
+  isModalVisible: boolean= false;
 
   constructor(private service: RapportService) {}
   ngAfterViewInit(): void {
@@ -23,19 +27,18 @@ export class RapportComponent implements OnInit, AfterViewInit {
     this.loadCspBarChart();
     this.loadContratPieChart();
     this.loadDepartLineChart();
-    }
-
+    this.prevoirRetraites();
+  }
   ngOnInit(): void {
     const script = document.createElement('script');
     script.src = 'assets/js/dashboards-analytics.js';
     document.body.appendChild(script);
-    
+    this.prevoirRetraites();
   }
-
   loadSexePieChart() {
     this.service.getBySexe().subscribe((data) => {
       const chartData = Object.values(data).map((value: any) => value);
- 
+
       this.SexePieChart = new Chart({
         chart: {
           type: 'pie',
@@ -46,14 +49,9 @@ export class RapportComponent implements OnInit, AfterViewInit {
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
         },
-        legend: {
-          enabled: true, // Active les légendes
-          layout: 'vertical', // 'horizontal' ou 'vertical'
-          align: 'right', // Aligne les légendes à droite
-          verticalAlign: 'middle', // Alignement vertical : 'top', 'middle', 'bottom'
-          itemStyle: {
-            fontSize: '15px', // Taille de la police des légendes
-            fontWeight: 'bold', // Style de police
+        accessibility: {
+          point: {
+            valueSuffix: '%',
           },
         },
         plotOptions: {
@@ -61,14 +59,14 @@ export class RapportComponent implements OnInit, AfterViewInit {
             allowPointSelect: true,
             cursor: 'pointer',
             dataLabels: {
-              enabled: true,
-              format: '{point.name}: {point.percentage:.1f} %',
+              enabled: false,
               style: {
-                fontSize: '0.7em',
+                fontSize: '0.5em',
                 textOutline: 'none',
                 opacity: 0.7,
               },
             },
+            showInLegend: true,
           },
         },
         series: [
@@ -76,7 +74,7 @@ export class RapportComponent implements OnInit, AfterViewInit {
             type: 'pie',
             name: 'valeur',
             data: chartData,
-            colors: ['#ffab00','#696cff'],
+            colors: ['#696cff', '#ffab00'],
           },
         ],
       });
@@ -93,17 +91,17 @@ export class RapportComponent implements OnInit, AfterViewInit {
       const dataMasculin = chartData
         .filter((item: any) => item[1] === 'Masculin')
         .map((item: any) => [parseInt(item[0], 10), parseInt(item[2], 10)]);
-  
+
       // Préparation des données pour les séries
-      const femininData = ages.map(age => {
-        const found = dataFeminin.find(item => item[0] === age);
+      const femininData = ages.map((age) => {
+        const found = dataFeminin.find((item) => item[0] === age);
         return found ? found[1] : 0;
       });
-      const masculinData = ages.map(age => {
-        const found = dataMasculin.find(item => item[0] === age);
+      const masculinData = ages.map((age) => {
+        const found = dataMasculin.find((item) => item[0] === age);
         return found ? found[1] : 0;
       });
-  
+
       this.AgeBarChart = new Chart({
         chart: {
           type: 'column',
@@ -112,29 +110,28 @@ export class RapportComponent implements OnInit, AfterViewInit {
           text: 'Pyramide des âges',
         },
         xAxis: {
-          title: {
-            text: 'Nombre d\'employés',
-          },
-        },
-        yAxis: {
           categories: ages, // Les âges comme catégories de l'axe X
           title: {
             text: 'Âge',
           },
-         
+        },
+        yAxis: {
+          title: {
+            text: "Nombre d'employés",
+          },
         },
         series: [
           {
             type: 'column',
             name: 'Féminin',
             data: femininData,
-            color:'#ffab00'
+            color: '#ffab00',
           },
           {
             type: 'column',
             name: 'Masculin',
             data: masculinData,
-            color:'#696cff'
+            color: '#696cff',
           },
         ],
       });
@@ -154,42 +151,34 @@ export class RapportComponent implements OnInit, AfterViewInit {
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
         },
-        legend: {
-          enabled: true, // Active les légendes
-          layout: 'vertical', // 'horizontal' ou 'vertical'
-          align: 'right', // Aligne les légendes à droite
-          verticalAlign: 'middle', // Alignement vertical : 'top', 'middle', 'bottom'
-          itemStyle: {
-            fontSize: '15px', // Taille de la police des légendes
-            fontWeight: 'bold', // Style de police
-          },
-        },
+
         plotOptions: {
           pie: {
             allowPointSelect: true,
             cursor: 'pointer',
             dataLabels: {
-              enabled: true,
-              format: '{point.name}: {point.percentage:.1f} %',
+              enabled: false,
               style: {
-                fontSize: '0.6em',
+                fontSize: '0.5em',
+                fontWeight: 'bold',
                 textOutline: 'none',
                 opacity: 0.7,
               },
             },
+            showInLegend: true,
           },
         },
         series: [
           {
             type: 'pie',
-            name: 'valeur',
+            name: 'pourcentage',
             data: chartData,
           },
         ],
       });
-    })
+    });
   }
-  loadContratPieChart(){
+  loadContratPieChart() {
     this.service.getByContrat().subscribe((data) => {
       const chartData = Object.values(data).map((value: any) => value);
       console.log(chartData);
@@ -198,20 +187,10 @@ export class RapportComponent implements OnInit, AfterViewInit {
           type: 'pie',
         },
         title: {
-          text: 'Répartition  par Type de contrat',
+          text: 'Répartition par type de contrat',
         },
         tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
-        },
-        legend: {
-          enabled: true, // Active les légendes
-          layout: 'vertical', // 'horizontal' ou 'vertical'
-          align: 'right', // Aligne les légendes à droite
-          verticalAlign: 'middle', // Alignement vertical : 'top', 'middle', 'bottom'
-          itemStyle: {
-            fontSize: '15px', // Taille de la police des légendes
-            fontWeight: 'bold', // Style de police
-          },
+          valueSuffix: '%',
         },
         plotOptions: {
           pie: {
@@ -219,9 +198,11 @@ export class RapportComponent implements OnInit, AfterViewInit {
             cursor: 'pointer',
             dataLabels: {
               enabled: true,
-              format: '{point.name}: {point.percentage:.1f} %',
+
+              // format: '{point.name}: {point.percentage:.1f} %',
               style: {
                 fontSize: '0.5em',
+                fontWeight: 'bold',
                 textOutline: 'none',
                 opacity: 0.7,
               },
@@ -231,17 +212,17 @@ export class RapportComponent implements OnInit, AfterViewInit {
         series: [
           {
             type: 'pie',
-            name: 'valeur',
+            name: 'pourcentage',
             data: chartData,
           },
         ],
       });
     });
   }
-  loadCspBarChart(){
-    this.service.getByCsp().subscribe((data)=>{
+  loadCspBarChart() {
+    this.service.getByCsp().subscribe((data) => {
       const chartData = Object.values(data).map((value: any) => value);
-      this.CspBarChart=new Chart({
+      this.CspBarChart = new Chart({
         chart: {
           type: 'column',
         },
@@ -249,67 +230,119 @@ export class RapportComponent implements OnInit, AfterViewInit {
           text: 'Catégorie Socioprofessionnelle',
         },
         xAxis: {
-          title: {
-            text: 'Nombre d\'employés',
-          },
+          type: 'category',
         },
         yAxis: {
           categories: Object.keys(data),
-          
+          title: {
+            text: "Nombre d'employés",
+          },
         },
-        
+
         series: [
-          
           {
             type: 'column',
             data: chartData,
             colorByPoint: true,
           },
         ],
-
-  })})
-}
-  loadDepartLineChart(){
-    this.service.getByDepart().subscribe((data)=>{
+      });
+    });
+  }
+  loadDepartLineChart() {
+    this.service.getByDepart().subscribe((data) => {
       const chartData = Object.values(data).map((value: any) => value);
-      this.DepartLineChart=new Chart({
+      this.DepartLineChart = new Chart({
         chart: {
-          type: 'column',
+          type: 'pie',
         },
         title: {
           text: 'Causes de départ',
         },
+        accessibility: {
+          point: {
+            valueSuffix: '%',
+          },
+        },
+        plotOptions: {
+          pie: {
+            dataLabels: {
+              enabled: true,
+              distance: -50,
+              style: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            },
+            startAngle: -90,
+            endAngle: 90,
+            center: ['50%', '75%'],
+            size: '110%',
+          },
+        },
+
+        series: [
+          {
+            type: 'pie',
+            data: chartData,
+          },
+        ],
+      });
+    });
+  }
+  openModal() {
+    this.isModalVisible = true;
+  }
+
+  prevoirRetraites() {
+    this.service.prevoirRetraites().subscribe((data) => {
+      // Transformer les données : [['1 année', 3], ['2 années', 4], ['3 années', 2]]
+      const chartData = Object.entries(data).map(
+        ([key, value]: [string, any[]]) => [
+          `${key} année${parseInt(key, 10) > 1 ? 's' : ''}`, // Ajoute "année(s)" au label
+          value.length, // Compte le nombre d'éléments dans chaque tableau
+        ]
+      );
+      this.RetraiteChart = new Chart({
+        chart: {
+          type: 'column',
+        },
+        title: {
+          text: 'Prévision des départs à la retraite',
+        },
         xAxis: {
+          type: 'category',
           title: {
-            text: 'Nombre d\'employés',
+            text: 'Années restantes',
           },
         },
         yAxis: {
-          categories: Object.keys(data),
-          
-        },
-        legend: {
-          enabled: true, // Active les légendes
-          layout: 'vertical', // 'horizontal' ou 'vertical'
-          align: 'right', // Aligne les légendes à droite
-          verticalAlign: 'middle', // Alignement vertical : 'top', 'middle', 'bottom'
-          itemStyle: {
-            fontSize: '15px', // Taille de la police des légendes
-            fontWeight: 'bold', // Style de police
+          title: {
+            text: 'Nombre de départs',
           },
         },
+
         series: [
           {
             type: 'column',
-            name: 'raison',
+            name: 'Départs à la retraite',
             data: chartData,
             colorByPoint: true,
+            point: {
+              events: {
+                click: (event) => {
+                  const index = event.point.index;
+                  const clickedYear = Object.keys(data)[index];
+                  this.selectedEmployees = (
+                    data as unknown as { [key: string]: Retraite[] }
+                  )[clickedYear]; // Met à jour la liste
+                  this.openModal();
+                },
+              },
+            },
           },
         ],
-      })
-
-    })
+      });
+    });
   }
 }
-
-

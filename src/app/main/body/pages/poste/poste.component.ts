@@ -6,6 +6,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { PageEvent } from '../../../../api/models/pageEvent';
 import { SearchService } from '../../../../api/services/search.service';
 import { PosteDto } from '../../../../api/models/PosteDto';
+import { SecteurDto } from '../../../../api/models/secteur';
+import { SecteurService } from '../../../../api/services/secteur.service';
 
 @Component({
   selector: 'app-poste',
@@ -17,22 +19,29 @@ export class PosteComponent implements OnInit {
   posteForm: FormGroup;
   postes: PosteDto[] = [];
   paginate: PosteDto[] = [];
+  searchItem: string = '';
   first: number = 0;
   rows: number = 10;
-  filteredData: any;
+  filteredData: PosteDto[] = [];
   itemsPerPage: number = 10;
   currentPage: number = 1;
+  secteurList: SecteurDto[] = [];
 
-  onPageChange(event: number) {
-    this.currentPage = event;
+  private updatePaginatedData(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     this.paginate = this.postes.slice(start, end);
   }
 
+  onPageChange(event: number) {
+    this.currentPage = event;
+    this.updatePaginatedData();
+  }
+
   constructor(
     private service: PosteService,
     private searchService: SearchService,
+    private secteurService: SecteurService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
@@ -43,11 +52,13 @@ export class PosteComponent implements OnInit {
       description: [''],
       niveauDeSalaire: [0],
       remarque: [''],
+      secteur: [''],
     });
   }
 
   ngOnInit(): void {
     this.liste();
+    this.listSecteur();
   }
 
   addPoste() {
@@ -56,7 +67,7 @@ export class PosteComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: `Poste ${data.libelle?.bold} ajouté avec succès`,
+          detail: `Poste ${data.libelle} ajouté avec succès`,
         });
         this.liste();
         this.posteForm?.reset();
@@ -74,23 +85,22 @@ export class PosteComponent implements OnInit {
     });
   }
 
+  onSearch(): void {
+    const term = this.searchItem.toLowerCase();
+    this.filteredData = this.postes.filter((poste) =>
+      poste.libelle?.toLowerCase().includes(term)
+    );
+    this.currentPage = 1;
+    this.updatePaginatedData();
+  }
+
   liste() {
     this.service.getAllPostes().subscribe({
       next: (data: PosteDto[]) => {
         this.postes = data;
-
-        this.filteredData = computed(() => {
-          const query = this.searchService.searchQuery().toLowerCase();
-          const filtered = this.postes.filter((poste) =>
-            poste.libelle?.toLowerCase().includes(query)
-          );
-          const start = this.first;
-          const end = start + this.rows;
-
-          // Applique la pagination sur les résultats filtrés
-          return filtered.slice(start, end);
-        });
-        this.paginate = this.filteredData().slice(0, this.rows);
+        this.filteredData = data;
+        this.currentPage = 1; // Réinitialiser à la première page
+        this.updatePaginatedData();
       },
       error: (err) => {
         this.messageService.add({
@@ -144,6 +154,7 @@ export class PosteComponent implements OnInit {
       description: poste.description,
       niveauDeSalaire: poste.niveauDeSalaire,
       remarque: poste.remarque,
+      secteur: poste.secteur,
     });
   }
 
@@ -166,5 +177,19 @@ export class PosteComponent implements OnInit {
           });
         },
       });
+  }
+  listSecteur() {
+    this.secteurService.getAll().subscribe({
+      next: (data: SecteurDto[]) => {
+        this.secteurList = data;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la récupération de la liste des secteurs',
+        });
+      },
+    });
   }
 }

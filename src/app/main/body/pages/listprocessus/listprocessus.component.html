@@ -5,25 +5,57 @@
   </h4>
 
   <div class="d-flex justify-content-end align-items-center mb-3">
-    <button class="btn btn-primary" (click)="add()">
-      Ajouter
-    </button>
+    <button class="btn btn-primary" (click)="add()">Ajouter</button>
   </div>
 
   <div class="nav-align-top">
     <ul class="nav nav-pills mb-4" role="tablist">
       <li class="nav-item">
-        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-home" aria-controls="navs-pills-top-home" aria-selected="true">Tous ({{recrutements.length}})</button>
+        <button
+          type="button"
+          class="nav-link active"
+          role="tab"
+          data-bs-toggle="tab"
+          data-bs-target="#navs-pills-top-home"
+          aria-controls="navs-pills-top-home"
+          aria-selected="true"
+        >
+          Tous ({{ recrutements.length }})
+        </button>
       </li>
       <li class="nav-item">
-        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile" aria-controls="navs-pills-top-profile" aria-selected="false">En Cours ({{recrutementsActifs.length}})</button>
+        <button
+          type="button"
+          class="nav-link"
+          role="tab"
+          data-bs-toggle="tab"
+          data-bs-target="#navs-pills-top-profile"
+          aria-controls="navs-pills-top-profile"
+          aria-selected="false"
+        >
+          En Cours ({{ recrutementsActifs.length }})
+        </button>
       </li>
       <li class="nav-item">
-        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-messages" aria-controls="navs-pills-top-messages" aria-selected="false">Terminés (1)</button>
+        <button
+          type="button"
+          class="nav-link"
+          role="tab"
+          data-bs-toggle="tab"
+          data-bs-target="#navs-pills-top-messages"
+          aria-controls="navs-pills-top-messages"
+          aria-selected="false"
+        >
+          Terminés ({{recrutementsTermines.length}})
+        </button>
       </li>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane fade show active" id="navs-pills-top-home" role="tabpanel">
+      <div
+        class="tab-pane fade show active"
+        id="navs-pills-top-home"
+        role="tabpanel"
+      >
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
@@ -36,35 +68,33 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><strong><a [routerLink]="['/main/recrutement/detail',27]">{{recru.poste}}</a></strong></td>
-                <td>{{recru.recruteur}}</td>
-                <td>
-                  {{recru.dateDebut | date : 'mediumDate'}}
-                </td>
-                <td> 
-                  {{recru.salaire | currency : 'XOF' :'code':'1.0-0'}}
-                </td>
-                <td><span [class]="getClass(recru.statut!)" >{{recru.statut}}</span></td>
-              </tr>
-
               @for (item of recrutements; track $index) {
               <tr>
-                <td><strong><a [routerLink]="['/main/recrutement/detail',item.id]">{{item.poste?.toUpperCase()}}</a></strong></td>
-                <td>{{item.recruteur}}</td>
                 <td>
-                  {{item.dateDebut | date : 'mediumDate'}}
+                  <strong
+                    ><a [routerLink]="['/main/recrutement/detail', item.id]">{{
+                      item.poste?.toUpperCase()
+                    }}</a></strong
+                  >
                 </td>
-                <td> 
-                  {{item.salaire | currency : 'XOF' :'code':'1.0-0'}}
+                <td>{{ item.recruteur }}</td>
+                <td>
+                  {{ item.dateDebut | date : "mediumDate" }}
                 </td>
-                <td><span [class]="getClass(item.statut!)" >{{item.statut}}</span></td>
+                <td>
+                  {{ item.salaire | currency : "XOF" : "code" : "1.0-0" }}
+                </td>
+                <td>
+                  <span [class]="getClass(item.statut!)">{{
+                    item.statut
+                  }}</span>
+                </td>
               </tr>
-            }@empty {
+              }@empty {
               <tr>
                 <td colspan="5" class="text-center">Aucun poste à pourvoir</td>
               </tr>
-            }
+              }
             </tbody>
           </table>
         </div>
@@ -84,21 +114,31 @@
             <tbody>
               @for (item of recrutementsActifs; track $index) {
               <tr>
-                <td><a>{{item.poste}}</a></td>
-                <td>{{item.recruteur}}</td>
                 <td>
-                  {{item.dateDebut | date : 'mediumDate'}}
+                  <strong
+                  ><a [routerLink]="['/main/recrutement/detail', item.id]">{{
+                    item.poste?.toUpperCase()
+                  }}</a></strong
+                >
                 </td>
-                <td> 
-                  {{item.salaire | currency : 'XOF' :'code':'1.0-0'}}
+                <td>{{ item.recruteur }}</td>
+                <td>
+                  {{ item.dateDebut | date : "mediumDate" }}
                 </td>
-                <td><span class="badge bg-label-success me-1">{{item.statut}}</span></td>
+                <td>
+                  {{ item.salaire | currency : "XOF" : "code" : "1.0-0" }}
+                </td>
+                <td>
+                  <span class="badge bg-label-success me-1">{{
+                    item.statut
+                  }}</span>
+                </td>
               </tr>
-            }@empty {
+              }@empty {
               <tr>
                 <td colspan="5" class="text-center">Aucun poste à pourvoir</td>
               </tr>
-            }
+              }
             </tbody>
           </table>
         </div>
@@ -118,21 +158,27 @@
             <tbody>
               @for (item of recrutementsTermines; track $index) {
               <tr>
-                <td><a>{{item.poste}}</a></td>
-                <td>{{item.recruteur}}</td>
                 <td>
-                  {{item.dateDebut | date : 'mediumDate'}}
+                  <a>{{ item.poste }}</a>
                 </td>
-                <td> 
-                  {{item.salaire | currency : 'XOF' :'code':'1.0-0'}}
+                <td>{{ item.recruteur }}</td>
+                <td>
+                  {{ item.dateDebut | date : "mediumDate" }}
                 </td>
-                <td><span class="badge bg-label-danger me-1">{{item.statut}}</span></td>
+                <td>
+                  {{ item.salaire | currency : "XOF" : "code" : "1.0-0" }}
+                </td>
+                <td>
+                  <span class="badge bg-label-danger me-1">{{
+                    item.statut
+                  }}</span>
+                </td>
               </tr>
-            }@empty {
+              }@empty {
               <tr>
                 <td colspan="5" class="text-center">Aucun poste à pourvoir</td>
               </tr>
-            }
+              }
             </tbody>
           </table>
         </div>

@@ -19,7 +19,7 @@ export class ActivateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
   }
 
   confirm(token:string) {
@@ -28,6 +28,7 @@ export class ActivateComponent implements OnInit {
         this.message =
           'Votre compte a été bien activé.\nMaintenant vous pouvez vous connecter';
         this.submitted = true;
+        this.isOkay = true;
       },
       error: () => {
         this.message = 'le Token a expiré ou est invalide. Veuillez réessayer';
@@ -38,7 +39,7 @@ export class ActivateComponent implements OnInit {
   }
 
   redirectToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   onCodeCompleted(token: string) {

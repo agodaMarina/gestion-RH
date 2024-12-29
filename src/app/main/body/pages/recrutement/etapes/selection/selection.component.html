@@ -1,6 +1,7 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Recrutement /</span> Details du processus
 </h4>
+<p-toast></p-toast>
 <div class="">
   <div class="row">
     <div class="col-md-9">
@@ -10,35 +11,42 @@
             <div>
               <div class="d-flex justify-content-between align-items-right">
                 <h4 class="text-primary mr-5">
-                  Processus de recrutement – {{recrutement.poste}}
+                  Processus de recrutement – {{ recrutement.poste }}
                 </h4>
                 <div>
-                <span class="badge bg-success fs-6">{{recrutement.statut}}</span></div>
+                  <span class="badge bg-success fs-6">{{
+                    recrutement.statut
+                  }}</span>
+                </div>
               </div>
               <p class="text-muted">
-               Ouvert depuis le : <strong>{{recrutement.dateDebut | date:'dd-MM-YYYY'}}</strong>
+                Ouvert depuis le :
+                <strong>{{
+                  recrutement.dateDebut | date : "dd-MM-YYYY"
+                }}</strong>
               </p>
-              <p>Etape Actuelle: {{recrutement.etapeActuelle}}</p>
-              <p class="text-muted">Terminé  le :{{recrutement.dateFin | date:''}}</p>
+              <p>Etape Actuelle: {{ recrutement.etapeActuelle }}</p>
+              <p class="text-muted">
+                Terminé le :{{ recrutement.dateFin | date : "dd-MM-YYYY" }}
+              </p>
             </div>
-            
           </div>
 
           <div class="row mt-4">
             <div class="col-md-6">
               <h6>Details du poste:</h6>
               <p>
-                Poste: {{recrutement.poste}}<br />
-                Salaire: {{recrutement.salaire}}<br />
-                Niveau d'étude: {{recrutement.niveauEtude}}<br />
+                Poste: {{ recrutement.poste }}<br />
+                Salaire: {{ recrutement.salaire }}<br />
+                Niveau d'étude: {{ recrutement.niveauEtude }}<br />
                 Lieu: Lomé-TOGO
               </p>
             </div>
             <div class="col-md-6">
               <h6>Recruteur:</h6>
               <p>
-                Nom: <strong>{{recrutement.recruteur}}</strong><br />
-                
+                Nom: <strong>{{ recrutement.recruteur }}</strong
+                ><br />
               </p>
             </div>
           </div>
@@ -55,352 +63,375 @@
                 </tr>
               </thead>
               <tbody>
-                @for (item of candidates; track $index) {
-                <tr>
-                  <td>{{item.nom}}</td>
-                  <td>{{item.prenom}}</td>
-                  <td>{{item.email}}</td>
-                  <td>{{item.telephone}}</td>
-                  <td>{{item.dateEntretien1 | date: 'mediumDate'}}</td>
-                </tr>
-              }@empty {
-                <tr>
-                  <td colspan="5" ><strong class="text-center">Aucun candidat enregisté</strong> </td>
-                </tr>
-              }
+                <ng-container *ngIf="recrutement.statut === 'EN_COURS'">
+                  @for (item of candidats; track item.id) {
+                  <tr>
+                    <td>
+                      <input
+                        type="checkbox"
+                        [value]="item.id"
+                        (change)="onCheckboxChange($event, item.id!)"
+                      />
+                    </td>
+                    <td>{{ item.nom }}</td>
+                    <td>{{ item.prenom }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.telephone }}</td>
+                    <td>{{ item.moyenne }}</td>
+                  </tr>
+                  }@empty {
+                  <tr>
+                    <td colspan="5">
+                      <strong class="text-center"
+                        >Aucun candidat enregisté</strong
+                      >
+                    </td>
+                  </tr>
+                  }
+                </ng-container>
+                <ng-container *ngIf="recrutement.statut === 'TERMINE'">
+                  @for (item of candidats; track item.id) {
+                  <tr>
+                    <td>{{ item.nom }}</td>
+                    <td>{{ item.prenom }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.telephone }}</td>
+                    <td>{{ item.moyenne }}</td>
+                  </tr>
+                  }@empty {
+                  <tr>
+                    <td colspan="5">
+                      <strong class="text-center"
+                        >Aucun candidat enregisté</strong
+                      >
+                    </td>
+                  </tr>
+                  }
+                </ng-container>
               </tbody>
             </table>
           </div>
 
           <div class="d-flex justify-content-between mt-4">
+            <div></div>
             <div>
-             
-            </div>
-            <div>
-              <p>Total candidats: <strong>{{candidates.length}}</strong></p>
+              <p>
+                Total candidats: <strong>{{ Listcandidats.length }}</strong>
+              </p>
               <p>Candidats évalués: <strong>0</strong></p>
               <p>Candidats Sélectionés: <strong>0</strong></p>
-             
             </div>
           </div>
         </div>
       </div>
     </div>
-    <ng-container *ngIf="recrutement.statut ==='EN_COURS' " >
-    <!-- Bloc des boutons -->
-    <div class="col-md-3">
-      <div class="d-flex flex-column gap-3">
-        <button class="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#addModal"
-        >Ajouter des candidats</button>
-        <button class="btn btn-warning" (click)="terminer()">Terminer le processus</button>
+    <ng-container *ngIf="recrutement.statut === 'EN_COURS'">
+      <!-- Bloc des boutons -->
+      <div class="col-md-3">
+        <div class="d-flex flex-column gap-3">
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addModal"
+          >
+            Ajouter des candidats
+          </button>
+          <button class="btn btn-warning" (click)="terminer()">
+            Terminer le processus
+          </button>
+        </div>
       </div>
-    </div>
-  </ng-container>
+    </ng-container>
   </div>
 </div>
 
 <div
-class="modal fade"
-id="addModal"
-tabindex="-1"
-aria-labelledby="addModalLabel"
-aria-hidden="true"
+  class="modal fade"
+  id="addModal"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
 >
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="addModalLabel">
-        Ajouter un nouveau Candidat
-      </h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div class="modal-body">
-      <!-- Contenu du formulaire ou autre contenu à ajouter -->
-      <form [formGroup]="candidatureForm">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="name" class="form-label">Nom</label>
-              <div class="input-group input-group-merge">
-                <span
-                  id="basic-icon-default-fullname2"
-                  class="input-group-text"
-                  ><i class="bx bx-user"></i
-                ></span>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="nom"
-                  name="nom"
-                  placeholder="Doe"
-                  aria-label="John Doe"
-                  aria-describedby="basic-icon-default-fullname2"
-                />
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">
+          Ajouter un nouveau Candidat
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenu du formulaire ou autre contenu à ajouter -->
+        <form [formGroup]="candidatureForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="name" class="form-label">Nom</label>
+                <div class="input-group input-group-merge">
+                  <span
+                    id="basic-icon-default-fullname2"
+                    class="input-group-text"
+                    ><i class="bx bx-user"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="nom"
+                    name="nom"
+                    placeholder="Doe"
+                    aria-label="John Doe"
+                    aria-describedby="basic-icon-default-fullname2"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="email" class="form-label">Prénom</label>
-              <div class="input-group input-group-merge">
-                <span
-                  id="basic-icon-default-fullname2"
-                  class="input-group-text"
-                  ><i class="bx bx-user"></i
-                ></span>
-                <input
-                  type="text"
-                  name="prenom"
-                  class="form-control"
-                  formControlName="prenom"
-                  placeholder="John"
-                  aria-label="John Doe"
-                  aria-describedby="basic-icon-default-fullname2"
-                />
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="email" class="form-label">Prénom</label>
+                <div class="input-group input-group-merge">
+                  <span
+                    id="basic-icon-default-fullname2"
+                    class="input-group-text"
+                    ><i class="bx bx-user"></i
+                  ></span>
+                  <input
+                    type="text"
+                    name="prenom"
+                    class="form-control"
+                    formControlName="prenom"
+                    placeholder="John"
+                    aria-label="John Doe"
+                    aria-describedby="basic-icon-default-fullname2"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="phone" class="form-label">Téléphone</label>
-              <div class="input-group input-group-merge">
-                <span
-                  id="basic-icon-default-phone2"
-                  class="input-group-text"
-                  ><i class="bx bx-phone"></i
-                ></span>
-                <input
-                  type="text"
-                  formControlName="telephone"
-                  name="telephone"
-                  class="form-control phone-mask"
-                  placeholder="65 87 99 89"
-                  aria-describedby="basic-icon-default-phone2"
-                />
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="phone" class="form-label">Téléphone</label>
+                <div class="input-group input-group-merge">
+                  <span id="basic-icon-default-phone2" class="input-group-text"
+                    ><i class="bx bx-phone"></i
+                  ></span>
+                  <input
+                    type="text"
+                    formControlName="telephone"
+                    name="telephone"
+                    class="form-control phone-mask"
+                    placeholder="65 87 99 89"
+                    aria-describedby="basic-icon-default-phone2"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="address" class="form-label">Email</label>
-              <div class="input-group input-group-merge">
-                <span
-                  id="basic-icon-default-phone2"
-                  class="input-group-text"
-                  ><i class="bx bx-envelope"></i
-                ></span>
-                <input
-                  type="text"
-                  formControlName="email"
-                  name="email"
-                  class="form-control"
-                  placeholder="test@exemple.com"
-                  aria-describedby="basic-icon-default-phone2"
-                />
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="address" class="form-label">Email</label>
+                <div class="input-group input-group-merge">
+                  <span id="basic-icon-default-phone2" class="input-group-text"
+                    ><i class="bx bx-envelope"></i
+                  ></span>
+                  <input
+                    type="text"
+                    formControlName="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="test@exemple.com"
+                    aria-describedby="basic-icon-default-phone2"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="address" class="form-label">Adresse</label>
-              <div class="input-group input-group-merge">
-                <span
-                  id="basic-icon-default-phone2"
-                  class="input-group-text"
-                  ><i class="bx bx-home"></i
-                ></span>
-                <input
-                  type="text"
-                  formControlName="adresse"
-                  name="adresse"
-                  class="form-control"
-                  placeholder="Lomé, Togo"
-                  aria-label="658 799 8941"
-                  aria-describedby="basic-icon-default-phone2"
-                />
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="address" class="form-label">Adresse</label>
+                <div class="input-group input-group-merge">
+                  <span id="basic-icon-default-phone2" class="input-group-text"
+                    ><i class="bx bx-home"></i
+                  ></span>
+                  <input
+                    type="text"
+                    formControlName="adresse"
+                    name="adresse"
+                    class="form-control"
+                    placeholder="Lomé, Togo"
+                    aria-label="658 799 8941"
+                    aria-describedby="basic-icon-default-phone2"
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="city" class="form-label"
-                >Prochaine action à mener</label
-              >
-              <div class="input-group input-group-merge">
-                <span
-                  id="basic-icon-default-phone2"
-                  class="input-group-text"
-                  ><i class="bx bx-chevrons-right"></i>
-                </span>
-                <input
-                  type="text"
-                  formControlName="prochaineAction"
-                  name="prochaineAction"
-                  class="form-control"
-                  placeholder="quelle est la prochaine étape à mener ?"
-                  aria-label="658 799 8941"
-                  aria-describedby="basic-icon-default-phone2"
-                />
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="city" class="form-label"
+                  >Prochaine action à mener</label
+                >
+                <div class="input-group input-group-merge">
+                  <span id="basic-icon-default-phone2" class="input-group-text"
+                    ><i class="bx bx-chevrons-right"></i>
+                  </span>
+                  <input
+                    type="text"
+                    formControlName="prochaineAction"
+                    name="prochaineAction"
+                    class="form-control"
+                    placeholder="quelle est la prochaine étape à mener ?"
+                    aria-label="658 799 8941"
+                    aria-describedby="basic-icon-default-phone2"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="state" class="form-label"
-                >date d'entretien 1</label
-              >
-              <div class="input-group input-group-merge">
-                <span
-                  id="basic-icon-default-phone2"
-                  class="input-group-text"
-                  ><i class="bx bx-calendar"></i
-                ></span>
-                <input
-                  type="date"
-                  formControlName="dateEntretien1"
-                  name="dateEntretien1"
-                  class="form-control"
-                  aria-describedby="basic-icon-default-phone2"
-                />
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="state" class="form-label">date d'entretien 1</label>
+                <div class="input-group input-group-merge">
+                  <span id="basic-icon-default-phone2" class="input-group-text"
+                    ><i class="bx bx-calendar"></i
+                  ></span>
+                  <input
+                    type="date"
+                    formControlName="dateEntretien1"
+                    name="dateEntretien1"
+                    class="form-control"
+                    aria-describedby="basic-icon-default-phone2"
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="defaultSelect" class="form-label"
-                >Appréciation Globale
-              </label>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label"
+                  >Appréciation Globale
+                </label>
 
-              <select
-                id="defaultSelect"
-                class="form-select"
-                name="apreciationGlobale"
-                formControlName="apreciationGlobale"
-              >
-                <option value="Convoquer pour être embauché">
-                  Convoquer pour être embauché
-                </option>
-                <option value="Convoquer pour second entretien">
-                  Convoquer pour second entretien
-                </option>
-                <option value="Convoquer pour une période d'essai">
-                  Convoquer pour une période d'essai
-                </option>
-              </select>
+                <select
+                  id="defaultSelect"
+                  class="form-select"
+                  name="apreciationGlobale"
+                  formControlName="apreciationGlobale"
+                >
+                  <option value="Convoquer pour être embauché">
+                    Convoquer pour être embauché
+                  </option>
+                  <option value="Convoquer pour second entretien">
+                    Convoquer pour second entretien
+                  </option>
+                  <option value="Convoquer pour une période d'essai">
+                    Convoquer pour une période d'essai
+                  </option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="defaultSelect" class="form-label"
-                >Note Expérience
-              </label>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label"
+                  >Note Expérience
+                </label>
 
-              <input
+                <input
                   type="number"
                   formControlName="noteExperience"
                   name="noteExperience"
                   class="form-control"
                   aria-describedby="basic-icon-default-phone2"
                 />
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="defaultSelect" class="form-label"
-                >Note Presentation
-              </label>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label"
+                  >Note Presentation
+                </label>
 
-              <input
+                <input
                   type="number"
                   formControlName="notePresentation"
                   name="notePresentation"
                   class="form-control"
                   aria-describedby="basic-icon-default-phone2"
                 />
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="defaultSelect" class="form-label"
-                >Note Compétence et Atout
-              </label>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label"
+                  >Note Compétence et Atout
+                </label>
 
-              <input
-              type="number"
-              formControlName="noteCompetenceEtAtout"
-              name="noteCompetenceEtAtout"
-              class="form-control"
-              aria-describedby="basic-icon-default-phone2"
-            />
+                <input
+                  type="number"
+                  formControlName="noteCompetenceEtAtout"
+                  name="noteCompetenceEtAtout"
+                  class="form-control"
+                  aria-describedby="basic-icon-default-phone2"
+                />
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="defaultSelect" class="form-label"
-                >Note Savoir être
-              </label>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label"
+                  >Note Savoir être
+                </label>
 
-              <input
+                <input
                   type="number"
                   formControlName="noteSavoirEtre"
                   name="noteSavoirEtre"
                   class="form-control"
                   aria-describedby="basic-icon-default-phone2"
                 />
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="defaultSelect" class="form-label"
-                >Note Qualité et défaut
-              </label>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label"
+                  >Note Qualité et défaut
+                </label>
 
-              <input
+                <input
                   type="number"
                   formControlName="noteQualiteEtDefaut"
                   name="noteQualiteEtDefaut"
                   class="form-control"
                   aria-describedby="basic-icon-default-phone2"
                 />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="defaultSelect" class="form-label">Statut </label>
+              <select
+                id="defaultSelect"
+                class="form-select"
+                formControlName="estRetenu"
+                name="estRetenu"
+              >
+                <option ngValue="true">Accepté</option>
+                <option ngValue="false">Rejeté</option>
+              </select>
             </div>
           </div>
-          <div class="col-md-6">
-            <label for="defaultSelect" class="form-label"
-                >Statut
-              </label>
-              <select 
-              id="defaultSelect"
-                class="form-select"
-              formControlName="estRetenu"
-              name="estRetenu">
-                <option ngValue=true>Accepté</option>
-                <option ngValue=false>Rejeté</option>
-              </select>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        data-bs-dismiss="modal"
-      >
-        Fermer
-      </button>
-      <button type="submit" class="btn btn-primary" (click)="add(recrutement.id!)">
-        Enregistrer
-      </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fermer
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="add(recrutement.id!)"
+        >
+          Enregistrer
+        </button>
+      </div>
     </div>
   </div>
-</div>
 </div>

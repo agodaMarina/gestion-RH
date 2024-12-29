@@ -8,4 +8,41 @@
     
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   }
+  .timeline {
+    list-style: none;
+    padding: 0;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background-color: #dee2e6;
+    transform: translateX(-50%);
+  }
+  .timeline li {
+    margin-bottom: 30px;
+    position: relative;
+  }
+  .timeline-badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  .timeline-panel {
+    width: 45%;
+    position: relative;
+    border-radius: 5px;
+  }
+  .timeline-inverted .timeline-panel {
+    margin-left: auto;
+  }
   

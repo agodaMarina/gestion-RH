@@ -11,6 +11,7 @@ import { Error500Component } from './error/error500/error500.component';
 import { Error403Component } from './error/error403/error403.component';
 import { Error401Component } from './error/error401/error401.component';
 import { Error400Component } from './error/error400/error400.component';
+import { LoadingComponent } from './loading/loading.component';
 
 
 
@@ -21,7 +22,8 @@ import { Error400Component } from './error/error400/error400.component';
     Error500Component,
     Error403Component,
     Error401Component,
-    Error400Component
+    Error400Component,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

@@ -48,6 +48,7 @@ export class RecrutementService {
   getAll(): Observable<RecrutementDto[]> {
     return this.http.get<RecrutementDto[]>(`${this.baseUrl}/all`);
   }
+  
   setRecrutementId(id: number): void {
     this.recrutementIdSignal.set(id);
   }

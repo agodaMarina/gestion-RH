@@ -186,7 +186,7 @@ export class AbsenceComponent implements OnInit {
   }
 
   listeEmploye() {
-    this.emploiyerService.getEmployes().subscribe({
+    this.emploiyerService.getEmployeActifs().subscribe({
       next: (value: EmployeDto[]) => {
         this.employes = value;
       },

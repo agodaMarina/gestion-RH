@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Register } from '../../api/models/register';
 import { AuthenticationService } from '../../api/services/authentication.service';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../api/services/loading.service';
+import { finalize } from 'rxjs';
 
 
 @Component({
@@ -13,10 +15,13 @@ export class RegisterComponent {
   registerRequest: Register = { username: '', email: '', password: '' };
   errorMsg: Array<string> = [];
 
-  constructor(private service: AuthenticationService, private router: Router) {}
+  constructor(private service: AuthenticationService, private router: Router,private loadingService: LoadingService) {}
 
   register() {
-    this.service.register(this.registerRequest).subscribe({
+    this.loadingService.setLoading(true);
+    this.service.register(this.registerRequest)
+    .pipe(finalize(() => this.loadingService.setLoading(false)))
+    .subscribe({
       next: (response) => {
         this.router.navigateByUrl('/auth/activate');
       },

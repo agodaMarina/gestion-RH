@@ -18,17 +18,7 @@ export class ListprocessusComponent implements OnInit {
   nombreCandidats: number = 10;
   recrutementsActifs: RecrutementDto[] = [];
   recrutementsTermines: RecrutementDto[] = [];
-  recru = {
-    id: 27,
-    poste: 'Consultant Data',
-    salaire: 55000,
-    niveauEtude: 'Bac+4',
-    recruteur: 'Paul Martin',
-    statut: 'TERMINER',
-    etapeActuelle: 'Évaluation des CV',
-    dateDebut: '2024-02-01',
-    dateFin: '2024-03-15',
-  };
+  
   constructor(
     private recrutementService: RecrutementService,
     private searchService: SearchService,
@@ -65,7 +55,7 @@ export class ListprocessusComponent implements OnInit {
           (recrutement) => recrutement.statut === 'EN_COURS'
         );
         this.recrutementsTermines = data.filter(
-          (recrutement) => recrutement.statut === 'TERMINER'
+          (recrutement) => recrutement.statut === 'TERMINE'
         );
         // Signal calculé pour filtrer la liste d'employés
         this.filteredjobs = computed(() => {

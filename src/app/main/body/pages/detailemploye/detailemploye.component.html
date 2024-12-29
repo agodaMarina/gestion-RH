@@ -6,16 +6,14 @@
       <div class="card-body pt-12">
         <div class="user-avatar-section">
           <div class="d-flex align-items-center flex-column">
-            <div class="avatar mb-4" >
-              <img [src]="getProfileImg(employe.sexe)" alt="profile">
+            <div class="avatar mb-4">
+              <img [src]="getProfileImg(employe.sexe)" alt="profile" />
             </div>
             <div class="user-info text-center">
               <h5>{{ employe.nom }} {{ employe.prenom }}</h5>
               <span class="badge bg-label-secondary">{{ employe.csp }}</span
               ><br />
-              <span class="badge bg-label-primary">{{
-                employe.poste
-              }}</span>
+              <span class="badge bg-label-primary">{{ employe.poste }}</span>
             </div>
           </div>
         </div>
@@ -23,11 +21,9 @@
         <h5 class="pb-4 border-bottom mb-4">Details</h5>
         <div class="info-container">
           <ul class="list-unstyled mb-6">
-        
-          
             <li class="mb-2">
               <span class="h6">Date d'embauche: </span>
-              <span>{{ employe.dateEmbauche | date: 'dd-MM-YYYY' }}</span>
+              <span>{{ employe.dateEmbauche | date : "dd-MM-YYYY" }}</span>
             </li>
             <li class="mb-2">
               <span class="h6">Ancienneté: </span>
@@ -57,7 +53,6 @@
               <span class="h6">Situation Familiale: </span>
               <span>{{ employe.situationFamiliale }}</span>
             </li>
-           
           </ul>
           <div class="d-flex justify-content-center">
             <a
@@ -80,156 +75,240 @@
 
   <!-- User Content -->
   <div class="col-xl-8 col-lg-7 order-0 order-md-1">
-      <div class="nav-align-top mb-4">
-        <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-          <li class="nav-item">
-            <button
-              type="button"
-              class="nav-link active"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#navs-pills-justified-home"
-              aria-controls="navs-pills-justified-home"
-              aria-selected="true"
+    <div class="alert alert-warning alert-dismissible" role="alert" *ngIf="!employe.isActif">
+      {{ message }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Fermer"
+      ></button>
+    </div>
+    <div class="nav-align-top mb-4">
+      <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link active"
+            role="tab"
+            data-bs-toggle="tab"
+            data-bs-target="#navs-pills-justified-home"
+            aria-controls="navs-pills-justified-home"
+            aria-selected="true"
+          >
+            <i class="tf-icons bx bx-home"></i> Historique
+            <span
+              class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
+              >3</span
             >
-              <i class="tf-icons bx bx-home"></i> Historique
-              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger">3</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button
-              type="button"
-              class="nav-link"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#navs-pills-justified-profile"
-              aria-controls="navs-pills-justified-profile"
-              aria-selected="false"
-            >
-              <i class="tf-icons bx bx-user"></i> Contrat
-            </button>
-          </li>
-          <li class="nav-item">
-            <button
-              type="button"
-              class="nav-link"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#navs-pills-justified-messages"
-              aria-controls="navs-pills-justified-messages"
-              aria-selected="false"
-            >
-              <i class="tf-icons bx bx-message-square"></i> Absences
-            </button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
-            <div class="container mt-4">
-              <div class="timeline">
-                <!-- Timeline Item 1 -->
-                <div class="d-flex align-items-start mb-4">
-                  <div class="timeline-icon">
-                    <span class="badge bg-primary rounded-circle">&nbsp;</span>
-                  </div>
-                  <div class="ms-3">
-                    <h6 class="fw-bold mb-0">12 Invoices have been paid <span class="text-muted small ms-2">12 min ago</span></h6>
-                    <p class="mb-2">Invoices have been paid to the company</p>
-                    <a href="#" class="btn btn-sm btn-light text-danger">
-                      <i class="bi bi-file-earmark-pdf"></i> invoices.pdf
-                    </a>
-                  </div>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link"
+            role="tab"
+            data-bs-toggle="tab"
+            data-bs-target="#navs-pills-justified-profile"
+            aria-controls="navs-pills-justified-profile"
+            aria-selected="false"
+          >
+            <i class="tf-icons bx bx-user"></i> Contrat
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link"
+            role="tab"
+            data-bs-toggle="tab"
+            data-bs-target="#navs-pills-justified-messages"
+            aria-controls="navs-pills-justified-messages"
+            aria-selected="false"
+          >
+            <i class="tf-icons bx bx-message-square"></i> Absences
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div
+          class="tab-pane fade show active"
+          id="navs-pills-justified-home"
+          role="tabpanel"
+        >
+          <div class="container mt-4">
+            <div class="timeline">
+              <!-- Timeline Item 1 -->
+              <div class="d-flex align-items-start mb-4">
+                <div class="timeline-icon">
+                  <span class="badge bg-primary rounded-circle">&nbsp;</span>
                 </div>
-            
-                <!-- Timeline Item 2 -->
-                <div class="d-flex align-items-start mb-4">
-                  <div class="timeline-icon">
-                    <span class="badge bg-success rounded-circle">&nbsp;</span>
-                  </div>
-                  <div class="ms-3">
-                    <h6 class="fw-bold mb-0">Client Meeting <span class="text-muted small ms-2">45 min ago</span></h6>
-                    <p class="mb-2">Project meeting with John 10:15am</p>
-                    <div class="d-flex align-items-center">
-                      <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="client">
-                      <div>
-                        <span class="fw-bold d-block">Lester McCarthy (Client)</span>
-                        <small class="text-muted">CEO of ThemeSelection</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- Timeline Item 3 -->
-                <div class="d-flex align-items-start">
-                  <div class="timeline-icon">
-                    <span class="badge bg-info rounded-circle">&nbsp;</span>
-                  </div>
-                  <div class="ms-3">
-                    <h6 class="fw-bold mb-0">Create a new project for client <span class="text-muted small ms-2">2 Days ago</span></h6>
-                    <p class="mb-2">6 team members in a project</p>
-                    <div class="d-flex align-items-center">
-                      <img src="https://via.placeholder.com/40" class="rounded-circle me-1" alt="member">
-                      <img src="https://via.placeholder.com/40" class="rounded-circle me-1" alt="member">
-                      <span class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">+3</span>
-                    </div>
-                  </div>
+                <div class="ms-3">
+                  <h6 class="fw-bold mb-0">
+                    12 Invoices have been paid
+                    <span class="text-muted small ms-2">12 min ago</span>
+                  </h6>
+                  <p class="mb-2">Invoices have been paid to the company</p>
+                  <a href="#" class="btn btn-sm btn-light text-danger">
+                    <i class="bi bi-file-earmark-pdf"></i> invoices.pdf
+                  </a>
                 </div>
               </div>
-            </div>
-            
-          </div>
-          <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
-            <div class="container mt-4 p-3 border rounded bg-light">
-              <!-- Status -->
-              <div class="d-flex align-items-center mb-3">
-                <span class="me-2"><i class="bi bi-circle text-primary"></i> Type</span>
-                <span class="fw-bold ms-auto text-primary">{{contrat.type}}</span>
-              </div>
-            
-              <!-- Due Date -->
-              <div class="d-flex align-items-center mb-3">
-                <span class="me-2"><i class="bx bx-calendar"></i> Date de Début</span>
-                <span class="fw-bold ms-auto">{{contrat.dateDebut}}</span>
-              </div>
-            
-              <!-- Assignee -->
-              <div class="d-flex align-items-center mb-3">
-                <span class="me-2"><i class="bi bi-people"></i> Assignee</span>
-                <div class="ms-auto d-flex align-items-center">
-                  <img src="https://via.placeholder.com/30" class="rounded-circle me-2" alt="assignee">
-                  <span class="me-3 fw-bold">Calum Tyler</span>
-                  <span class="badge bg-success text-white rounded-pill me-2">DT</span>
-                  <span class="me-3 fw-bold">Dawson Tarman</span>
-                  <button class="btn btn-sm btn-outline-primary">Invite</button>
-                </div>
-              </div>
-            
-              <!-- Tags -->
-              <div class="d-flex align-items-center mb-3">
-                <span class="me-2"><i class="bx bx-tags"></i>Etat</span>
-                <div class="ms-auto">
-                  <span class="badge bg-primary text-white me-2">Dashboard</span>
-                  <span class="badge bg-warning text-dark">{{contrat.etat}}</span>
-                </div>
-              </div>
-            
-              <!-- Description -->
-              <div>
-                <span class="d-block mb-2"><i class="bi bi-card-text"></i> Description</span>
-                <textarea class="form-control" rows="3" readonly>
-            This page aims to provide real-time insights into employee performance metrics and key business indicators.
-                </textarea>
-              </div>
-            </div>
-            
-          </div>
-          <div class="tab-pane fade" id="navs-pills-justified-messages" role="tabpanel">
-            <full-calendar [options]="calendarOptions"></full-calendar>
 
+              <!-- Timeline Item 2 -->
+              <div class="d-flex align-items-start mb-4">
+                <div class="timeline-icon">
+                  <span class="badge bg-success rounded-circle">&nbsp;</span>
+                </div>
+                <div class="ms-3">
+                  <h6 class="fw-bold mb-0">
+                    Client Meeting
+                    <span class="text-muted small ms-2">45 min ago</span>
+                  </h6>
+                  <p class="mb-2">Project meeting with John 10:15am</p>
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="https://via.placeholder.com/40"
+                      class="rounded-circle me-2"
+                      alt="client"
+                    />
+                    <div>
+                      <span class="fw-bold d-block"
+                        >Lester McCarthy (Client)</span
+                      >
+                      <small class="text-muted">CEO of ThemeSelection</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Timeline Item 3 -->
+              <div class="d-flex align-items-start">
+                <div class="timeline-icon">
+                  <span class="badge bg-info rounded-circle">&nbsp;</span>
+                </div>
+                <div class="ms-3">
+                  <h6 class="fw-bold mb-0">
+                    Create a new project for client
+                    <span class="text-muted small ms-2">2 Days ago</span>
+                  </h6>
+                  <p class="mb-2">6 team members in a project</p>
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="https://via.placeholder.com/40"
+                      class="rounded-circle me-1"
+                      alt="member"
+                    />
+                    <img
+                      src="https://via.placeholder.com/40"
+                      class="rounded-circle me-1"
+                      alt="member"
+                    />
+                    <span
+                      class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                      style="width: 40px; height: 40px"
+                      >+3</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="navs-pills-justified-profile"
+          role="tabpanel"
+        >
+          <div class="container mt-4 p-3 border rounded bg-light">
+            <!-- Status -->
+            <div class="d-flex align-items-center mb-3">
+              <span class="me-2"
+                ><i class="bi bi-circle text-primary"></i> Type</span
+              >
+              <span class="fw-bold ms-auto text-primary">{{
+                contrat.type
+              }}</span>
+            </div>
+
+            <!-- Due Date -->
+            <div class="d-flex align-items-center mb-3">
+              <span class="me-2"
+                ><i class="bx bx-calendar"></i> Date de Début</span
+              >
+              <span class="fw-bold ms-auto">{{ contrat.dateDebut }}</span>
+            </div>
+
+            <!-- Assignee -->
+            <div class="d-flex align-items-center mb-3">
+              <span class="me-2"
+                ><i class="bx bx-calendar"></i> Date de Fin</span
+              >
+              <span class="fw-bold ms-auto">{{ contrat.dateFin }}</span>
+            </div>
+
+            <!-- Tags -->
+            <div class="d-flex align-items-center mb-3">
+              <span class="me-2"><i class="bx bx-tags"></i>Etat</span>
+              <div class="ms-auto">
+                @if (contrat.etat) {
+                <span class="badge bg-warning text-dark">ACTIF </span>
+                } @else {
+                <span class="badge bg-warning text-dark">INACTIF</span>
+                }
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <span class="d-block mb-2"
+                ><i class="bi bi-card-text"></i> Description</span
+              >
+              <textarea class="form-control" rows="5" readonly>
+            This page aims to provide real-time insights into employee performance metrics and key business indicators.
+                </textarea
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="navs-pills-justified-messages"
+          role="tabpanel"
+        >
+          <div class="container py-3">
+            <div class="row">
+              <div class="col-md-10 offset-md-1">
+                <ul class="timeline">
+                  @for (item of absences; track $index) {
+                  <li [ngClass]="getinverted($index)">
+                    <div class="timeline-badge bg-primary"></div>
+                    <div class="timeline-panel card shadow-sm p-3">
+                      <h5 class="timeline-title fw-bold">{{ item.type }}</h5>
+                      <p class="text-muted mb-1">
+                        {{ item.dateDebut }} - {{ item.dateFin }}
+                      </p>
+                      <p>{{ item.motif }}</p>
+                    </div>
+                  </li>
+                  }@empty {
+                  <li>
+                    <div class="timeline-badge bg-primary"></div>
+                    <div class="timeline-panel card shadow-sm p-3">
+                      <h5 class="timeline-title fw-bold">Aucune absence</h5>
+                      <p class="text-muted mb-1">
+                        Aucune absence n'a été enregistrée pour le moment
+                      </p>
+                    </div>
+                  </li>
+                  }
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-   
+    </div>
   </div>
   <!--/ User Content -->
 

@@ -41,7 +41,7 @@ import { SelectionComponent } from './body/pages/recrutement/etapes/selection/se
 
 import { PaginationComponent } from './body/pagination/pagination.component';
 import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus.component';
-import { FullCalendarModule } from '@fullcalendar/angular';
+
 @NgModule({
   declarations: [
     MainComponent,
@@ -84,7 +84,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     StepsModule,
     BadgeModule,
     DividerModule,
-    FullCalendarModule
+
   ],
   providers: [ConfirmationService, MessageService],
 })

@@ -42,6 +42,10 @@ export class EmployeService {
     return this.http.get<Depart>(`${this.url}/${id}/depart`);
   }
 
+  prevoirRetraites(intervalleMax: number = 5): Observable<Map<number, any[]>> {
+    return this.http.get<Map<number, any[]>>(`${this.url}?intervalleMax=${intervalleMax}`);
+  }
+
   importEmployees(file: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file);
