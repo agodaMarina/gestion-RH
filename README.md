@@ -1,6 +1,7 @@
 # SaferFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.9.
+Ce projet a été réalisé avec [Angular CLI](https://github.com/angular/angular-cli) version 17.3.9 et Spring Boot. Cette application permet la gestion des ressources humaines en ce qui concerne les processus de recrutement , la gestion des employés et leurs contrats , la gestion des absences et des départs. L'application fournie aussi quelques statistiques et prévisions pour aider les RH dans leurs tâches.
+
 
 ## Development server
 
