@@ -1,10 +1,11 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Employés /</span> Ajouter un employé
 </h4>
-
+<p-toast />
 <div class="card">
   <div class="card-body">
-    <form (ngSubmit)="submit()">
+   
+    <form [formGroup]="form">
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
@@ -17,8 +18,11 @@
                 type="text"
                 class="form-control"
                 id="basic-icon-default-fullname"
-                placeholder="John Doe"
-                aria-label="John Doe"
+                placeholder="John"
+                aria-label="John"
+                name="nom"
+                formControlName="nom"
+                
                 aria-describedby="basic-icon-default-fullname2"
               />
             </div>
@@ -35,8 +39,10 @@
                 type="text"
                 class="form-control"
                 id="basic-icon-default-fullname"
-                placeholder="John Doe"
-                aria-label="John Doe"
+                placeholder="Doe"
+                aria-label="Doe"
+                name="prenom"
+                formControlName="prenom"
                 aria-describedby="basic-icon-default-fullname2"
               />
             </div>
@@ -55,6 +61,8 @@
                 class="form-control phone-mask"
                 placeholder="658 799 8941"
                 aria-label="658 799 8941"
+                name="tel"
+                formControlName="tel"
                 aria-describedby="basic-icon-default-phone2"
               />
             </div>
@@ -71,7 +79,9 @@
                 type="text"
                 id="basic-icon-default-phone"
                 class="form-control phone-mask"
-                placeholder="658 799 8941"
+                placeholder="adresse"
+                name="adresse"
+                formControlName="adresse"
                 aria-label="658 799 8941"
                 aria-describedby="basic-icon-default-phone2"
               />
@@ -85,14 +95,17 @@
               <span id="basic-icon-default-phone2" class="input-group-text"
                 ><i class="bx bx-male-sign"></i>
               </span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
+              <select
+                id="csp"
+                name="sexe"
+                formControlName="sexe"
+                class="form-select"
+                required
+              >
+                <option value="Féminin">Féminin</option>
+                <option value="Masculin">Masculin</option>
+             
+              </select>
             </div>
           </div>
         </div>
@@ -107,7 +120,8 @@
                 type="text"
                 id="basic-icon-default-phone"
                 class="form-control phone-mask"
-                placeholder="658 799 8941"
+                name="situationFamiliale"
+                formControlName="situationFamiliale"
                 aria-label="658 799 8941"
                 aria-describedby="basic-icon-default-phone2"
               />
@@ -122,146 +136,119 @@
                 ><i class="bx bx-calendar"></i
               ></span>
               <input
-                type="text"
+                type="date"
                 id="basic-icon-default-phone"
                 class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
+                name="dateNaissance"
+                formControlName="dateNaissance"
                 aria-describedby="basic-icon-default-phone2"
               />
             </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="country" class="form-label">Date D'embauche</label>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-calendar"></i
-              ></span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
-            </div>
-          </div>
-        </div>
         <div class="col-md-6">
           <div class="mb-3">
             <label for="company" class="form-label">Csp</label>
             <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-buildings"></i
-              ></span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
+              <select
+                id="csp"
+                name="csp"
+                formControlName="csp"
+                class="form-select"
+                required
+              >
+                <option *ngFor="let csp of csps" [ngValue]="csp.libelle">
+                  {{ csp.libelle }}
+                </option>
+              </select>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="job" class="form-label">Secteur</label>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-building"></i
-              ></span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
-            </div>
-          </div>
-        </div>
+
         <div class="col-md-6">
           <div class="mb-3">
             <label for="salary" class="form-label">Poste</label>
             <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-briefcase"></i
-              ></span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
+              <select
+                id="csp"
+                name="poste"
+                formControlName="poste"
+                class="form-select"
+                required
+              >
+                <option *ngFor="let p of postes" [ngValue]="p.libelle">
+                  {{ p.libelle }}
+                </option>
+              </select>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="birthday" class="form-label">Type de contrat</label>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-notepad"></i
-              ></span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="" class="form-label">Salaire de base</label>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-money"></i
-              ></span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="" class="form-label">Ancienneté</label>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-phone2" class="input-group-text"
-                ><i class="bx bx-phone"></i
-              ></span>
-              <input
-                type="text"
-                id="basic-icon-default-phone"
-                class="form-control phone-mask"
-                placeholder="658 799 8941"
-                aria-label="658 799 8941"
-                aria-describedby="basic-icon-default-phone2"
-              />
-            </div>
+     
+      </div>
+    </form>
+    <div class="divider">
+      <div class="divider-text">Contrat</div>
+    </div>
+    <form #f="ngForm">
+      <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="birthday" class="form-label">Type de contrat</label>
+          <div class="input-group input-group-merge">
+            <select
+              id="csp"
+              name="type"
+              [(ngModel)]="contrat.type"
+              class="form-select"
+              required
+            >
+              <option value="CDD">CDD</option>
+              <option value="CDI">CDI</option>
+              <option value="STAGE">STAGE</option>
+              <option value="INTERIM">INTERIM</option>
+            </select>
           </div>
         </div>
       </div>
-
-        <button type="submit" class="btn btn-primary">Ajouter</button>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="" class="form-label">Date De Debut</label>
+          <div class="input-group input-group-merge">
+            <span id="basic-icon-default-phone2" class="input-group-text"
+              ><i class="bx bx-money"></i
+            ></span>
+            <input
+              type="date"
+              id="basic-icon-default-phone"
+              class="form-control phone-mask"
+              name="dateDebut"
+              [(ngModel)]="contrat.dateDebut"
+              aria-describedby="basic-icon-default-phone2"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="" class="form-label">Date de Fin</label>
+          <div class="input-group input-group-merge">
+            <span id="basic-icon-default-phone2" class="input-group-text"
+              ><i class="bx bx-phone"></i
+            ></span>
+            <input
+              type="date"
+              id="basic-icon-default-phone"
+              class="form-control phone-mask"
+              name="dateFin"
+              [(ngModel)]="contrat.dateFin"
+              aria-describedby="basic-icon-default-phone2"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
     </form>
+    <button type="submit" class="btn btn-primary" (click)="add()">Ajouter</button>
   </div>
 </div>

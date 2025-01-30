@@ -5,9 +5,9 @@
   <div class="d-flex justify-content-end align-items-center mb-3">
     <div>
       <!-- Bouton exporter -->
-      <a class="btn btn-secondary m-2" (click)="export()">
+      <button class="btn btn-secondary m-2" (click)="export()">
         <span class="tf-icons bx bx-export bx-18px me-2"></span> Exporter
-      </a>
+      </button>
     </div>
   </div>
    
@@ -16,7 +16,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Poste Concerné</th>
+          <th>Statut</th>
           <th>Nom</th>
           <th>Prenom</th>
           <th>Moyenne</th>
@@ -28,7 +28,18 @@
         <ng-container *ngFor="let item of candidats">
           <tr >
             <td >
-              <strong></strong>
+              <strong>
+                <span
+                  class="badge rounded-pill bg-success"
+                  *ngIf="item.estRetenu"
+                  >Recruté</span
+                >
+                <span
+                  class="badge rounded-pill bg-danger"
+                  *ngIf="!item.estRetenu"
+                  >Refusé</span
+                >
+              </strong>
             </td>
             <td>
               <strong>{{ item.nom }}</strong>
@@ -36,7 +47,7 @@
             <td>{{ item.prenom }}</td>
            
             <td>
-              {{ item.email}}
+              {{ item.moyenne}}
             </td>
             <td>
               {{ item.dateEntretien1 | date: "dd/MM/yyyy" }}

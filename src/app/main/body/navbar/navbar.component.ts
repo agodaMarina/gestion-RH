@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../../../api/services/search.service';
 import { AuthenticationService } from '../../../api/services/authentication.service';
 import { User } from '../../../api/models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ export class NavbarComponent implements OnInit {
   user:User={};
   constructor(
     private searchService: SearchService,
+    private route:Router,
     private service: AuthenticationService
   ) {}
 

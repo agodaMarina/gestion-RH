@@ -1,0 +1,12 @@
+<div class="notifications-container">
+  <div
+    *ngFor="let notification of notifications"
+    class="notification"
+    [ngClass]="notification.type"
+  >
+    <div class="message">{{ notification.message }}</div>
+    <div class="timestamp">
+      {{ notification.timestamp | date : "short" }}
+    </div>
+  </div>
+</div>

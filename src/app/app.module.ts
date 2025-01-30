@@ -6,14 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotfoundComponent } from './error/notfound/notfound.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { httpInterceptor} from './interceptor/http.interceptor';
+import { httpInterceptor } from './interceptor/http.interceptor';
 import { Error500Component } from './error/error500/error500.component';
 import { Error403Component } from './error/error403/error403.component';
 import { Error401Component } from './error/error401/error401.component';
 import { Error400Component } from './error/error400/error400.component';
 import { LoadingComponent } from './loading/loading.component';
-
-
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -23,21 +22,22 @@ import { LoadingComponent } from './loading/loading.component';
     Error403Component,
     Error401Component,
     Error400Component,
-    LoadingComponent
+    LoadingComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     {
-      provide:HTTP_INTERCEPTORS,
-      useClass:httpInterceptor,
-      multi:true
-    }
+      provide: HTTP_INTERCEPTORS,
+      useClass: httpInterceptor,
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

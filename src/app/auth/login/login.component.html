@@ -94,12 +94,16 @@
           <p class="mb-4">
             Veuillez entrer vos identifiants pour vous connecter
           </p>
-          <div *ngIf="errorMsg.length" class="alert alert-danger" role="alert">
+          @if (errorMsg.length > 0) {
+          <div class="alert alert-danger" role="alert">
             <p *ngFor="let msg of errorMsg">{{ msg }}</p>
           </div>
+          }
           <form id="formAuthentication" class="mb-3">
             <div class="mb-3">
-              <label for="email" class="form-label">Email ou nom d'utilisateur</label>
+              <label for="email" class="form-label"
+                >Email ou nom d'utilisateur</label
+              >
               <input
                 type="text"
                 class="form-control"

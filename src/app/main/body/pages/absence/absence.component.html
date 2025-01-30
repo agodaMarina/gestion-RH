@@ -9,7 +9,7 @@
       <div class="leave-card bg-light">
         <div>
           <h6>Permission</h6>
-          <h4>{{ counts["PERMISSION"] }}</h4>
+          <h4>{{ counts["PERMISSION"] + counts["CONGE FORMATION"] }}</h4>
         </div>
         <div class="leave-card-icon bg-success">
           <i class="bx bx-calendar"></i>
@@ -48,7 +48,9 @@
       <div class="leave-card bg-light">
         <div>
           <h6>Autres</h6>
-          <h4>{{ counts["MATERNITE"] + counts["CONGE FORMATION"] + counts["MISE A PIED"]}}</h4>
+          <h4>
+            {{ counts["MATERNITE"] + counts["MISE A PIED"] }}
+          </h4>
         </div>
         <div class="leave-card-icon bg-warning">
           <i class="bx bx-box"></i>
@@ -61,11 +63,11 @@
 <div class="d-flex justify-content-end align-items-center mb-3">
   <!-- Bouton Ajouter -->
   <button
-  type="button"
+    type="button"
     class="btn btn-primary"
     data-bs-toggle="modal"
     data-bs-target="#addModal"
-  > 
+  >
     Ajouter
   </button>
 </div>
@@ -81,7 +83,7 @@
         aria-controls="navs-pills-top-home"
         aria-selected="true"
       >
-        Tous ({{absences.length}})
+        Tous ({{ absences.length }})
       </button>
     </li>
     <li class="nav-item">
@@ -94,7 +96,7 @@
         aria-controls="navs-pills-top-profile"
         aria-selected="false"
       >
-        Actifs ({{absencesActive.length}})
+        Actifs ({{ absencesActive.length }})
       </button>
     </li>
   </ul>
@@ -133,11 +135,15 @@
                   </td>
                   <td>{{ item.dateDebut | date : "dd-MM-yyyy" }}</td>
                   <td>{{ item.dateFin | date : "dd-MM-yyyy" }}</td>
-                  <td>@if (item.joursRestants && item.joursRestants > 0) {
-                    <span class="text-center">{{ item.joursRestants }} jour(s)</span> 
-                  } @else {
+                  <td>
+                    @if (item.joursRestants && item.joursRestants > 0) {
+                    <span class="text-center"
+                      >{{ item.joursRestants }} jour(s)</span
+                    >
+                    } @else {
                     <span class="badge bg-success">De Retour</span>
-                  }</td>
+                    }
+                  </td>
                   <td>
                     <div class="dropdown">
                       <button
@@ -178,8 +184,8 @@
       </div>
     </div>
     <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel">
-       <!-- Striped Rows -->
-       <div class="card">
+      <!-- Striped Rows -->
+      <div class="card">
         <div class="table-respon sive text-nowrap">
           <table class="table table-striped">
             <thead>
@@ -207,11 +213,14 @@
                   </td>
                   <td>{{ item.dateDebut | date : "dd-MM-yyyy" }}</td>
                   <td>{{ item.dateFin | date : "dd-MM-yyyy" }}</td>
-                  <td>@if (item.joursRestants && item.joursRestants > 0) {
-                    <span class="text-center">{{ item.joursRestants }} jour(s)</span> 
-                  } @else {
+                  <td>
+                    @if (item.joursRestants && item.joursRestants > 0) {
+                    <span class="text-center"
+                      >{{ item.joursRestants }} jour(s)</span
+                    >
+                    } @else {
                     <span class="badge bg-success">De Retour</span>
-                  }
+                    }
                   </td>
                   <td>
                     <div class="dropdown">
@@ -252,7 +261,6 @@
         </div>
       </div>
     </div>
-   
   </div>
 </div>
 
@@ -301,9 +309,18 @@
                 {{ item.nom }} {{ item.prenom }}
               </option>
             </select>
+            <div
+              class="text-danger small"
+              *ngIf="
+                abForm.get('idEmploye')?.touched &&
+                abForm.get('idEmploye')?.invalid
+              "
+            >
+              {{ getErrorMessage("idEmploye") }}
+            </div>
           </div>
           <div class="mb-3">
-            <label for="prenom" class="form-label">Motif</label>
+            <label for="prenom" class="form-label">Motif *</label>
             <input
               type="text"
               class="form-control"
@@ -311,9 +328,17 @@
               name="motif"
               placeholder="Entrez le motif"
             />
+            <div
+              class="text-danger small"
+              *ngIf="
+                abForm.get('motif')?.touched && abForm.get('motif')?.invalid
+              "
+            >
+              {{ getErrorMessage("motif") }}
+            </div>
           </div>
           <div class="mb-3">
-            <label for="prenom" class="form-label">Type</label>
+            <label for="prenom" class="form-label">Type *</label>
             <select
               id="defaultSelect"
               class="form-select"
@@ -324,26 +349,40 @@
                 {{ item }}
               </option>
             </select>
+            <div
+              class="text-danger small"
+              *ngIf="abForm.get('type')?.touched && abForm.get('type')?.invalid"
+            >
+              {{ getErrorMessage("type") }}
+            </div>
           </div>
           <div class="mb-3">
-            <label for="moyenne" class="form-label">Début</label>
+            <label for="moyenne" class="form-label">Début *</label>
             <input
               type="date"
               class="form-control"
               formControlName="dateDebut"
               name="dateDebut"
               placeholder="Entrez la la date de début"
+              [class.is-invalid]="isFieldInvalid('dateDebut')"
             />
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('dateDebut')">
+              {{ getErrorMessage("dateDebut") }}
+            </div>
           </div>
           <div class="mb-3">
-            <label for="moyenne" class="form-label">Retour</label>
+            <label for="moyenne" class="form-label">Retour *</label>
             <input
               type="date"
               formControlName="dateFin"
               name="dateFin"
               class="form-control"
               placeholder="Entrez la date de retour"
+              [class.is-invalid]="isFieldInvalid('dateFin')"
             />
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('dateFin')">
+              {{ getErrorMessage("dateFin") }}
+            </div>
           </div>
         </form>
       </div>
@@ -351,7 +390,12 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Fermer
         </button>
-        <button type="submit" class="btn btn-primary" (click)="add()">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!abForm.valid"
+          (click)="add()"
+        >
           Enregistrer
         </button>
       </div>

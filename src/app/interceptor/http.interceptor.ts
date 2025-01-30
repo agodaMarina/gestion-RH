@@ -24,7 +24,11 @@ const routesWithoutToken = [
 export class httpInterceptor implements HttpInterceptor {
   private totalRequests = 0;
 
-  constructor(private loadingService: LoadingService, private tokenService: TokenService, private router: Router) {}
+  constructor(
+    private loadingService: LoadingService,
+    private tokenService: TokenService,
+    private router: Router
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -42,29 +46,15 @@ export class httpInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        switch (error.status) {
-          case 400: // Bad Request
-            this.router.navigate(['/error/400']);
-            break;
-          case 403: // Forbidden (Accès refusé)
-            this.router.navigate(['/auth/login']);
-            break;
-          case 404: // Not Found
-            this.router.navigate(['/error/404']);
-            break;
-        }
-        return throwError(() => new Error(error.message));
-      })
-    ).pipe(
-      finalize(() => {
-        this.totalRequests--;
-        if (this.totalRequests === 0) {
-          this.loadingService.setLoading(false);
-        }
-      })
-    );
+    return next
+      .handle(request)
+      .pipe(
+        finalize(() => {
+          this.totalRequests--;
+          if (this.totalRequests === 0) {
+            this.loadingService.setLoading(false);
+          }
+        })
+      );
   }
 }
-    

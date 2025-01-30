@@ -19,6 +19,7 @@ import { AddPosteComponent } from './body/pages/recrutement/etapes/add-poste/add
 import { EvaluationComponent } from './body/pages/recrutement/etapes/evaluation/evaluation.component';
 import { SelectionComponent } from './body/pages/recrutement/etapes/selection/selection.component';
 import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus.component';
+import { NotfoundComponent } from '../error/notfound/notfound.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,7 @@ const routes: Routes = [
       { path: 'recruteur', component: RecruteurComponent },
     ],
   },
+  {path:'**', component:NotfoundComponent}
 ];
 
 @NgModule({

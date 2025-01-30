@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Absence } from '../../../../api/models/Absence';
-import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  Form,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { AbsenceService } from '../../../../api/services/absence.service';
 import { EmployeService } from '../../../../api/services/employe.service';
-import { Employe, EmployeDto } from '../../../../api/models/employe';
+import { EmployeDto } from '../../../../api/models/employe';
 
 @Component({
   selector: 'app-absence',
@@ -20,7 +26,16 @@ export class AbsenceComponent implements OnInit {
   employes!: EmployeDto[];
   itemsPerPage: number = 10;
   currentPage: number = 1;
-  typeConge = ['CONGE', 'MATERNITE', 'PERMISSION','REPOS MEDICAL', 'SUSPENSION','MISE A PIED','CONGE FORMATION'];
+
+  typeConge = [
+    'CONGE',
+    'MATERNITE',
+    'PERMISSION',
+    'REPOS MEDICAL',
+    'SUSPENSION',
+    'MISE A PIED',
+    'CONGE FORMATION',
+  ];
 
   constructor(
     private service: AbsenceService,
@@ -29,12 +44,41 @@ export class AbsenceComponent implements OnInit {
     private messageService: MessageService,
     private emploiyerService: EmployeService
   ) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     this.abForm = this.formbuilder.group({
       type: ['', Validators.required],
-      motif: [''],
-      dateDebut: ['', Validators.required],
-      dateFin: ['', Validators.required],
+      motif: ['', Validators.required],
+      dateDebut: [
+        '',
+        [
+          Validators.required,
+          (control: AbstractControl) => {
+            if (!control.value) return null;
+            const inputDate = new Date(control.value);
+            inputDate.setHours(0, 0, 0, 0);
+            return inputDate >= today ? null : { dateInvalid: true };
+          },
+        ],
+      ],
+      dateFin: [
+        '',
+        [
+          Validators.required,
+          (control: AbstractControl) => {
+            if (!control.value) return null;
+            const startDate = new Date(this.abForm?.get('dateDebut')?.value);
+            const endDate = new Date(control.value);
+            startDate.setHours(0, 0, 0, 0);
+            endDate.setHours(0, 0, 0, 0);
+            return endDate >= startDate ? null : { endDateInvalid: true };
+          },
+        ],
+      ],
       idEmploye: [],
+    });
+    this.abForm.get('dateDebut')?.valueChanges.subscribe(() => {
+      this.abForm.get('dateFin')?.updateValueAndValidity();
     });
   }
 
@@ -51,28 +95,60 @@ export class AbsenceComponent implements OnInit {
   }
 
   add() {
-    this.service.createAbsence(this.abForm?.value).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Nouvelle absence ajoutée avec succès',
-        });
-        this.liste();
-        this.abForm?.reset();
-        const modal = document.querySelector('.modal');
-        if (modal) {
-          modal.classList.remove('show');
+    if (this.abForm?.invalid) {
+      this.service.createAbsence(this.abForm?.value).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Nouvelle absence ajoutée avec succès',
+          });
+          this.liste();
+          this.abForm?.reset();
+          const modal = document.querySelector('.modal');
+          if (modal) {
+            modal.classList.remove('show');
+          }
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Nouvelle absence ajoutée avec succès',
+          });
+        },
+      });
+    } else {
+      Object.keys(this.abForm.controls).forEach((key) => {
+        const control = this.abForm.get(key);
+        if (control) {
+          control.markAsTouched();
+          control.markAsDirty();
         }
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Nouvelle absence ajoutée avec succès',
-        });
-      },
-    });
+      });
+    }
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.abForm.get(fieldName);
+    return field ? field.invalid && (field.dirty || field.touched) : false;
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.abForm.get(controlName);
+
+    if (control?.errors && (control.dirty || control.touched)) {
+      if (control.errors['dateInvalid']) {
+        return 'La date de début doit être égale ou postérieure à la date actuelle';
+      }
+      if (control.errors['endDateInvalid']) {
+        return 'La date de fin doit être égale ou postérieure à la date de début';
+      }
+      if (control.errors['required']) {
+        return 'Ce champ est requis';
+      }
+    }
+    return '';
   }
 
   liste() {
@@ -121,7 +197,7 @@ export class AbsenceComponent implements OnInit {
       dateFin: absence.dateFin,
       idEmploye: absence.employe,
     });
-    this.abForm?.disable();    
+    this.abForm?.disable();
   }
 
   supprimer(id: number) {
@@ -188,7 +264,7 @@ export class AbsenceComponent implements OnInit {
   listeEmploye() {
     this.emploiyerService.getEmployeActifs().subscribe({
       next: (value: EmployeDto[]) => {
-        this.employes = value;
+        this.employes = value.filter((employe) => employe.isActif);
       },
       error: (err) => {
         this.messageService.add({
@@ -200,14 +276,14 @@ export class AbsenceComponent implements OnInit {
     });
   }
 
-  countAbsenceTypes(absences:Absence[]): { [key: string]: number } {
+  countAbsenceTypes(absences: Absence[]): { [key: string]: number } {
     this.counts = {
-      'CONGE': 0,
+      CONGE: 0,
       'REPOS MEDICAL': 0,
-      'PERMISSION': 0,
-      'MATERNITE': 0,
+      PERMISSION: 0,
+      MATERNITE: 0,
       'MISE A PIED': 0,
-      'SUSPENSION': 0,
+      SUSPENSION: 0,
       'CONGE FORMATION': 0,
     };
 
@@ -220,6 +296,4 @@ export class AbsenceComponent implements OnInit {
 
     return this.counts;
   }
-
- 
 }

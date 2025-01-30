@@ -11,8 +11,7 @@ import { SecteurDto } from '../../../../api/models/secteur';
 import { PosteService } from '../../../../api/services/poste.service';
 import { RecruteurService } from '../../../../api/services/recruteur.service';
 import { SecteurService } from '../../../../api/services/secteur.service';
-import { Recrutement } from '../../../../api/models/recrutement';
-import { Steps } from 'primeng/steps';
+
 
 @Component({
   selector: 'app-recrutement',
@@ -202,7 +201,7 @@ export class RecrutementComponent implements OnInit {
   addPoste() {
     this.posteService.createPoste(this.poste).subscribe(
       (data) => {
-        console.log(data);
+        
         this.listeDesPotes();
       },
       (error) => {

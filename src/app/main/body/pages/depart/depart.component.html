@@ -1,6 +1,65 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Départs /</span> Liste des Départs
 </h4>
+<div class="container py-3">
+  <div class="row g-4">
+    <!-- Annual Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>RETRAITE</h6>
+          <h4>{{ counts["RETRAITE"] }}</h4>
+        </div>
+        <div class="leave-card-icon bg-success">
+          <i class="bx bx-calendar"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>LICENCIEMENT</h6>
+          <h4>
+            {{ counts["LICENCIEMENT"] + counts["RUPTURE CONVENTIONNELLE"] }}
+          </h4>
+        </div>
+        <div class="leave-card-icon bg-primary">
+          <i class="bx bx-plus-medical"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Casual Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>DEMISSION</h6>
+          <h4>{{ counts["DEMISSION"] }}</h4>
+        </div>
+        <div class="leave-card-icon bg-info">
+          <i class="bx bx-calendar-check"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Leaves -->
+    <div class="col-md-6 col-lg-3">
+      <div class="leave-card bg-light">
+        <div>
+          <h6>AUTRES</h6>
+          <h4>
+            {{ counts["DECES"] + counts["FIN DE CONTRAT"] }}
+          </h4>
+        </div>
+        <div class="leave-card-icon bg-warning">
+          <i class="bx bx-box"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="d-flex justify-content-end align-items-center mb-3">
   <!-- Bouton Ajouter -->
   <button
@@ -26,7 +85,7 @@
       </thead>
       <tbody class="table-border-bottom-0">
         @for (item of paginate; track $index) {
-        <tr >
+        <tr>
           <td>
             <strong>{{ item.employe }}</strong>
           </td>
@@ -55,14 +114,13 @@
             </div>
           </td>
         </tr>
-      }@empty {
+        }@empty {
         <tr>
-          <td colspan="4" class="text-center"> Aucun Départ enregitré </td>
+          <td colspan="4" class="text-center">Aucun Départ enregitré</td>
         </tr>
-      }
+        }
       </tbody>
     </table>
-  
   </div>
   <!--/ Striped Rows -->
   <!-- Modal (Fenêtre) -->
@@ -99,12 +157,13 @@
                 name="employe"
                 formControlName="employe"
               >
-              @for (item of employes; track $index) {
-                <option [ngValue]="item.nom+' '+item.prenom">{{item.nom+' '+item.prenom}}</option>
-              }@empty {
-                <option >Aucun employé enregistré</option>
-              }
-              
+                @for (item of employes; track $index) {
+                <option [ngValue]="item.nom + ' ' + item.prenom">
+                  {{ item.nom + " " + item.prenom }}
+                </option>
+                }@empty {
+                <option>Aucun employé enregistré</option>
+                }
               </select>
             </div>
             <div class="mb-3">
@@ -121,12 +180,13 @@
                 <option ngValue="DEMISSION">DEMISSION</option>
                 <option ngValue="LICENCIEMENT">LICENCIEMENT</option>
                 <option ngValue="FIN DE CONTRAT">FIN DE CONTRAT</option>
-                <option ngValue="RUPTURE CONVENTIONNELLE">RUPTURE CONVENTIONNELLE</option>
+                <option ngValue="RUPTURE CONVENTIONNELLE">
+                  RUPTURE CONVENTIONNELLE
+                </option>
                 <option ngValue="RETRAITE">RETRAITE</option>
                 <option ngValue="DECES">DECES</option>
               </select>
             </div>
-            
           </form>
         </div>
         <div class="modal-footer">
@@ -137,7 +197,9 @@
           >
             Fermer
           </button>
-          <button type="submit" class="btn btn-primary" (click)="add()">Enregistrer</button>
+          <button type="submit" class="btn btn-primary" (click)="add()">
+            Enregistrer
+          </button>
         </div>
       </div>
     </div>

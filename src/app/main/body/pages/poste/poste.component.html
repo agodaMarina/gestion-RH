@@ -138,9 +138,9 @@
                 formControlName="secteur"
                 name="secteur"
               >
-                <option selected>Choisir...</option>
+                <option [selected]="true" >Choisir...</option>
                 @for (item of secteurList; track $index) {
-                <option [ngValue]="[item.id]">{{ item.libelle }}</option>
+                <option [ngValue]="item.libelle">{{ item.libelle }}</option>
                 }
               </select>
             </div>

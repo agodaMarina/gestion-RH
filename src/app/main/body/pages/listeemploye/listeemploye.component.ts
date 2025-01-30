@@ -9,12 +9,7 @@ import { AbsenceService } from '../../../../api/services/absence.service';
 import { ElementRef } from '@angular/core';
 import { SearchService } from '../../../../api/services/search.service';
 
-interface PageEvent {
-  first?: number;
-  rows?: number;
-  page?: number;
-  pageCount?: number;
-}
+
 @Component({
   selector: 'app-listeemploye',
   templateUrl: './listeemploye.component.html',
@@ -25,7 +20,7 @@ export class ListeemployeComponent {
   paginateEmploye: EmployeDto[] = [];
   employesActif: EmployeDto[] = [];
   employesInactif: EmployeDto[] = [];
-  itemsPerPage = 12;
+  itemsPerPage = 16;
   currentPage = 1;
   departNumber!: number;
   totalAbsence!: number;
@@ -84,6 +79,8 @@ export class ListeemployeComponent {
     this.service.getEmployes().subscribe(
       (data: EmployeDto[]) => {
         this.employes = data;
+        this.employesActif = data.filter((emp) => emp.isActif);
+        this.employesInactif = data.filter((emp) => !emp.isActif);
 
         // Signal calculé pour filtrer la liste d'employés
         this.filteredEmployees = computed(() => {

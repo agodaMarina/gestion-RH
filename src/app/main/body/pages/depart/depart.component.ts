@@ -20,8 +20,8 @@ export class DepartComponent implements OnInit {
   first: number = 0;
   rows: number = 10;
   itemsPerPage: number = 10;
-  currentPage: number = 0;
-  
+  currentPage: number = 1;
+  counts: { [key: string]: number } = {};
 
   onPageChange(event: number) {
     this.currentPage = event;
@@ -51,15 +51,15 @@ export class DepartComponent implements OnInit {
   getEmployes() {
     this.employeService.getEmployes().subscribe({
       next: (data) => {
-        this.employes = data;
+        this.employes = data.filter((employe) => employe.isActif);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erreur',
-          detail: "Erreur lors de la récupération de la liste des employés",
+          detail: 'Erreur lors de la récupération de la liste des employés',
         });
-      }
+      },
     });
   }
 
@@ -88,6 +88,7 @@ export class DepartComponent implements OnInit {
     this.service.getAll().subscribe({
       next: (data: Depart[]) => {
         this.departs = data;
+        this.countDepartTypes(data);
         this.paginate = this.departs.slice(0, this.rows);
       },
       error: (err) => {
@@ -155,5 +156,23 @@ export class DepartComponent implements OnInit {
           });
         },
       });
+  }
+
+  countDepartTypes(departs: Depart[]): { [key: string]: number } {
+    this.counts = {
+      DEMISSION: 0,
+      'FIN DE CONTRAT': 0,
+      LICENCIEMENT: 0,
+      RETRAITE: 0,
+      'RUPTURE CONVENTIONNELLE': 0,
+      DECES: 0,
+    };
+
+    return departs.reduce((acc, depart) => {
+      if (depart.raison) {
+        acc[depart.raison]++;
+      }
+      return acc;
+    }, this.counts);
   }
 }

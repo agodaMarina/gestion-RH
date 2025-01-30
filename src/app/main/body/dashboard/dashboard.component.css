@@ -1,31 +1,85 @@
-.kanban-board {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 1rem;
-  }
-  .kanban-column {
-    flex: 0 0 300px;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    margin: auto;
-    padding: 1rem;
-    min-height: 400px;
-  }
-  .kanban-header {
-    font-weight: bold;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  .kanban-card {
-    background: white;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  .kanban-card .badge {
-    font-size: 0.8rem;
-  }
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #495057;
+  text-align: center;
+  flex: 1;
+}
+
+.calendar-header button {
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 1rem;
+  color: #6c757d;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.calendar-header button:hover {
+  background-color: #e9ecef;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  gap: 5px;
+}
+
+.calendar-days div {
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-align: center;
+  color: #6c757d;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  width: 100%;
+}
+
+.calendar-grid button {
+  height: 40px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #495057;
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.calendar-grid button:hover {
+  background-color: #e9ecef;
+  transform: scale(1.05);
+}
+
+.calendar-grid button.active {
+  background-color: #0d6efd;
+  color: #fff;
+}

@@ -23,6 +23,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "@stomp/stompjs",
+              "sockjs-client"
+            ],
             "outputPath": "dist/safer-front",
             "index": "src/index.html",
             "browser": "src/main.ts",

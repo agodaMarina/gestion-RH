@@ -17,7 +17,7 @@ export class SelectionComponent implements OnInit {
   recrutement: RecrutementDto = {};
   candidats: CandidatureCreation[] = [];
   Listcandidats: CandidatureCreation[] = [];
-
+  nombreDeCandidatsSelectionnes: number = 0;
 
   constructor(
     private recrutementService: RecrutementService,
@@ -39,7 +39,6 @@ export class SelectionComponent implements OnInit {
       noteCompetenceEtAtout: [0],
       noteSavoirEtre: [0],
       noteQualiteEtDefaut: [0],
-      estRetenu: [],
       apreciationGlobale: [''],
     });
   }
@@ -67,6 +66,9 @@ export class SelectionComponent implements OnInit {
     this.recrutementService.getCandidats(this.id).subscribe({
       next: (data: CandidatureCreation[]) => {
         this.candidats = data;
+        this.nombreDeCandidatsSelectionnes = this.candidats.filter(
+          (candidat) => candidat.estRetenu === true
+        ).length;
       },
       error: (error: any) => {
         this.messageService.add({
@@ -76,6 +78,17 @@ export class SelectionComponent implements OnInit {
         });
       },
     });
+  }
+  selectedIds: number[] = []; // Contient les IDs sélectionnés
+
+  onCheckboxChange(event: Event, id: number) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.selectedIds.push(id);
+    } else {
+      this.selectedIds = this.selectedIds.filter((itemId) => itemId !== id); // Supprimer l'ID
+    }
   }
 
   add(recrutementId: number) {
@@ -97,29 +110,27 @@ export class SelectionComponent implements OnInit {
   }
 
   terminer() {
-    this.recrutementService.endRecrutement(this.id).subscribe({
-      next: () => {
-        this.router.navigate(['recrutement']);
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Erreur lors de la clôture du recrutement',
-        });
-      },
-    });
-  }
-
-  selectedIds: number[] = []; // Contient les IDs sélectionnés
-
-  onCheckboxChange(event: Event, id: number) {
-    const isChecked = (event.target as HTMLInputElement).checked;
-
-    if (isChecked) {
-      this.selectedIds.push(id);
+    if (this.selectedIds.length === 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Veuillez sélectionner au moins un candidat !',
+      });
     } else {
-      this.selectedIds = this.selectedIds.filter((itemId) => itemId !== id); // Supprimer l'ID
+      this.recrutementService
+        .endRecrutement(this.id, this.selectedIds)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/main/posteApourvoir']);
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Erreur lors de la clôture du recrutement',
+            });
+          },
+        });
     }
   }
 }

@@ -14,21 +14,45 @@
                   Processus de recrutement – {{ recrutement.poste }}
                 </h4>
                 <div>
-                  <span class="badge bg-success fs-6">{{
-                    recrutement.statut
-                  }}</span>
+                  <span
+                    class="badge bg-success fs-6"
+                    *ngIf="recrutement.statut === 'EN_COURS'"
+                    >{{ recrutement.statut }}
+                  </span>
+                  <span
+                    class="badge bg-danger fs-6"
+                    *ngIf="recrutement.statut === 'TERMINE'"
+                    >{{ recrutement.statut }}
+                  </span>
                 </div>
               </div>
-              <p class="text-muted">
-                Ouvert depuis le :
-                <strong>{{
-                  recrutement.dateDebut | date : "dd-MM-YYYY"
-                }}</strong>
-              </p>
-              <p>Etape Actuelle: {{ recrutement.etapeActuelle }}</p>
-              <p class="text-muted">
-                Terminé le :{{ recrutement.dateFin | date : "dd-MM-YYYY" }}
-              </p>
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <p class="text-muted">
+                    Etape Actuelle:
+                    {{ recrutement.etapeActuelle?.toLocaleUpperCase() }}
+                  </p>
+                </div>
+
+                <div class="col-md-6">
+                  <p class="text-muted">
+                    Ouvert depuis le :
+                    <strong>{{
+                      recrutement.dateDebut | date : "dd-MM-YYYY"
+                    }}</strong>
+                  </p>
+    
+                  <p class="text-muted">
+                    Terminé le :
+                    <strong>
+                      {{ recrutement.dateFin | date : "dd-MM-YYYY" }}</strong
+                    >
+                  </p>
+                </div>
+
+              </div>
+              
+              
             </div>
           </div>
 
@@ -53,13 +77,14 @@
 
           <div class="table-responsive mt-4">
             <table class="table">
-              <thead class="table-light">
+              <thead >
                 <tr>
+                  <th>#</th>
                   <th>Nom</th>
                   <th>Prenom</th>
                   <th>Email</th>
                   <th>Téléphone</th>
-                  <th>Entretien</th>
+                  <th>Moyenne</th>
                 </tr>
               </thead>
               <tbody>
@@ -90,8 +115,10 @@
                   }
                 </ng-container>
                 <ng-container *ngIf="recrutement.statut === 'TERMINE'">
-                  @for (item of candidats; track item.id) {
-                  <tr>
+                  @for (item of candidats; track $index) {
+                  <tr [ngClass]="{ 'table-success': item.estRetenu }">
+
+                    <td>{{$index +1 }}</td>
                     <td>{{ item.nom }}</td>
                     <td>{{ item.prenom }}</td>
                     <td>{{ item.email }}</td>
@@ -116,10 +143,14 @@
             <div></div>
             <div>
               <p>
-                Total candidats: <strong>{{ Listcandidats.length }}</strong>
+                Total candidats: <strong>{{ candidats.length }}</strong>
               </p>
-              <p>Candidats évalués: <strong>0</strong></p>
-              <p>Candidats Sélectionés: <strong>0</strong></p>
+              <p>
+                Candidats évalués: <strong>{{ candidats.length }}</strong>
+              </p>
+              <p>
+                Candidats Sélectionés: <strong>{{ nombreDeCandidatsSelectionnes }}</strong>
+              </p>
             </div>
           </div>
         </div>

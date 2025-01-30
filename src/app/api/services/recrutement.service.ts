@@ -39,10 +39,8 @@ export class RecrutementService {
     return this.http.put<void>(`${this.baseUrl}/${recrutementId}/evaluations`, evaluationsRequest);
   }
 
-  endRecrutement(recrutementId: number): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/end`,{
-      params: { recrutementId }
-    });
+  endRecrutement(recrutementId: number,ids:number[]): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/end`, ids, { params: { recrutementId } });
   }
 
   getAll(): Observable<RecrutementDto[]> {
