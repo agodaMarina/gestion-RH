@@ -37,7 +37,7 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @for (item of postes; track $index) {
+        @for (item of paginate; track $index) {
         <tr>
           <td>
             <strong>{{ item.reference }}</strong>

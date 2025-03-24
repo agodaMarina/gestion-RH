@@ -87,7 +87,7 @@ export class PosteComponent implements OnInit {
 
   onSearch(): void {
     const term = this.searchItem.toLowerCase();
-    this.filteredData = this.postes.filter((poste) =>
+    this.paginate = this.postes.filter((poste) =>
       poste.libelle?.toLowerCase().includes(term)
     );
     this.currentPage = 1;

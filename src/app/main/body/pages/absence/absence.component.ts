@@ -95,7 +95,7 @@ export class AbsenceComponent implements OnInit {
   }
 
   add() {
-    if (this.abForm?.invalid) {
+    if (this.abForm?.valid) {
       this.service.createAbsence(this.abForm?.value).subscribe({
         next: () => {
           this.messageService.add({
@@ -129,6 +129,7 @@ export class AbsenceComponent implements OnInit {
     }
   }
 
+ 
   isFieldInvalid(fieldName: string): boolean {
     const field = this.abForm.get(fieldName);
     return field ? field.invalid && (field.dirty || field.touched) : false;
@@ -264,7 +265,7 @@ export class AbsenceComponent implements OnInit {
   listeEmploye() {
     this.emploiyerService.getEmployeActifs().subscribe({
       next: (value: EmployeDto[]) => {
-        this.employes = value.filter((employe) => employe.isActif);
+        this.employes = value
       },
       error: (err) => {
         this.messageService.add({

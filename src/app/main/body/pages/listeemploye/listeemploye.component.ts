@@ -48,6 +48,7 @@ export class ListeemployeComponent {
     });
 
     this.get();
+    this.getEmployeActif();
     this.getTotaldepart();
     this.getTotalAbsence();
     this.getTotalEmployeActif();
@@ -79,8 +80,7 @@ export class ListeemployeComponent {
     this.service.getEmployes().subscribe(
       (data: EmployeDto[]) => {
         this.employes = data;
-        this.employesActif = data.filter((emp) => emp.isActif);
-        this.employesInactif = data.filter((emp) => !emp.isActif);
+        this.employesInactif = data.filter((emp) => emp.isActif);
 
         // Signal calculé pour filtrer la liste d'employés
         this.filteredEmployees = computed(() => {
@@ -107,6 +107,17 @@ export class ListeemployeComponent {
         console.log(error);
       }
     );
+  }
+
+  getEmployeActif() {
+    this.service.getEmployeActifs().subscribe(
+      (data: EmployeDto[]) => {
+        this.employesActif = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   afficherDetail(itemId: number) {

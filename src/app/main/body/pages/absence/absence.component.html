@@ -83,7 +83,7 @@
         aria-controls="navs-pills-top-home"
         aria-selected="true"
       >
-        Tous ({{ absences.length }})
+        Actifs ({{ absencesActive.length }})
       </button>
     </li>
     <li class="nav-item">
@@ -96,7 +96,7 @@
         aria-controls="navs-pills-top-profile"
         aria-selected="false"
       >
-        Actifs ({{ absencesActive.length }})
+        Tous ({{ absences.length }})
       </button>
     </li>
   </ul>
@@ -123,7 +123,7 @@
             </thead>
             <tbody class="table-border-bottom-0">
               <ng-container>
-                @for (item of absences; track $index) {
+                @for (item of absencesActive; track $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   <td>
@@ -201,7 +201,7 @@
             </thead>
             <tbody class="table-border-bottom-0">
               <ng-container>
-                @for (item of absencesActive; track $index) {
+                @for (item of absences; track $index) {
                 <tr>
                   <td>{{ $index + 1 }}</td>
                   <td>
