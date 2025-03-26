@@ -18,7 +18,8 @@ public class DepartController {
 
     @PostMapping("/ajouter")
     public ResponseEntity<?> ajouter(@RequestBody DepartDto depart) {
-        return ResponseEntity.ok().body(departService.ajouterDepart(depart));
+        departService.ajouterDepart(depart);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/modifier")
@@ -28,7 +29,7 @@ public class DepartController {
     }
 
     @GetMapping("/lister")
-    public ResponseEntity<List<Depart>> lister() {
+    public ResponseEntity<List<DepartDto>> lister() {
         return ResponseEntity.ok(departService.listerDepart());
     }
 

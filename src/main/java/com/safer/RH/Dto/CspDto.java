@@ -10,5 +10,4 @@ import java.util.List;
 public class CspDto {
     private Long id;
     private String libelle;
-    private List<String> employes;
 }

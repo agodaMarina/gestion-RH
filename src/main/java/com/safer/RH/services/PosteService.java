@@ -54,7 +54,16 @@ public class PosteService {
     public List<PosteDto> listerPoste() {
         List<PosteDto> liste = new ArrayList<>();
         for (Poste poste : posteRepository.getAll()) {
-            liste.add(new PosteDto(poste.getId(), poste.getReference(),poste.getLibelle(),poste.getNiveauEtude(),poste.getDescription(),poste.getNiveauDeSalaire(),poste.getRemarque(),poste.getSecteur().getLibelle()));
+            liste.add(
+                    new PosteDto(
+                            poste.getId(),
+                            poste.getReference(),
+                            poste.getLibelle(),
+                            poste.getNiveauEtude(),
+                            poste.getDescription(),
+                            poste.getNiveauDeSalaire(),
+                            poste.getRemarque(),
+                            poste.getSecteur().getLibelle()));
         }
         return liste;
     }

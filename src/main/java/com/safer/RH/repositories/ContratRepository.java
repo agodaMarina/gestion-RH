@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ContratRepository extends JpaRepository<Contrat,Integer> {
+
 }

@@ -17,7 +17,6 @@ public class Contrat {
     private  String type;
     private  LocalDate dateDebut;
     private LocalDate dateFin;
-    private boolean etat;
-
+    private boolean etat=true;
 
 }

@@ -19,22 +19,4 @@ public class CandidatureDataInjector {
     Faker faker= new Faker();
     Random random = new Random();
 
-    public void injectCandidatureData(int number ){
-        for (int i=0; i<number;i++ ){
-            Candidature candidature=new Candidature();
-            candidature.setNom(faker.name().firstName());
-            candidature.setPrenom(faker.name().lastName());
-            candidature.setEmail(faker.internet().emailAddress());
-            candidature.setTelephone(String.valueOf(faker.phoneNumber()));
-            candidature.setAdresse(faker.address().fullAddress());
-            candidature.setProchaineAction(faker.lorem().sentence());
-            candidature.setDateEntretien1(LocalDate.now().minusDays(faker.number().numberBetween(100, 1000)));
-            candidature.setStadeDeRecrutement(faker.options().option("En cours", "recruter", "refuser"));
-            candidature.setMoyenne(candidature.getMoyenne());
-            candidature.setApreciationGlobale((candidature.getStadeDeRecrutement().equals("recruter"))?"Convoquer pour être embauché": (candidature.getStadeDeRecrutement().equals("refuser")) ? "Convoquer pour un second entretien" : (candidature.getStadeDeRecrutement().equals("En cours")) ? "Convoquer pour une période d'essai" : " ");
-
-
-            candidatureRepository.save(candidature);
-        }
-    }
 }

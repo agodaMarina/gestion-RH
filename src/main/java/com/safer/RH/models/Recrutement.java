@@ -15,10 +15,12 @@ public class Recrutement {
     private Long id;
     @OneToOne
     private Poste poste;
-    @OneToMany(mappedBy = "recrutement",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Candidature> candidats;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "recruteur_id", nullable = false)
     private Recruteur recruteur;
+    private String typeContrat;
     @Enumerated(EnumType.STRING)
     private StateRecrutement statut;//(EN_COURS, TERMINE)
     private String etapeActuelle;

@@ -6,6 +6,7 @@ import com.safer.RH.models.*;
 import com.safer.RH.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class RecrutementService {
     private final EmployeRepository employeeRepository;
     private final CandidatureService candidatureService;
 
-    public Recrutement addRecrutement(int posteId,int RecruteurId,Poste nouveauPoste) {
+    public Long addRecrutement(int posteId,int RecruteurId,String contrat,Poste nouveauPoste) {
         Poste poste;
         // Vérifier si le poste existe, sinon créer un nouveau poste
         if (posteId == 0 && nouveauPoste != null) {
@@ -36,13 +37,15 @@ public class RecrutementService {
         Recrutement recrutement = new Recrutement();
         recrutement.setPoste(poste);
         recrutement.setRecruteur(recruteur);
+        recrutement.setTypeContrat(contrat);
         recrutement.setEtapeActuelle("Initialisation");
         recrutement.setStatut(StateRecrutement.EN_COURS);
         recrutement.setDateDebut(LocalDate.now());
-        recrutementRepository.save(recrutement);
-        return recrutement;
+        return recrutementRepository.save(recrutement).getId();
+
     }
 
+    @Transactional
     public void ajouterCandidats(Long recrutementId, List<CandidatureDto> candidats) {
         Recrutement recrutement = recrutementRepository.findById(recrutementId)
                 .orElseThrow();
@@ -55,6 +58,12 @@ public class RecrutementService {
             candidature1.setEmail(candidature.getEmail());
             candidature1.setApreciationGlobale(candidature.getApreciationGlobale());
             candidature1.setDateEntretien1(candidature.getDateEntretien1());
+            candidature1.setNoteExperience(candidature.getNoteExperience());
+            candidature1.setNotePresentation(candidature.getNotePresentation());
+            candidature1.setNoteCompetenceEtAtout(candidature.getNoteCompetenceEtAtout());
+            candidature1.setNoteSavoirEtre(candidature.getNoteSavoirEtre());
+            candidature1.setNoteQualiteEtDefaut(candidature.getNoteQualiteEtDefaut());
+            candidature1.setMoyenne((candidature.getNoteExperience() + candidature.getNotePresentation()+candidature.getNoteCompetenceEtAtout()+candidature.getNoteSavoirEtre()+candidature.getNoteQualiteEtDefaut()) / 5);
             candidature1.setEstRetenu(false);
              candidature1.setRecrutement(recrutement);
              candidatureService.ajouter(candidature1);
@@ -64,44 +73,18 @@ public class RecrutementService {
         recrutementRepository.save(recrutement);
     }
 
-
-
-    public void Evaluation(Long recrutementId,List<Evaluation> evaluations) {
+    @Transactional
+    public void TerminerRecrutement(Long recrutementId) {
         Recrutement recrutement = recrutementRepository.findById(recrutementId)
                 .orElseThrow();
-        if (recrutement.getCandidats().isEmpty()) {
-            throw new IllegalArgumentException("Aucun candidat associé à ce recrutement");
-        }
-        // Traiter chaque évaluation fournie par l'utilisateur
-        for (Evaluation evaluationRequest : evaluations) {
-            // Récupérer le candidat par ID
-            Candidature candidat = candidatureRepository.findById(evaluationRequest.getCandidat().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Candidat introuvable"));
-
-            // Vérifier que le candidat est lié à ce recrutement
-            if (!recrutement.getCandidats().contains(candidat)) {
-                throw new IllegalArgumentException("Candidat non associé à ce recrutement");
-            }
-
-            // Créer et sauvegarder l'évaluation
-            Evaluation evaluation = new Evaluation();
-            evaluation.setCandidat(candidat);
-            evaluation.setNoteExperience(evaluationRequest.getNoteExperience());
-            evaluation.setNotePresentation(evaluationRequest.getNoteExperience());
-            evaluation.setNoteCompetenceEtAtout(evaluationRequest.getNoteCompetenceEtAtout());
-            evaluation.setNoteSavoirEtre(evaluationRequest.getNoteSavoirEtre());
-            evaluation.setNoteQualiteEtDefaut(evaluationRequest.getNoteQualiteEtDefaut());
-            evaluation.setMoyenne((evaluationRequest.getNoteExperience() + evaluationRequest.getNotePresentation()+evaluationRequest.getNoteCompetenceEtAtout()+evaluationRequest.getNoteSavoirEtre()+evaluationRequest.getNoteQualiteEtDefaut()) / 5);
-            evaluation.setDateEvaluation(LocalDate.now());
-
-            evaluationRepository.save(evaluation);
-        }
-        //evaluer chaque candidats
-        recrutement.setEtapeActuelle("Evaluation des candidats");
+        recrutement.setStatut(StateRecrutement.TERMINE);
+        recrutement.setEtapeActuelle("Terminé");
+        recrutement.setDateFin(LocalDate.now());
         recrutementRepository.save(recrutement);
-    }
+    };
 
-    public List<Employe> selectionnerCandidats(Long recrutementId,List<Long>listIdCandidats) {
+    @Transactional
+    public List<Employe> selectionnerCandidats(Contrat contrat,Long recrutementId,List<Long>listIdCandidats) {
         var recrutement=recrutementRepository.getById(recrutementId);
         List<Employe> employes=new ArrayList<>();
         for (Long id : listIdCandidats) {
@@ -113,11 +96,12 @@ public class RecrutementService {
                     employe.setTel(candidature.getTelephone());
                     employe.setAdresse(candidature.getAdresse());
                     employe.setPoste(candidature.getRecrutement().getPoste());
+                    employe.setContrat(contrat);
                     employe.setActif(true);
             employes.add(employeeRepository.save(employe));
         }
         recrutement.setStatut(StateRecrutement.TERMINE);
-        recrutement.setEtapeActuelle("Selection des candidats");
+        recrutement.setEtapeActuelle("Fin du processus de recrutement");
         recrutement.setDateFin(LocalDate.now());
         recrutementRepository.save(recrutement);
 
@@ -144,7 +128,13 @@ public class RecrutementService {
 
     public List<CandidatureDto> getCandidats(Long recrutementId) {
         List<CandidatureDto> candidatureDtos = new ArrayList<>();
-        for (Candidature candidature : recrutementRepository.getCandidaturesById(recrutementId)) {
+        // Récupérer les candidatures associées au recrutement
+        List<Candidature> candidatures = recrutementRepository.getCandidaturesById(recrutementId);
+        if (candidatures == null || candidatures.isEmpty()) {
+            return candidatureDtos; // Retourner une liste vide si aucune candidature
+        }
+
+        for (Candidature candidature : candidatures) {
             CandidatureDto candidatureDto = new CandidatureDto();
             candidatureDto.setId(candidature.getId());
             candidatureDto.setNom(candidature.getNom());
@@ -155,9 +145,27 @@ public class RecrutementService {
             candidatureDto.setApreciationGlobale(candidature.getApreciationGlobale());
             candidatureDto.setEstRetenu(candidature.isEstRetenu());
             candidatureDto.setDateEntretien1(candidature.getDateEntretien1());
+            candidatureDto.setMoyenne(candidature.getMoyenne());
             candidatureDtos.add(candidatureDto);
         }
         return candidatureDtos;
 
+    }
+
+
+    public RecrutementDto getRecrutementById(Long recrutementId) {
+        Recrutement recrutement = recrutementRepository.findById(recrutementId)
+                .orElseThrow();
+        RecrutementDto recrutementDto = new RecrutementDto();
+        recrutementDto.setId(recrutement.getId());
+        recrutementDto.setPoste(recrutement.getPoste().getLibelle());
+        recrutementDto.setSalaire(recrutement.getPoste().getNiveauDeSalaire());
+        recrutementDto.setNiveauEtude(recrutement.getPoste().getNiveauEtude());
+        recrutementDto.setRecruteur(recrutement.getRecruteur().getNom());
+        recrutementDto.setStatut(recrutement.getStatut().name());
+        recrutementDto.setEtapeActuelle(recrutement.getEtapeActuelle());
+        recrutementDto.setDateDebut(recrutement.getDateDebut());
+        recrutementDto.setDateFin(recrutement.getDateFin());
+        return recrutementDto;
     }
 }

@@ -19,9 +19,14 @@ public class CandidatureDto {
     private String telephone;
     private String adresse;
     private LocalDate dateEntretien1;
-    private String stadeDeRecrutement;
+    private double notePresentation;
+    private double noteExperience;
+    private double noteCompetenceEtAtout;
+    private double noteSavoirEtre;
+    private double noteQualiteEtDefaut;
     private double moyenne;
     private String  apreciationGlobale;
     private boolean estRetenu = false;
     private String poste;
+
 }

@@ -1,5 +1,6 @@
 package com.safer.RH.Dto;
 
+import com.safer.RH.models.Anciennete;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class EmployeDto {
     private LocalDate dateNaissance;
     private int age;
     private LocalDate dateEmbauche;
-    private int anciennete;
+    private Anciennete ancienneteAnnee;
     private LocalDate dateDepart;
     private String csp;
     private String poste;
@@ -30,4 +31,13 @@ public class EmployeDto {
     private LocalDate dateFinContrat;
     private boolean isActif;
 
+    @Override
+    public String toString() {
+        return "EmployeDto{" +
+                "nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                '}';
+    }
 }
+
+

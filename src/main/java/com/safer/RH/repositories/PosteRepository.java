@@ -15,5 +15,7 @@ public interface PosteRepository extends JpaRepository <Poste,Integer> {
 
     boolean existsByLibelle(String libelle);
 
+    Poste findByLibelle(String libelle);
+
 
 }

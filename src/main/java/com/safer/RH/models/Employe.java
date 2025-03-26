@@ -23,22 +23,22 @@ public class Employe {
     private LocalDate dateNaissance;
     private int age;
     private LocalDate dateEmbauche;
-    private int anciennete;
+    @Embedded
+    private Anciennete anciennete;
     private LocalDate dateDepart;
     @ManyToOne
-    @JoinColumn(name = "csp_id")
     private Csp csp;
     @ManyToOne
     private Poste poste;
     @OneToMany(mappedBy = "employe",cascade = CascadeType.ALL)
     private Collection<Absence> absences;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(orphanRemoval = true)
     private Depart depart;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Contrat contrat;
     @OneToMany(fetch = FetchType.LAZY)
     private Collection<Evenement> evenements;
-    private boolean isActif=true;
+        private boolean isActif=true;
 
     public int calculateAge() {
         if (this.dateNaissance != null) {
@@ -47,4 +47,20 @@ public class Employe {
         }
         return 0; // Si la date de naissance est null ou mal formatée
     }
+
+
+    public Anciennete calculateAnciennete() {
+        if (this.dateEmbauche != null) {
+            LocalDate hireDate = this.dateEmbauche;
+            Period period = Period.between(hireDate, LocalDate.now());
+            return new Anciennete(period.getYears(), period.getMonths(), period.getDays());
+        }
+        return new Anciennete(0, 0, 0); // Si la date d'embauche est null ou mal formatée
+    }
+
+    // Ajoutez une méthode pour mettre à jour l'ancienneté
+    public void updateAnciennete() {
+        this.anciennete = calculateAnciennete();
+    }
 }
+

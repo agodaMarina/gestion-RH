@@ -1,7 +1,4 @@
 package com.safer.RH.auth;
-
-
-
 import com.safer.RH.models.User;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;

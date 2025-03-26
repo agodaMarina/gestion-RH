@@ -18,12 +18,14 @@ public class Candidature {
     private String adresse;
     private String prochaineAction;
     private LocalDate dateEntretien1;
-    private LocalDate dateEntretien2;
-    private LocalDate dateEntretien3;
-    private String stadeDeRecrutement;
+    private double notePresentation;
+    private double noteExperience;
+    private double noteCompetenceEtAtout;
+    private double noteSavoirEtre;
+    private double noteQualiteEtDefaut;
     private double moyenne;
     private String  apreciationGlobale;
-    @OneToOne
+    @ManyToOne
     private Recrutement recrutement;
     @OneToOne
     private Evaluation evaluation;

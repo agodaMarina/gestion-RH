@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -22,16 +23,21 @@ public interface EmployeRepository extends JpaRepository<Employe, Integer>{
     @Query("SELECT e.age, e.sexe, COUNT(e) FROM Employe e  GROUP BY e.sexe, e.age")
     List<Object[]> countEmployesByAge();
 
-//    @Query("SELECT e.contrat.type, COUNT(e) FROM Employe e  GROUP BY e.contrat.type")
-//    List<Object[]> countEmployesByContrat();
+    @Query("SELECT e.contrat.type, COUNT(e) FROM Employe e  GROUP BY e.contrat.type")
+    List<Object[]> countEmployesByContrat();
 
     @Query("SELECT e.depart.raison, COUNT(e) FROM Employe e  GROUP BY e.depart.raison")
     List<Object[]> countEmployesByDepart();
+
+    @Query("SELECT e FROM Employe e WHERE e.contrat.dateFin = :date AND e.contrat.etat = true")
+    List<Employe> findByContratDateFinAndContratEtatTrue(LocalDate date);
 
     @Query("SELECT e FROM Employe e ORDER BY e.nom ASC")
     List<Employe> getAll();
 
     Employe getEmployeByNomAndPrenom(String nom, String prenom);
+
+    List<Employe>getEmployeByIsActif(boolean isActif);
 
     boolean existsByPosteId(int id);
 }

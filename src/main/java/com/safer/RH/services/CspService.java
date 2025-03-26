@@ -18,10 +18,8 @@ public class CspService {
         var cspDtos = new ArrayList<CspDto>();
         var listeEmployes = new ArrayList<String>();
         for (Csp csp : cspRepository.findAll()) {
-            for (var employe : csp.getEmployes()) {
-                listeEmployes.add(employe.getNom() + " " + employe.getPrenom());
-            }
-            cspDtos.add(new CspDto(csp.getId(), csp.getLibelle(),listeEmployes ));
+
+            cspDtos.add(new CspDto(csp.getId(), csp.getLibelle()));
         }
         return cspDtos;
     }

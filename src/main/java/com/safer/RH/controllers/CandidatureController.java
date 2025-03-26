@@ -29,7 +29,7 @@ public class CandidatureController {
     public ResponseEntity<List<CandidatureDto>> lister() {
         return ResponseEntity.ok(candidatureService.getListCandidature());
     }
-
+//
 //    @GetMapping("/listerParRecrutement")
 //    public ResponseEntity<List<CandidatureDto>> listerParRecrutement(@RequestParam Long id) {
 //        return ResponseEntity.ok(candidatureService.getListCandidatureByRecrutementId(id));

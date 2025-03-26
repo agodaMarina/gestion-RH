@@ -1,6 +1,7 @@
 package com.safer.RH.controllers;
 
 import com.safer.RH.Dto.AbsenceDto;
+import com.safer.RH.faker.DataInitializer;
 import com.safer.RH.faker.EmployeDataInjector;
 import com.safer.RH.models.Contrat;
 import com.safer.RH.models.Depart;
@@ -12,6 +13,7 @@ import com.safer.RH.services.PosteService;
 import com.safer.RH.services.SecteurService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,13 +30,13 @@ public class EmployeController {
     private final ContratService contratService;
     private final PosteService posteService;
     private final SecteurService secteurService;
-    private final EmployeDataInjector employeDataInjector;
+    private final DataInitializer employeDataInjector;
 
-//    @GetMapping("/inject-fake-data")
-//    public String injectData() {
-//        employeDataInjector.injectFakeEmployes(100); // Injecter 100 employés fictifs
-//        return "Données fictives injectées avec succès!";
-//    }
+    @GetMapping("/inject-fake-data")
+    public String injectData() {
+        employeDataInjector.injectCsp(10); // Injecter 100 employés fictifs
+        return "Données fictives injectées avec succès!";
+    }
 
 
 
@@ -58,6 +60,11 @@ public class EmployeController {
         return ResponseEntity.ok().body(employeService.listeEmploye());
     }
 
+    @GetMapping("/listerActif")
+    public ResponseEntity<?> listerEmployeActif() {
+        return ResponseEntity.ok().body(employeService.listeDesEmployesActifs());
+    }
+
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> getEmployeById(@PathVariable int id) {
         return ResponseEntity.ok().body(employeService.getEmployeById(id));
@@ -77,6 +84,31 @@ public class EmployeController {
         }
         return ResponseEntity.ok(contrat);
     }
+
+    @PutMapping("/RenouvelerContrat")
+    public ResponseEntity<?> addContrat(@RequestParam int id, @RequestBody Contrat contrat) {
+        employeService.renouvelerContrat(id,contrat);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(value = "/updateEmploye",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateEmploye(@RequestPart EmployeDto employeDto,@RequestPart Contrat contrat) {
+        employeService.updateEmploye(employeDto,contrat);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "addEmploye",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addEmploye(@RequestPart EmployeDto employeDto, @RequestPart Contrat contrat) {
+        employeService.ajouterEmploye(employeDto,contrat);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/rompreContrat/{id}/{raison}")
+    public ResponseEntity<?> desactiverEmploye(@PathVariable int id, @PathVariable String raison) {
+        employeService.rompreContrat(id,raison);
+        return ResponseEntity.ok().build();
+    }
+
 
     // Endpoint pour récupérer toutes les absences d'un employé par son ID
     @GetMapping("/{id}/absences")

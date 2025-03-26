@@ -1,12 +1,9 @@
 package com.safer.RH.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 @Data
 @AllArgsConstructor
@@ -21,12 +18,13 @@ public class EmployeDto {
     private LocalDate dateNaissance;
     private int age;
     private LocalDate dateEmbauche;
-    private int anciennete;
+    private Anciennete anciennete;
     private LocalDate dateDepart;
     private String csp;
     private String poste;
     private String depart;
     private String contrat;
+    private Integer contratId;
     private LocalDate datedebutContrat;
     private LocalDate dateFinContrat;
     private boolean isActif;

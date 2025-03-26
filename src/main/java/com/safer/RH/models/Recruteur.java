@@ -14,7 +14,4 @@ public class Recruteur {
 
     @Column(nullable = false)
     private String nom;
-
-    @OneToMany(mappedBy = "recruteur")
-    private Collection<Recrutement>recrutements;
 }

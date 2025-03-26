@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -49,11 +50,40 @@ public class CandidatureService {
     public List<CandidatureDto> getListCandidature(){
         List <CandidatureDto> candidatures = new ArrayList<>();
         for (Candidature c : candidatureRepository.getListeAsc()) {
-            candidatures.add(new CandidatureDto(c.getId(),c.getNom(),c.getPrenom(),c.getEmail(),c.getTelephone(),c.getAdresse(),c.getDateEntretien1(),c.getStadeDeRecrutement(),c.getMoyenne(),c.getApreciationGlobale(),c.isEstRetenu(),c.getRecrutement().getPoste().getLibelle()));
+            candidatures.add(
+                    new CandidatureDto(
+                            c.getId(),
+                            c.getNom(),
+                            c.getPrenom(),
+                            c.getEmail(),
+                            c.getTelephone(),
+                            c.getAdresse(),
+                            c.getDateEntretien1(),
+                            c.getNotePresentation(),
+                            c.getNoteExperience(),
+                            c.getNoteCompetenceEtAtout(),
+                            c.getNoteSavoirEtre(),
+                            c.getNoteQualiteEtDefaut(),
+                            c.getMoyenne(),
+                            c.getApreciationGlobale(),
+                            c.isEstRetenu(),
+                            c.getRecrutement().getPoste().getLibelle()));
         }
         return candidatures;
     }
 
+    public void modifierEstRetenu(Long id, boolean estRetenu) {
+        // Récupérer la candidature par son ID
+        Candidature candidature = candidatureRepository.findById(id)
+                .orElseThrow(() -> new ExecutionException("Candidature introuvable avec l'ID : " + id));
+
+        // Mettre à jour l'attribut estRetenu
+        candidature.setEstRetenu(estRetenu);
+
+        // Sauvegarder la mise à jour dans la base de données
+        candidature = candidatureRepository.save(candidature);
+
+    }
     public ByteArrayInputStream exportCandidatToExcel() throws IOException {
         String[] columns = {"Nom", "Prenom", "Email", "Téléphone", "Adresse", "Stade de Recrutement",  "Moyenne", "Poste concerné"};
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -74,7 +104,6 @@ public class CandidatureService {
                 row.createCell(2).setCellValue(c.getEmail());
                 row.createCell(3).setCellValue(c.getTelephone());
                 row.createCell(4).setCellValue(c.getAdresse());
-                row.createCell(6).setCellValue(c.getStadeDeRecrutement());
                 row.createCell(7).setCellValue(c.getMoyenne());
                 row.createCell(8).setCellValue(c.getPoste());
             }
