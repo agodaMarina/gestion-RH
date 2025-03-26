@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @for (item of secteurs; track $index) {
+        @for (item of paginate; track $index) {
         <tr>
           <td>{{ $index + 1 }}</td>
           <td>

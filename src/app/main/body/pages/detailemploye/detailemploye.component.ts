@@ -42,6 +42,7 @@ export class DetailemployeComponent implements OnInit {
     this.getContratByUser(Number(id));
     this.getDepart(Number(id));
     this.getCsp();
+    this.verifiedActivity();
   }
 
   getDetail(id: number) {
@@ -123,8 +124,8 @@ export class DetailemployeComponent implements OnInit {
       if (dateFin > currentDate) {
         this.message =
           `Cet employé est Inactif car du ${lastAbsence.dateDebut} au ${lastAbsence.dateFin}, ` +
-          `il est en permission de type ${lastAbsence.type}.`;
-        console.log(this.message);
+          `il est en ${lastAbsence.type}.`;
+        
       }
     }
   }
@@ -195,6 +196,7 @@ export class DetailemployeComponent implements OnInit {
   }
 
   rompreContrat() {
+    
     alert('Voulez-vous vraiment rompre le contrat de cet employé ?') ;
     this.service.rompreContrat(this.employe.id, 'RUPTURE CONVENTIONNELLE').subscribe({
       next: (data: Contrat) => {

@@ -35,7 +35,7 @@ export interface EmployeDto{
     dateNaissance: string; 
     age:number;
     dateEmbauche: string;   
-    anciennete:number;
+    anciennete:string;
     dateDepart?: string;    
     csp: string;
     poste: string;     

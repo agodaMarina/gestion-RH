@@ -78,9 +78,7 @@ export class EmployeService {
     });
   }
   rompreContrat(id: number, raison: string): Observable<Contrat> {
-    return this.http.put<Contrat>(this.url + '/RompreContrat',  {
-      params: { id, raison },
-    });
+    return this.http.put<Contrat>(this.url + '/rompreContrat/'+id+'/'+raison,raison);
   }
 
   prevoirRetraites(intervalleMax: number = 5): Observable<Map<number, any[]>> {

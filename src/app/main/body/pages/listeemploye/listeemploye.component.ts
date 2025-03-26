@@ -80,7 +80,7 @@ export class ListeemployeComponent {
     this.service.getEmployes().subscribe(
       (data: EmployeDto[]) => {
         this.employes = data;
-        this.employesInactif = data.filter((emp) => emp.isActif);
+        this.employesInactif = data.filter((emp) => !emp.isActif);
 
         // Signal calculé pour filtrer la liste d'employés
         this.filteredEmployees = computed(() => {
