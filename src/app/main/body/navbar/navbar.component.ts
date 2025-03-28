@@ -3,6 +3,7 @@ import { SearchService } from '../../../api/services/search.service';
 import { AuthenticationService } from '../../../api/services/authentication.service';
 import { User } from '../../../api/models/user';
 import { Router } from '@angular/router';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private searchService: SearchService,
     private route:Router,
-    private service: AuthenticationService
+    private service: AuthenticationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +46,9 @@ export class NavbarComponent implements OnInit {
         console.log(err)
       }
     })
+  }
+  openBugReportModal() {
+    this.modalService.openModal();
   }
   
   logout() {

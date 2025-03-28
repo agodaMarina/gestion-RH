@@ -101,52 +101,7 @@
         <i class="bx bx-plus bx-18px m-2"></i>ajouter
       </a>
     </div>
-    <!-- Striped Rows -->
-    <!-- <div class="card">
-    <div class="table-responsive text-nowrap">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Poste</th>
-            <th>Csp</th>
-            <th>contrat</th>
-          </tr>
-        </thead>
-        <tbody class="table-border-bottom-0">
-          
-          @for (item of employes; track $index) {
-          <tr  style="cursor: pointer;" (click)="goToDetail(item)">
-            <td>
-              <strong>{{ item.nom.toUpperCase() }}</strong>
-            </td>
-            <td>{{ item.prenom }}</td>
-            <td>
-              <strong>{{ item.poste }}</strong>
-            </td>
-            <td>
-              {{ item.csp }}
-            </td>
-            <td>{{item.contrat}} </td>
-          
-          </tr>}@empty {
-            <tr>Aucun employé portant ce nom</tr>
-          }
-        </tbody>
-      </table>
-      <div class="card flex justify-content-center">
-        <p-paginator
-          (onPageChange)="onPageChange($event)"
-          [first]="first"
-          [rows]="rows"
-          [totalRecords]="employes.length"
-          [rowsPerPageOptions]="[10, 20, 30]"
-        />
-      </div>
-    </div>
-    
-  </div>-->
+ 
   </div>
   <div class="nav-align-top">
     <ul class="nav nav-pills mb-4" role="tablist">

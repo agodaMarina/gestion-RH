@@ -49,9 +49,9 @@ export class DepartComponent implements OnInit {
   }
 
   getEmployes() {
-    this.employeService.getEmployes().subscribe({
+    this.employeService.getEmployeActifs().subscribe({
       next: (data) => {
-        this.employes = data.filter((employe) => employe.isActif);
+        this.employes = data
       },
       error: (err) => {
         this.messageService.add({

@@ -40,6 +40,7 @@ import { SelectionComponent } from './body/pages/recrutement/etapes/selection/se
 
 import { PaginationComponent } from './body/pagination/pagination.component';
 import { ListprocessusComponent } from './body/pages/listprocessus/listprocessus.component';
+import { NotificationComponent } from '../notification/notification.component';
 
 
 

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Candidature, CandidatureCreation } from '../models/Candidature';
@@ -39,9 +39,15 @@ export class RecrutementService {
     return this.http.put<void>(`${this.baseUrl}/${recrutementId}/evaluations`, evaluationsRequest);
   }
 
-  endRecrutement(recrutementId: number,ids:number[]): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/end`, ids, { params: { recrutementId } });
+  endRecrutement(recrutementId: number, ids: number[]): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/end`, ids, { 
+      params: new HttpParams().set('recrutementId', recrutementId.toString()) 
+    });
   }
+
+  // endRecrutement(recrutementId: number,ids:number[]): Observable<void> {
+  //   return this.http.put<void>(`${this.baseUrl}/end`, ids, { params: { recrutementId } });
+  // }
 
   getAll(): Observable<RecrutementDto[]> {
     return this.http.get<RecrutementDto[]>(`${this.baseUrl}/all`);

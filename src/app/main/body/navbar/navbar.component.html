@@ -26,13 +26,7 @@
 
    <ul class="navbar-nav flex-row align-items-center ms-auto">
      <!-- Place this tag where you want the button to render. -->
-     <li class="nav-item lh-1 me-3">
-      <button type="button" class="btn text-nowrap d-inline-block me-4">
-        <span class="tf-icons bx bx-bell"></span>
-        <span class="badge rounded-pill bg-danger badge-notifications">10</span>
-      </button>
-             
-     </li>
+     
 
      <!-- User -->
      <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -67,9 +61,9 @@
            </a>
          </li>
          <li>
-           <a class="dropdown-item" href="#">
+           <a class="dropdown-item" (click)="openBugReportModal()">
              <i class="bx bx-cog me-2"></i>
-             <span class="align-middle">paramêtres</span>
+             <span class="align-middle">report</span>
            </a>
          </li>
        

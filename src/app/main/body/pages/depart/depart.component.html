@@ -80,7 +80,6 @@
           <th>Employé</th>
           <th>Raison</th>
           <th>Date de sortie</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
@@ -92,27 +91,6 @@
 
           <td>{{ item.raison }}</td>
           <td>{{ item.dateDepart }}</td>
-          <td>
-            <div class="dropdown">
-              <button
-                type="button"
-                class="btn p-0 dropdown-toggle hide-arrow"
-                data-bs-toggle="dropdown"
-              >
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" (click)="modifier(item)"
-                  ><i class="bx bx-edit-alt me-1"></i> voir</a
-                >
-                <a
-                  class="dropdown-item"
-                  (click)="item.id ? supprimer(item.id) : null"
-                  ><i class="bx bx-trash me-1"></i> supprimer</a
-                >
-              </div>
-            </div>
-          </td>
         </tr>
         }@empty {
         <tr>

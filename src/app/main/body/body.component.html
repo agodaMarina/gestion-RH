@@ -1,10 +1,71 @@
 <div class="content-wrapper">
-    <!-- Content -->
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <router-outlet></router-outlet>
+  <!-- Content -->
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+     
+      tabindex="-1"
+      aria-labelledby="bugReportModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="bugReportModalLabel">
+              Signaler un bug
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="email" class="form-label">Votre Email :</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  [(ngModel)]="email"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label"
+                  >Description du bug :</label
+                >
+                <textarea
+                  class="form-control"
+                  id="description"
+                  rows="3"
+                  [(ngModel)]="description"
+                  required
+                ></textarea>
+              </div>
+            </form>
+            <p *ngIf="message">{{ message }}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="sendReport()"
+            >
+              Envoyer
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- / Content -->
-   <app-footer></app-footer>
-
-    <div class="content-backdrop fade"></div>
+    <router-outlet></router-outlet>
   </div>
+  <!-- / Content -->
+  <app-footer></app-footer>
+
+  <div class="content-backdrop fade"></div>
+</div>

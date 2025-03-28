@@ -117,6 +117,7 @@ export class SelectionComponent implements OnInit {
         detail: 'Veuillez sélectionner au moins un candidat !',
       });
     } else {
+      // console.log(this.selectedIds)
       this.recrutementService
         .endRecrutement(this.id, this.selectedIds)
         .subscribe({
